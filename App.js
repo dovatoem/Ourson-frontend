@@ -1,9 +1,14 @@
+import { useCallback } from "react";
+import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 const theme = {
   ...DefaultTheme,
@@ -54,9 +59,23 @@ const theme = {
 };
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Bryndan_Write: require("./assets/fonts/Bryndan_Write.ttf"),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <PaperProvider theme={theme}>
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
         <Text style={styles.text}>Ourson</Text>
         <StatusBar style="auto" />
       </View>
@@ -72,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontFamily: "Bryndan Write",
+    fontFamily: "Bryndan_Write",
     fontSize: 30,
   },
 });
