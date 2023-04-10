@@ -9,6 +9,28 @@ import {
 } from "react-native-paper";
 import * as SplashScreen from "expo-splash-screen";
 
+//Navigation modules
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HeroScreen from './screens/HeroScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import SignInScreen from './screens/SignInScreen';
+import DayScreen from './screens/DayScreen';
+import OnBoardingScreen1 from './screens/OnBoardingScreen1';
+import OnBoardingScreen2 from './screens/OnBoardingScreen2';
+import OnBoardingScreen3 from "./screens/OnBoardingScreen3";
+import TastedFoodScreen from "./screens/TastedFoodScreen";
+import ShoppingListScreen from "./screens/ShoppingListScreen";
+import FavoritesScreen from "./screens/FavoritesScreen";
+import PanicModeScreen from "./screens/PanicModeScreen";
+import SearchScreen from "./screens/SearchScreen";
+import SearchedRecipeScreen from "./screens/SearchedRecipeScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import DashboardScreen from "./screens/DashboardScreen";
+import RegenerateSearchScreen from "./screens/RegenerateSearchScreen";
+
+const Stack = createNativeStackNavigator();
+
 SplashScreen.preventAutoHideAsync();
 
 const theme = {
@@ -60,6 +82,7 @@ const theme = {
 export default function App() {
   const [fontsLoaded] = useFonts({
     Bryndan_Write: require("./assets/fonts/Bryndan_Write.ttf"),
+    Roboto_Regular: require("./assets/fonts/Roboto_Regular.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -74,35 +97,23 @@ export default function App() {
 
   return (
     <PaperProvider theme={theme}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <Text style={styles.text}>Ourson</Text>
-        <Button
-          mode="contained"
-          onPress={() => console.log("Sign in button", "Pressed")}
-        >
-          Se connecter
-        </Button>
-        <Button
-          mode="outlined"
-          onPress={() => console.log("Sign up button", "Pressed")}
-        >
-          S'inscrire
-        </Button>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Hero" component={HeroScreen} />
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="DayScreen" component={DayScreen} />
+          <Stack.Screen name="OnBoardingScreen1" component={OnBoardingScreen1} />
+          <Stack.Screen name="OnBoardingScreen2" component={OnBoardingScreen2} />
+          <Stack.Screen name="OnBoardingScreen3" component={OnBoardingScreen3} />
+          <Stack.Screen name="TastedFoodScreen" component={TastedFoodScreen} />
+        </Stack.Navigator>
+        <View onLayout={onLayoutRootView}>
         <StatusBar style="auto" />
-      </View>
+        </View>
+      </NavigationContainer>
     </PaperProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontFamily: "Bryndan_Write",
-    fontSize: 30,
-  },
-});
+
