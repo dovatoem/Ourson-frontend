@@ -10,6 +10,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "react-native-paper";
 import { Chip } from "react-native-paper";
+import { useState } from "react";
 
 export default function DayScreen() {
   const theme = useTheme();
@@ -64,12 +65,24 @@ export default function DayScreen() {
       "Toastez les tranches de pain de mie. Mixez les tranches toastées avec les cacahuètes et le parmesan râpé. Pelez la betterave, les navets et la patate douce. Passez l’ensemble de vos légumes à la mandoline afin de réaliser des rondelles régulières. Dans un petit saladier, mélangez la béchamel avec le fromage de chèvre frais. Disposez harmonieusement vos rondelles de légumes en les alternant dans un plat à gratin. Nappez l’ensemble de béchamel. Enfournez à 180 °C pendant 50 minutes. Saupoudrez la surface de votre gratin de chapelure au parmesan. Enfournez pour 10 minutes de cuisson supplémentaires.",
   };
 
+  const [activeMenu, setActiveMenu] = useState("Midi");
+  const [isLiked, setIsLiked] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [babyCounter, setBabyCounter] = useState(babyRecipe.portions);
+  const [adultCounter, setAdultCounter] = useState(adultRecipe.portions);
+
+  // const [city, setCity] = useState("");
+  // const [city, setCity] = useState("");
+  // const [city, setCity] = useState("");
+
   const babyIngredientsChips = babyRecipe.ingredients.map((data, i) => {
     let ingredientMapped = "";
     if (data.quantity === null || data.unit === null) {
       ingredientMapped = data.name;
     } else {
-      ingredientMapped = `${data.quantity} ${data.unit} de ${data.name}`;
+      ingredientMapped = `${
+        (data.quantity / babyRecipe.portions) * babyCounter
+      } ${data.unit} de ${data.name}`;
     }
     return (
       <Chip key={i} style={styles.chip}>
@@ -83,7 +96,9 @@ export default function DayScreen() {
     if (data.quantity === null || data.unit === null) {
       ingredientMapped = data.name;
     } else {
-      ingredientMapped = `${data.quantity} ${data.unit} de ${data.name}`;
+      ingredientMapped = `${
+        (data.quantity / adultRecipe.portions) * adultCounter
+      } ${data.unit} de ${data.name}`;
     }
     return (
       <Chip key={i} style={styles.chip}>
@@ -91,6 +106,22 @@ export default function DayScreen() {
       </Chip>
     );
   });
+
+  const handleClickPortionsBaby = (data) => {
+    if (data === "sub") {
+      setBabyCounter(babyCounter - 1);
+    } else {
+      setBabyCounter(babyCounter + 1);
+    }
+  };
+
+  const handleClickPortionsAdult = (data) => {
+    if (data === "sub") {
+      setAdultCounter(adultCounter - 1);
+    } else {
+      setAdultCounter(adultCounter + 1);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -145,9 +176,23 @@ export default function DayScreen() {
             <View style={styles.recipePortion}>
               <Text style={styles.titlePortion}>Portions</Text>
               <View style={styles.changePortion}>
-                <Icon name="minus" size={28} color="black" />
-                <Text style={styles.nbPortion}>{babyRecipe.portions}</Text>
-                <Icon name="plus" size={28} color="black" />
+                <Icon
+                  name="minus"
+                  size={28}
+                  color="black"
+                  onPress={() => {
+                    handleClickPortionsBaby("sub");
+                  }}
+                />
+                <Text style={styles.nbPortion}>{babyCounter}</Text>
+                <Icon
+                  name="plus"
+                  size={28}
+                  color="black"
+                  onPress={() => {
+                    handleClickPortionsBaby("add");
+                  }}
+                />
               </View>
             </View>
           </View>
@@ -182,9 +227,23 @@ export default function DayScreen() {
             <View style={styles.recipePortion}>
               <Text style={styles.titlePortion}>Portions</Text>
               <View style={styles.changePortion}>
-                <Icon name="minus" size={28} color="black" />
-                <Text style={styles.nbPortion}>{adultRecipe.portions}</Text>
-                <Icon name="plus" size={28} color="black" />
+                <Icon
+                  name="minus"
+                  size={28}
+                  color="black"
+                  onPress={() => {
+                    handleClickPortionsAdult("sub");
+                  }}
+                />
+                <Text style={styles.nbPortion}>{adultCounter}</Text>
+                <Icon
+                  name="plus"
+                  size={28}
+                  color="black"
+                  onPress={() => {
+                    handleClickPortionsAdult("add");
+                  }}
+                />
               </View>
             </View>
           </View>
