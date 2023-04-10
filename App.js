@@ -1,13 +1,15 @@
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { Button } from "react-native-paper";
+
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
 import * as SplashScreen from "expo-splash-screen";
+import DayScreen from "./screens/DayScreen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -74,22 +76,9 @@ export default function App() {
 
   return (
     <PaperProvider theme={theme}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <Text style={styles.text}>Ourson</Text>
-        <Button
-          mode="contained"
-          onPress={() => console.log("Sign in button", "Pressed")}
-        >
-          Se connecter
-        </Button>
-        <Button
-          mode="outlined"
-          onPress={() => console.log("Sign up button", "Pressed")}
-        >
-          S'inscrire
-        </Button>
-        <StatusBar style="auto" />
-      </View>
+      <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+        <DayScreen />
+      </SafeAreaView>
     </PaperProvider>
   );
 }
@@ -97,12 +86,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontFamily: "Bryndan_Write",
-    fontSize: 30,
   },
 });
