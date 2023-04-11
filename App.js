@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import { Button } from "react-native-paper";
+import { StyleSheet, Text, View, Title, Button, Paragraph, SafeAreaView } from "react-native";
+
 
 import {
   MD3LightTheme as DefaultTheme,
@@ -13,6 +13,16 @@ import * as SplashScreen from "expo-splash-screen";
 //Navigation modules
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+//Tab navigation modules
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+import {
+  Tabs,
+  TabScreen,
+  useTabIndex,
+  useTabNavigation,
+} from 'react-native-paper-tabs';
+
 import HeroScreen from "./screens/HeroScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignInScreen from "./screens/SignInScreen";
@@ -29,9 +39,9 @@ import SearchedRecipeScreen from "./screens/SearchedRecipeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import RegenerateSearchScreen from "./screens/RegenerateSearchScreen";
+import RegenerateFavScreen from "./screens/RegenerateFavScreen";
 
-const Stack = createNativeStackNavigator();
-
+//SplashScreen 
 SplashScreen.preventAutoHideAsync();
 
 const theme = {
@@ -96,27 +106,83 @@ export default function App() {
     return null;
   }
 
+
+const Stack = createNativeStackNavigator();
+//const Tab = createMaterialTopTabNavigator();
+
+ 
+//function TabNavigator() {
+//  return (
+//    <Tab.Navigator>
+//      <Tab.Screen name="Diversification" component={TastedFoodScreen}/>
+//      <Tab.Screen name="Liste de courses" component={ShoppingListScreen} />
+//      <Tab.Screen name="Favoris" component={FavoritesScreen} />
+//      <Tab.Screen name="Panic Mode" component={PanicModeScreen} />
+//      <Tab.Screen name="Rechercher " component={SearchScreen} />
+//      <Tab.Screen name="Dashboard " component={DashboardScreen} />
+//      <Tab.Screen name="Day" component={DayScreen} />
+//    </Tab.Navigator>
+//  );
+//}
+
+
+  function TabNavigator({navigation}) { 
+    return(
+      <View>
+        <SafeAreaView style={styles.safeArea}/>
+        <Tabs
+          defaultIndex={0} 
+          showTextLabel={true}
+          mode="scrollable"
+          uppercase={false}
+          showLeadingSpace={true} 
+          onChangeIndex={(index) => {
+            if (index === 0) {
+              navigation.navigate('TastedFoodScreen');
+            }else if (index === 1) {
+              navigation.navigate('ShoppingListScreen');
+            }else if (index === 2) {
+              navigation.navigate('FavoritesScreen');
+            }
+          }}
+        >
+          <TabScreen label="Diversification">
+            <View style={{backgroundColor:'black', flex:1 }}/>
+          </TabScreen>
+          <TabScreen label="Liste de courses" >
+            <View style={{backgroundColor:'black', flex:1 }}/>
+          </TabScreen>
+          <TabScreen label="Favoris" >
+            <View style={{backgroundColor:'black', flex:1 }}/>
+          </TabScreen>
+        </Tabs>
+      </View>
+    );
+  }
+
+
+
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{ headerShown: false}}>
           <Stack.Screen name="Hero" component={HeroScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="DayScreen" component={DayScreen} />
-          <Stack.Screen
-            name="OnBoardingScreen1"
-            component={OnBoardingScreen1}
-          />
-          <Stack.Screen
-            name="OnBoardingScreen2"
-            component={OnBoardingScreen2}
-          />
-          <Stack.Screen
-            name="OnBoardingScreen3"
-            component={OnBoardingScreen3}
-          />
-          <Stack.Screen name="TastedFoodScreen" component={TastedFoodScreen} />
+          <Stack.Screen name="OnBoardingScreen1" component={OnBoardingScreen1} />
+          <Stack.Screen name="OnBoardingScreen2" component={OnBoardingScreen2}/>
+          <Stack.Screen name="OnBoardingScreen3" component={OnBoardingScreen3}/>
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="RegenerateSearchScreen" component={RegenerateSearchScreen} />
+          <Stack.Screen name="RegenerateFavScreen" component={RegenerateFavScreen} />
+          <Stack.Screen name="SearchScreen " component={SearchScreen} />
+          <Stack.Screen name="SearchedRecipeScreen" component={SearchedRecipeScreen} />
+          <Stack.Screen name="ShoppingListScreen" component={ShoppingListScreen} />
+          <Stack.Screen name="TastedFoodScreen" component={TastedFoodScreen}/>
+          <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
+          <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
         <View onLayout={onLayoutRootView}>
           <StatusBar style="auto" />
@@ -125,3 +191,14 @@ export default function App() {
     </PaperProvider>
   );
 }
+
+
+const styles = StyleSheet.create({
+  tabBar: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "red",
+  },
+});

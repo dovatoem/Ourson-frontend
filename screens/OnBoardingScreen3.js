@@ -1,5 +1,5 @@
-import { Button, StyleSheet, Text, SafeAreaView, View, TextInput, ImageBackground, Image } from 'react-native';
-// import { Button } from "react-native-paper"; 
+import {StyleSheet, Text, SafeAreaView, View, TextInput, ImageBackground, Image } from 'react-native';
+import { Button } from "react-native-paper"; 
 
 
 export default function  OnBoardingScreen3  ({ navigation }) {
@@ -29,9 +29,17 @@ export default function  OnBoardingScreen3  ({ navigation }) {
                     style={styles.input}
                 />
         <Button
-        title="Terminer  --> Go to TastedFood (test) "
-        onPress={() => navigation.navigate('TastedFoodScreen')}
-        />
+        style={styles.button}
+        mode="contained"
+        title="Terminer  --> Go to DayScreen "
+        onPress={() => navigation.navigate('DayScreen')}
+        >Go to DayScreen</Button>
+        <Button
+        style={styles.button}
+        mode="contained"
+        title="Terminer  --> Go to TastedFood (to check navigation top tab) "
+        onPress={() => navigation.navigate('TabNavigator')}
+        >Go to TastedFood</Button>
     </ImageBackground>
     
    </View>
@@ -72,4 +80,11 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '80%',
     },
+    button: {
+      width: 180,
+      height: 60,
+      borderRadius:60,
+      marginTop: 20,
+      justifyContent: 'center',
+  },
 });
