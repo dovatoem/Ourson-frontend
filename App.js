@@ -10,6 +10,15 @@ import {
 } from "react-native-paper";
 import * as SplashScreen from "expo-splash-screen";
 
+// redux imports
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import user from './reducers/user';
+
+const store = configureStore({
+  reducer: { user },
+ });
+
 //Navigation modules
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -145,14 +154,9 @@ function TabNavigator() {
 
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer onStateChange={(state)=>console.log(state.routes[state.index].name)} >
-       <View>
-        <SafeAreaView></SafeAreaView>
-        <View style={{width: "100%", height: 130,}}>
-          <ImageBackground  source={require('./assets/headerOursonBackground.png')} style={styles.background}/>
-        </View> 
-       </View>
-        <Stack.Navigator screenOptions={{ headerShown: false}}>
+      <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Hero" component={HeroScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -175,6 +179,7 @@ function TabNavigator() {
           <StatusBar style="auto" />
         </View>
       </NavigationContainer>
+      </Provider>
     </PaperProvider>
   );
 }
