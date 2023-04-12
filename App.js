@@ -93,7 +93,7 @@ const theme = {
   },
 };
 
-export default function App(props) {
+export default function App() {
   const [fontsLoaded] = useFonts({
     Bryndan_Write: require("./assets/fonts/Bryndan_Write.ttf"),
     Roboto_Regular: require("./assets/fonts/Roboto_Regular.ttf"),
@@ -142,16 +142,25 @@ function TabNavigator() {
  );
 }
 
+const [currentScreen, setCurrentScreen] = useState(false)
+const Tabs = ['TastedFoodScreen', 'FavoritesScreen', 'ShoppingListScreen', 'SearchScreen', 'PanicModeScreen', 'DashboardScreen']
 
-  return (
+const isTabScreen = Tabs.includes(currentScreen);
+
+const handleStateChange = (state) => {
+  setCurrentScreen(state.routes[state.index].name);
+};
+
+return (
     <PaperProvider theme={theme}>
-      <NavigationContainer onStateChange={(state)=>console.log(state.routes[state.index].name)} >
+      <NavigationContainer onStateChange={handleStateChange}>
        <View>
         <SafeAreaView></SafeAreaView>
         <View style={{width: "100%", height: 130,}}>
           <ImageBackground  source={require('./assets/headerOursonBackground.png')} style={styles.background}/>
         </View> 
-       </View>
+       </View> 
+       
         <Stack.Navigator screenOptions={{ headerShown: false}}>
           <Stack.Screen name="Hero" component={HeroScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
