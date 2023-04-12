@@ -1,7 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Title, Button, Paragraph, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, Title, Button, Paragraph, SafeAreaView, ImageBackground } from "react-native";
 
 
 import {
@@ -13,6 +13,9 @@ import * as SplashScreen from "expo-splash-screen";
 //Navigation modules
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useRoute } from '@react-navigation/native';
+
+
 //Tab navigation modules
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -90,12 +93,13 @@ const theme = {
   },
 };
 
-export default function App() {
+export default function App(props) {
   const [fontsLoaded] = useFonts({
     Bryndan_Write: require("./assets/fonts/Bryndan_Write.ttf"),
     Roboto_Regular: require("./assets/fonts/Roboto_Regular.ttf"),
   });
 
+  
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       await SplashScreen.hideAsync();
@@ -108,63 +112,46 @@ export default function App() {
 
 
 const Stack = createNativeStackNavigator();
-//const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
  
-//function TabNavigator() {
-//  return (
-//    <Tab.Navigator>
-//      <Tab.Screen name="Diversification" component={TastedFoodScreen}/>
-//      <Tab.Screen name="Liste de courses" component={ShoppingListScreen} />
-//      <Tab.Screen name="Favoris" component={FavoritesScreen} />
-//      <Tab.Screen name="Panic Mode" component={PanicModeScreen} />
-//      <Tab.Screen name="Rechercher " component={SearchScreen} />
-//      <Tab.Screen name="Dashboard " component={DashboardScreen} />
-//      <Tab.Screen name="Day" component={DayScreen} />
-//    </Tab.Navigator>
-//  );
-//}
-
-
-  function TabNavigator({navigation}) { 
-    return(
-      <View>
-        <SafeAreaView style={styles.safeArea}/>
-        <Tabs
-          defaultIndex={0} 
-          showTextLabel={true}
-          mode="scrollable"
-          uppercase={false}
-          showLeadingSpace={true} 
-          onChangeIndex={(index) => {
-            if (index === 0) {
-              navigation.navigate('TastedFoodScreen');
-            }else if (index === 1) {
-              navigation.navigate('ShoppingListScreen');
-            }else if (index === 2) {
-              navigation.navigate('FavoritesScreen');
-            }
-          }}
-        >
-          <TabScreen label="Diversification">
-            <View style={{backgroundColor:'black', flex:1 }}/>
-          </TabScreen>
-          <TabScreen label="Liste de courses" >
-            <View style={{backgroundColor:'black', flex:1 }}/>
-          </TabScreen>
-          <TabScreen label="Favoris" >
-            <View style={{backgroundColor:'black', flex:1 }}/>
-          </TabScreen>
-        </Tabs>
-      </View>
-    );
-  }
-
+function TabNavigator() {
+ return (
+  <Tab.Navigator 
+    screenOptions={{
+      tabBarLabelStyle: { fontSize: 10
+      },
+      tabBarStyle: { backgroundColor: '#FFF8F6' },
+      tabBarScrollEnabled: true,
+    
+  }} 
+  style={{}}
+  >
+      <Tab.Screen name="Diversification" component={TastedFoodScreen} options={{ tabBarLabel: capitalize('Diversification') }} />
+      <Tab.Screen name="Liste de courses" component={ShoppingListScreen} options={{ tabBarLabel: capitalize('Liste de courses') }} />
+      <Tab.Screen name="Favoris" component={FavoritesScreen} options={{ tabBarLabel: capitalize('Favoris') }} />
+      <Tab.Screen name="Panic Mode" component={PanicModeScreen} options={{ tabBarLabel: capitalize('Panic Mode') }} />
+      <Tab.Screen name="Rechercher " component={SearchScreen} options={{ tabBarLabel: capitalize('Rechercher') }} />
+      <Tab.Screen name="Dashboard " component={DashboardScreen} options={{ tabBarLabel: capitalize('Dashboard') }} />
+      <Tab.Screen name="Day" component={DayScreen} options={{ tabBarLabel: capitalize('Day') }} />
+    </Tab.Navigator> 
+ );
+}
 
 
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer>
+      <NavigationContainer onStateChange={(state)=>console.log(state.routes[state.index].name)} >
+       <View>
+        <SafeAreaView></SafeAreaView>
+        <View style={{width: "100%", height: 130,}}>
+          <ImageBackground  source={require('./assets/headerOursonBackground.png')} style={styles.background}/>
+        </View> 
+       </View>
         <Stack.Navigator screenOptions={{ headerShown: false}}>
           <Stack.Screen name="Hero" component={HeroScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
@@ -194,6 +181,12 @@ const Stack = createNativeStackNavigator();
 
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#ffff',
+  },
   tabBar: {
     flex: 1,
     flexDirection: 'row',
@@ -201,4 +194,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "red",
   },
+  background: {
+    width: '100%',
+    height: '100%',
+  }
+
 });

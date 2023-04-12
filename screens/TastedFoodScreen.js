@@ -1,57 +1,45 @@
 import { StyleSheet, Text, SafeAreaView, View, TextInput, ImageBackground, Image } from 'react-native';
 import { Button, Chip } from "react-native-paper"; 
 
+
+
+
 export default function TastedFoodScreen({ navigation }) {
+
+
     return (
+    
       <View style={styles.container}>
-        <SafeAreaView style={styles.safeArea}/>
-        <ImageBackground source={require('../assets/headerOursonBackground.png')} style={styles.background}>
             <Text style={styles.title}>$prénom a déjà goûté...</Text>
             <Text style={styles.text}>Légumes</Text>
             <Text style={styles.text}>2/30 légumes goûtés</Text>
-            <Chip>Peppers</Chip>
+            <Chip style={styles.chip}>Peppers</Chip>
             <Text style={styles.text}>Fruits</Text>
             <Text style={styles.text}>1/30 fruits goûtés</Text>
-            <Chip>Chile Peppers</Chip>
-        </ImageBackground>
+            <Chip style={styles.chip}>Chile Peppers</Chip>
       </View>
+     
+      
     );
 }
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
       backgroundColor: '#ffff',
+    },
+    chip: {
+      marginBottom: 6,
+      marginRight: 6,
     },
     title: {
         fontFamily: "Bryndan_Write",
-        fontSize: 57,
+        fontSize: 33,
         fontWeight: 400,
         lineHeight: 64,
         textAlign: 'center',
-        marginTop: 100,
-        marginBottom: 100,
       },
       text: {
         fontFamily: "Roboto_Regular",
       },
-    background: {
-        width: '100%',
-        height: '100%',
-      }, 
-    safeArea: {
-        flex: 1, 
-        marginBottom: 35,
-      },  
-     input: {
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 5,
-        padding: 10,
-        marginVertical: 10,
-        width: '80%',
-    },
-
 });
