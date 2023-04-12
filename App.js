@@ -173,6 +173,8 @@ function TabNavigator() {
           <Stack.Screen name="TastedFoodScreen" component={TastedFoodScreen}/>
           <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
           <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
+          {/* SUPPRIMER UNE FOIS PAGE DASHBOARD FAITE */}
+          <Stack.Screen name="DashboardScreen" component={DashboardScreen} /> 
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
         <View onLayout={onLayoutRootView}>

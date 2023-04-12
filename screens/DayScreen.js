@@ -18,7 +18,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
-import { $CombinedState } from "redux";
+// import { $CombinedState } from "redux";
 
 export default function DayScreen() {
   const theme = useTheme();
