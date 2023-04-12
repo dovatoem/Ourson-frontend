@@ -10,6 +10,15 @@ import {
 } from "react-native-paper";
 import * as SplashScreen from "expo-splash-screen";
 
+// redux imports
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import user from './reducers/user';
+
+const store = configureStore({
+  reducer: { user },
+ });
+
 //Navigation modules
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -98,6 +107,7 @@ export default function App() {
 
   return (
     <PaperProvider theme={theme}>
+      <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Hero" component={HeroScreen} />
@@ -122,6 +132,7 @@ export default function App() {
           <StatusBar style="auto" />
         </View>
       </NavigationContainer>
+      </Provider>
     </PaperProvider>
   );
 }
