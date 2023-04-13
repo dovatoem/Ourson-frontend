@@ -117,7 +117,6 @@ export default function App(props) {
   const Stack = createNativeStackNavigator();
   const Tab = createMaterialTopTabNavigator();
   const [currentScreen, setCurrentScreen] = useState("Hero");
-  const [lastTabClicked, setLastTabClicked] = useState("Dashboard");
 
   const handleStateChange = (state) => {
     console.log(state);
@@ -151,37 +150,19 @@ export default function App(props) {
     return (
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 10 },
+          tabBarLabelStyle: {
+            fontSize: 13,
+            fontWeight: "bold",
+            textTransform: "capitalize",
+          },
           tabBarStyle: { backgroundColor: "#FDF0ED" },
           tabBarScrollEnabled: true,
+          tabBarIndicatorStyle: { backgroundColor: theme.colors.primary },
+          tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: theme.colors.outlineVariant,
         }}
-        backBehavior="history"
+        backBehavior="none"
       >
-        <Tab.Screen
-          name="Diversification"
-          component={TastedFoodScreen}
-          options={{ tabBarLabel: "Diversification" }}
-        />
-        <Tab.Screen
-          name="Liste de courses"
-          component={ShoppingListScreen}
-          options={{ tabBarLabel: "Liste de courses" }}
-        />
-        <Tab.Screen
-          name="Favoris"
-          component={FavoritesScreen}
-          options={{ tabBarLabel: "Favoris" }}
-        />
-        <Tab.Screen
-          name="Panic Mode"
-          component={PanicModeScreen}
-          options={{ tabBarLabel: "Panic Mode" }}
-        />
-        <Tab.Screen
-          name="Rechercher "
-          component={SearchScreen}
-          options={{ tabBarLabel: "Rechercher" }}
-        />
         <Tab.Screen
           name="Dashboard "
           component={DashboardScreen}
@@ -191,6 +172,31 @@ export default function App(props) {
           name="Day"
           component={DayScreen}
           options={{ tabBarLabel: "Day" }}
+        />
+        <Tab.Screen
+          name="Panic Mode"
+          component={PanicModeScreen}
+          options={{ tabBarLabel: "Panic Mode" }}
+        />
+        <Tab.Screen
+          name="Liste de courses"
+          component={ShoppingListScreen}
+          options={{ tabBarLabel: "Liste de courses" }}
+        />
+        <Tab.Screen
+          name="Diversification"
+          component={TastedFoodScreen}
+          options={{ tabBarLabel: "Diversification" }}
+        />
+        <Tab.Screen
+          name="Favoris"
+          component={FavoritesScreen}
+          options={{ tabBarLabel: "Favoris" }}
+        />
+        <Tab.Screen
+          name="Rechercher "
+          component={SearchScreen}
+          options={{ tabBarLabel: "Rechercher" }}
         />
       </Tab.Navigator>
     );

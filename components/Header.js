@@ -12,9 +12,9 @@ export default function Header({ navigation }) {
   return (
     <View>
       <SafeAreaView></SafeAreaView>
-      <View style={{ width: "100%", height: 180, marginBottom: -70 }}>
+      <View style={{ width: "100%", height: 140, marginBottom: -70 }}>
         <ImageBackground
-          source={require("../assets/headerOursonBackground.png")}
+          source={require("../assets/headerSmall.png")}
           style={styles.background}
         >
           <TouchableOpacity

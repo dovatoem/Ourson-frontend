@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   text: {
-    fontFamily: "Roboto_Regular",
+    fontFamily: "Roboto",
   },
 });
