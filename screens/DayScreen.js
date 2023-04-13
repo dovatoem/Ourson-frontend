@@ -18,9 +18,8 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
-import { $CombinedState } from "redux";
 
-export default function DayScreen() {
+export default function DayScreen({ navigation }) {
   const theme = useTheme();
 
   const [activeMenu, setActiveMenu] = useState("midi");
@@ -142,17 +141,14 @@ export default function DayScreen() {
   const adultIngredientsChips = adultRecipe.ingredients.map((data, i) => {
     if (data.quantity === null) {
       ingredientMapped = data.name;
-      console.log("if", data.quantity);
     } else if (data.unit === null && data.quantity !== null) {
       ingredientMapped = `${
         (data.quantity / adultRecipe.portions) * adultCounter
       } ${data.name}`;
-      console.log("else if", data.quantity);
     } else {
       ingredientMapped = `${
         (data.quantity / adultRecipe.portions) * adultCounter
       } ${data.unit} de ${data.name}`;
-      console.log("else", data.quantity);
     }
     return (
       <Chip key={i} style={styles.chip}>
@@ -189,7 +185,6 @@ export default function DayScreen() {
       </TouchableOpacity>
     );
   } else {
-    console.log(isLiked);
     heartIcon = (
       <TouchableOpacity
         onPress={() => {
@@ -207,11 +202,11 @@ export default function DayScreen() {
   const handleClickLike = () => {
     if (isLiked === false) {
       setIsLiked(true);
-      console.log(isLiked);
+
       // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
     } else {
       setIsLiked(false);
-      console.log(isLiked);
+
       // FETCH APPEL BASE DE DONNEE POUR SUPPRIMER likedRecipes à USER
     }
   };
