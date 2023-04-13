@@ -188,7 +188,7 @@ export default function App(props) {
     );
   }
 
-  return (
+return (
     <PaperProvider theme={theme}>
       <NavigationContainer onStateChange={handleStateChange}>
         {headerBar}
