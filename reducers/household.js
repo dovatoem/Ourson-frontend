@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
- value: { token: null, email: null, firstName: null },
+ value: { hhSize: null, kidsCount: null, firstName: null },
 };
 
-export const userSlice = createSlice({
- name: 'user',
+export const householdSlice = createSlice({
+ name: 'household',
  initialState,
  reducers: {
    login: (state, action) => {
@@ -16,5 +16,5 @@ export const userSlice = createSlice({
    
   }});
 
-export const { login } = userSlice.actions;
+export const { login } = householdSlice.actions;
 export default userSlice.reducer;

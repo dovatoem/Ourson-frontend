@@ -23,9 +23,10 @@ export default function SignUpScreen({ navigation }) {
       body: JSON.stringify({ email, password }),
     }).then(response => response.json())
       .then(data => {
+        console.log('data', data);
         if (data.result) {
         dispatch(login({ token: data.token, email, firstName: data.firstName }));
-        console.log(user);
+        console.log('signinSreen', user);
         navigation.navigate('OnBoardingScreen1')}
       });    
   };
@@ -37,7 +38,7 @@ export default function SignUpScreen({ navigation }) {
     <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
       <Text style={styles.title}>Se connecter</Text>
       <View style={styles.inputContainer}>
-        <TextInput onChangeText={(value) => setEmail(value)} mode="outlined" label="Email" style={styles.input} />
+        <TextInput onChangeText={(value) => setEmail(value)} mode="outlined" label="Email" style={styles.input} keyboardType="email-address"/>
         <TextInput onChangeText={(value) => setPassword(value)} mode="outlined" label="Mot de passe" style={styles.input} 
         secureTextEntry={!showPassword} right={<TextInput.Icon icon={showPassword ? 'eye' : 'eye-off'} onPress={() => setShowPassword(!showPassword)} color='#808080'/> }  />
       </View>

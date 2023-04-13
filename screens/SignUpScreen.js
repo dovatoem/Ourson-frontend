@@ -27,7 +27,8 @@ export default function SignUpScreen({ navigation }) {
         if (data.result) {
         dispatch(login({ token: data.token, email, firstName }));
         navigation.navigate('OnBoardingScreen1')}
-      });    
+        console.log('signupScreen', user);
+      }); 
   };
 
  return ( 
@@ -38,7 +39,7 @@ export default function SignUpScreen({ navigation }) {
       <Text style={styles.title}>Inscrivez-vous!</Text>
       <View style={styles.inputContainer}>
         <TextInput onChangeText={(value) => setFirstName(value)} mode="outlined" label="Prénom" style={styles.input} />
-        <TextInput onChangeText={(value) => setEmail(value)} mode="outlined" label="Email" style={styles.input} />
+        <TextInput onChangeText={(value) => setEmail(value)} mode="outlined" label="Email" style={styles.input} keyboardType="email-address"/>
         <TextInput onChangeText={(value) => setPassword(value)} mode="outlined" label="Mot de passe" style={styles.input} 
         secureTextEntry={!showPassword} right={<TextInput.Icon icon={showPassword ? 'eye' : 'eye-off'} onPress={() => setShowPassword(!showPassword)} color='#808080'/> }  />
       </View>

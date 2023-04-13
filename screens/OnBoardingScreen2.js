@@ -1,79 +1,154 @@
-import { Button, StyleSheet, Text, SafeAreaView, View, TextInput, ImageBackground, Image } from 'react-native';
-// import { Button } from "react-native-paper"; 
+import { StyleSheet, ImageBackground, View, SafeAreaView } from 'react-native';
+import { Button, Text, ProgressBar, RadioButton, } from "react-native-paper"; 
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { saveDiet, updateUserDiet } from '../reducers/user';
 
+export default function  OnBoardingScreen1({ navigation }) {
+  const user = useSelector((state) => state.user.value);
 
-export default function  OnBoardingScreen2 ({ navigation }) {
- return (
+  const [checked, setChecked] = useState("null");
+  const [diet, setDiet] = useState("null")
+    
+  const handleSubmit = () => {
+    fetch('https://back.ourson.app/users/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: user.token, dietName: diet }),
+    }).then(response => response.json())
+      .then(data => {
+        if (data.result) {
+        console.log('data.household', data.household);
+        console.log('user', data);        
+        navigation.navigate("OnBoardingScreen3")}       
+      });     
+  }
 
-  <View style={styles.container}>
+  return (
+  <View style={styles.fullContainer} >
     <SafeAreaView style={styles.safeArea}/>
     <ImageBackground source={require('../assets/onBoardingBackground.png')} style={styles.background}>
-        <Text style={styles.title}>Bienvenue $prénom!</Text>
-        <Text style={styles.text}>Pour vous offrir une expérience unique, nous avons besoin de quelques précisions</Text>
+    <Icon name="chevron-left" size={36} color="black" onPress={() => navigation.navigate("OnBoardingScreen1")} style={styles.chevron} />
+    <View style={styles.container} >
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Bienvenue {user.firstName}!</Text>  
+        <Text style={styles.headerText}>Pour vous offrir une expérience unique, nous avons besoin de quelques précisions</Text>     
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.title}>Régimes parentaux</Text>
+        <RadioButton.Group
+                onValueChange={(value) => {setChecked(value), setDiet(value)}}
+                value={checked}
+              >
+                <RadioButton.Item
+                  label="Végétarien"
+                  value="Végétarien"
+                  labelStyle={{
+                    fontSize: 16,
+                    lineHeight: 22,
+                  }}
+                />
+                 <RadioButton.Item
+                  label="Pescétarien"
+                  value="Pescétarien"
+                  labelStyle={{
+                    fontSize: 16,
+                    lineHeight: 22,
+                  }}               
+                />
+                  <RadioButton.Item
+                  label="Végétalien"
+                  value="Végétalien"
+                  labelStyle={{
+                    fontSize: 16,
+                    lineHeight: 22,
+                  }}             
+                />
+                <RadioButton.Item
+                  label="Aucun de ceux-ci"
+                  value="null"
+                  labelStyle={{
+                    fontSize: 16,
+                    lineHeight: 22,
+                  }}              
+                />
+              </RadioButton.Group>
         
-        <Text style={styles.text}>Régimes parentaux</Text>
-                <TextInput
-                    placeholder="Nombre de personnes"
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Nombre d'enfants"
-                    autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
-                    keyboardType="email-address" // https://reactnative.dev/docs/textinput#keyboardtype
-                    textContentType="emailAddress" // https://reactnative.dev/docs/textinput#textcontenttype-ios
-                    autoComplete="email" // https://reactnative.dev/docs/textinput#autocomplete-android
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Prénom du 1er enfant"
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Age du 1er enfant en mois"
-                    style={styles.input}
-                />
-        <Button
-        title="Continuer --> Go to OnBoardingScreen3 "
-        onPress={() => navigation.navigate('OnBoardingScreen3')}
-        />
+      </View>
+      <Button style={styles.button} mode="outlined" onPress={() => navigation.navigate("OnBoardingScreen3")}>Continuer</Button>
+        <ProgressBar progress={0.5} style={styles.progressBar} />
+      </View>
     </ImageBackground>
-    
-   </View>
+  </View>
 
  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#ffff',
-    },
-    
-    title: {
-        fontFamily: "Bryndan_Write",
-        fontSize: 57,
-        fontWeight: 400,
-        lineHeight: 64,
-        textAlign: 'center',
-        marginTop: 100,
-        marginBottom: 100,
-      },
-    background: {
-        width: '100%',
-        height: '100%',
-      }, 
-    safeArea: {
-        flex: 1, 
-        marginBottom: 35,
-      },  
-     input: {
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 5,
-        padding: 10,
-        marginVertical: 10,
-        width: '80%',
-    },
+  fullContainer: {
+    flex: 1,
+    backgroundColor: '#ffff',
+  },
+  safeArea: {
+    flex: 1, 
+    marginBottom: 35,
+  }, 
+  background: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center', 
+    alignItems: 'center'
+  }, 
+  chevron: {
+    marginLeft: '5%',
+    alignSelf: 'flex-start',
+  },
+  container: {
+    flex: 1,
+    width: '85%',
+    marginTop: '10%',
+    backgroundColor: '#ffff',
+    borderRadius: 10, 
+    alignItems: 'center',
+  },
+  header: {
+    marginLeft: '5%',
+  },
+  headerTitle : {
+    fontFamily: "Roboto",
+    fontSize: 36,
+    fontWeight: 700,
+    marginTop: '5%',   
+  },
+  headerText: {
+    fontFamily: "Roboto",
+    fontSize: 14,
+    fontWeight: 600,
+    marginRight: '5%',
+    marginTop: '3%',
+  },
+  inputContainer: {
+    marginLeft: '5%',
+    width: '85%',
+  },
+  title: {
+    fontFamily: "Roboto",
+    fontSize: 20,
+    fontWeight: 600,
+    marginTop: 25,
+  },
+  button: {
+    width: 180,
+    height: 60,
+    borderRadius:60,
+    justifyContent: 'center',
+    marginTop: 130,
+    alignSelf: 'center',
+  },
+  progressBar: {
+    width: 290,
+    marginTop: 35,
+    alignSelf: 'center',
+  },
 });
