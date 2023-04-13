@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { useCallback, useState } from "react";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -127,7 +126,7 @@ export default function App(props) {
 
   const [fontsLoaded] = useFonts({
     Bryndan_Write: require("./assets/fonts/Bryndan_Write.ttf"),
-    Roboto_Regular: require("./assets/fonts/Roboto_Regular.ttf"),
+    Roboto: require("./assets/fonts/Roboto.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {

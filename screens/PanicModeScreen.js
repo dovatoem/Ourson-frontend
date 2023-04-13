@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontFamily: "Roboto_Regular",
+    fontFamily: "Roboto",
   },
 
   title: {
