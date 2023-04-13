@@ -7,6 +7,7 @@ import { saveDiet, updateUserDiet } from '../reducers/user';
 
 export default function  OnBoardingScreen1({ navigation }) {
   const user = useSelector((state) => state.user.value);
+  const household = useSelector((state) => state.household.value);
 
   const [checked, setChecked] = useState("null");
   const [diet, setDiet] = useState("null")
@@ -15,12 +16,17 @@ export default function  OnBoardingScreen1({ navigation }) {
     fetch('https://back.ourson.app/users/profile', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: user.token, dietName: diet }),
+      body: JSON.stringify({ 
+        token: user.token, 
+        dietName: diet, 
+        hhSize: household.hhSize, 
+        kidsCount: household.kidsCount,
+        kidsArray: household.kidsArray
+       }),
     }).then(response => response.json())
       .then(data => {
-        if (data.result) {
-        console.log('data.household', data.household);
-        console.log('user', data);        
+        if (data.result) {    
+        console.log(data.household);  
         navigation.navigate("OnBoardingScreen3")}       
       });     
   }
@@ -76,7 +82,7 @@ export default function  OnBoardingScreen1({ navigation }) {
               </RadioButton.Group>
         
       </View>
-      <Button style={styles.button} mode="outlined" onPress={() => navigation.navigate("OnBoardingScreen3")}>Continuer</Button>
+      <Button style={styles.button} mode="outlined" onPress={() => handleSubmit()}>Continuer</Button>
         <ProgressBar progress={0.5} style={styles.progressBar} />
       </View>
     </ImageBackground>

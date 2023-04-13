@@ -16,6 +16,14 @@ import {
 
 import { IconButton } from "react-native-paper";
 
+//Redux
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+
+const store = configureStore({
+  reducer: { user, household },
+ });
+
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
@@ -191,6 +199,7 @@ export default function App(props) {
 
   return (
     <PaperProvider theme={theme}>
+      <Provider store={store}>
       <NavigationContainer onStateChange={handleStateChange}>
         {headerBar}
         <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -238,6 +247,7 @@ export default function App(props) {
           <StatusBar style="auto" />
         </View>
       </NavigationContainer>
+      </Provider>
     </PaperProvider>
   );
 }
