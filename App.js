@@ -1,8 +1,20 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import { Button } from "react-native-paper";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Title,
+  Button,
+  Paragraph,
+  SafeAreaView,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
+
+import { IconButton } from "react-native-paper";
 
 import {
   MD3LightTheme as DefaultTheme,
@@ -10,18 +22,21 @@ import {
 } from "react-native-paper";
 import * as SplashScreen from "expo-splash-screen";
 
-// redux imports
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import user from './reducers/user';
-
-const store = configureStore({
-  reducer: { user },
- });
-
 //Navigation modules
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useRoute } from "@react-navigation/native";
+
+//Tab navigation modules
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
+import {
+  Tabs,
+  TabScreen,
+  useTabIndex,
+  useTabNavigation,
+} from "react-native-paper-tabs";
+
 import HeroScreen from "./screens/HeroScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignInScreen from "./screens/SignInScreen";
@@ -38,9 +53,10 @@ import SearchedRecipeScreen from "./screens/SearchedRecipeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import RegenerateSearchScreen from "./screens/RegenerateSearchScreen";
+import RegenerateFavScreen from "./screens/RegenerateFavScreen";
+import Header from "./components/Header";
 
-const Stack = createNativeStackNavigator();
-
+//SplashScreen
 SplashScreen.preventAutoHideAsync();
 
 const theme = {
@@ -89,7 +105,26 @@ const theme = {
   },
 };
 
-export default function App() {
+export default function App(props) {
+  console.log(props);
+  const Stack = createNativeStackNavigator();
+  const Tab = createMaterialTopTabNavigator();
+  const [currentScreen, setCurrentScreen] = useState("Hero");
+  const [lastTabClicked, setLastTabClicked] = useState("Dashboard");
+
+  const handleStateChange = (state) => {
+    console.log(state);
+    setCurrentScreen(state.routes[state.index].name);
+  };
+
+  let headerBar = "";
+
+  if (currentScreen === "TabNavigator") {
+    headerBar = <Header />;
+  }
+  // utiliser currentScreen avec un if pour stocker dans une variable
+  // le header qui se declenchera uniquement si currentScreen===TabNavigator
+
   const [fontsLoaded] = useFonts({
     Bryndan_Write: require("./assets/fonts/Bryndan_Write.ttf"),
     Roboto_Regular: require("./assets/fonts/Roboto_Regular.ttf"),
@@ -105,10 +140,59 @@ export default function App() {
     return null;
   }
 
+  function TabNavigator() {
+    return (
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: { fontSize: 10 },
+          tabBarStyle: { backgroundColor: "#FDF0ED" },
+          tabBarScrollEnabled: true,
+        }}
+        backBehavior="history"
+      >
+        <Tab.Screen
+          name="Diversification"
+          component={TastedFoodScreen}
+          options={{ tabBarLabel: "Diversification" }}
+        />
+        <Tab.Screen
+          name="Liste de courses"
+          component={ShoppingListScreen}
+          options={{ tabBarLabel: "Liste de courses" }}
+        />
+        <Tab.Screen
+          name="Favoris"
+          component={FavoritesScreen}
+          options={{ tabBarLabel: "Favoris" }}
+        />
+        <Tab.Screen
+          name="Panic Mode"
+          component={PanicModeScreen}
+          options={{ tabBarLabel: "Panic Mode" }}
+        />
+        <Tab.Screen
+          name="Rechercher "
+          component={SearchScreen}
+          options={{ tabBarLabel: "Rechercher" }}
+        />
+        <Tab.Screen
+          name="Dashboard "
+          component={DashboardScreen}
+          options={{ tabBarLabel: "Dashboard" }}
+        />
+        <Tab.Screen
+          name="Day"
+          component={DayScreen}
+          options={{ tabBarLabel: "Day" }}
+        />
+      </Tab.Navigator>
+    );
+  }
+
   return (
     <PaperProvider theme={theme}>
-      <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer onStateChange={handleStateChange}>
+        {headerBar}
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Hero" component={HeroScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
@@ -126,13 +210,57 @@ export default function App() {
             name="OnBoardingScreen3"
             component={OnBoardingScreen3}
           />
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+          <Stack.Screen
+            name="RegenerateSearchScreen"
+            component={RegenerateSearchScreen}
+          />
+          <Stack.Screen
+            name="RegenerateFavScreen"
+            component={RegenerateFavScreen}
+          />
+          <Stack.Screen name="SearchScreen " component={SearchScreen} />
+          <Stack.Screen
+            name="SearchedRecipeScreen"
+            component={SearchedRecipeScreen}
+          />
+          <Stack.Screen
+            name="ShoppingListScreen"
+            component={ShoppingListScreen}
+          />
           <Stack.Screen name="TastedFoodScreen" component={TastedFoodScreen} />
+          <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
+          <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
         <View onLayout={onLayoutRootView}>
           <StatusBar style="auto" />
         </View>
       </NavigationContainer>
-      </Provider>
     </PaperProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffff",
+  },
+  tabBar: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "red",
+  },
+  background: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+});

@@ -42,7 +42,7 @@ export default function SignUpScreen({ navigation }) {
         <TextInput onChangeText={(value) => setPassword(value)} mode="outlined" label="Mot de passe" style={styles.input} 
         secureTextEntry={!showPassword} right={<TextInput.Icon icon={showPassword ? 'eye' : 'eye-off'} onPress={() => setShowPassword(!showPassword)} color='#808080'/> }  />
       </View>
-      <Button style={styles.button} mode="contained" onPress={() => handleSubmit()}>Se connecter</Button>
+      <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('DashboardScreen') }>Se connecter</Button>
     </KeyboardAvoidingView>
   </ImageBackground>   
   </View>

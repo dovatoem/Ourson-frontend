@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-
+import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
- value: { token: null, email: null, firstName: null },
+  value: { token: null, email: null, firstName: null },
+  lastTabUsedIndex: 1, // initial value
 };
 
 export const userSlice = createSlice({
@@ -16,5 +16,5 @@ export const userSlice = createSlice({
    
   }});
 
-export const { login } = userSlice.actions;
+export const { login, setLastTabUsedIndex } = userSlice.actions;
 export default userSlice.reducer;
