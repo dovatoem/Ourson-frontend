@@ -9,8 +9,9 @@ export default function DashboardScreen({ navigation }) {
   const onChangeSearch = researchText => setSearchValue(researchText);
 
  return (
-    <SafeAreaView >
+    
       <View>
+        <SafeAreaView/>
       <ImageBackground source={require('../assets/dashboardBackground.png')} style={styles.background}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Searchbar style={styles.searchBar}
@@ -69,7 +70,6 @@ export default function DashboardScreen({ navigation }) {
       </View>
      </ImageBackground>
      </View>
-   </SafeAreaView>
  );
 }
 
