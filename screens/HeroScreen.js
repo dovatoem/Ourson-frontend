@@ -31,7 +31,7 @@ export default function HeroScreen({ navigation }) {
             <Button
               style={styles.button}
               mode="outlined"
-              onPress={() => navigation.navigate("TabNavigator")}
+              onPress={() => navigation.navigate("SignUp")}
               title="S'inscrire"
             >
               S'inscrire
