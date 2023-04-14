@@ -115,13 +115,13 @@ const theme = {
 };
 
 export default function App(props) {
-  // console.log(props);
+  
   const Stack = createNativeStackNavigator();
   const Tab = createMaterialTopTabNavigator();
   const [currentScreen, setCurrentScreen] = useState("Hero");
 
   const handleStateChange = (state) => {
-    // console.log(state);
+   
     setCurrentScreen(state.routes[state.index].name);
   };
 
