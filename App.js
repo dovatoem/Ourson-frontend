@@ -158,125 +158,57 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer onStateChange={handleStateChange}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-              name="Hero"
-              component={HeroScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="SignIn"
-              component={SignInScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUpScreen}
-              currentScreen={currentScreen}
-            />
+            <Stack.Screen name="Hero" component={HeroScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
 
             <Stack.Screen
               name="OnBoardingScreen1"
               component={OnBoardingScreen1}
-              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="OnBoardingScreen2"
               component={OnBoardingScreen2}
-              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="OnBoardingScreen3"
               component={OnBoardingScreen3}
-              currentScreen={currentScreen}
             />
-            <Stack.Screen
-              name="DashboardScreen"
-              component={DashboardScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="MondayScreen"
-              component={MondayScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="TuesdayScreen"
-              component={TuesdayScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="WednesdayScreen"
-              component={WednesdayScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="ThursdayScreen"
-              component={ThursdayScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="FridayScreen"
-              component={FridayScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="SaturdayScreen"
-              component={SaturdayScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="SundayScreen"
-              component={SundayScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="ProfileScreen"
-              component={ProfileScreen}
-              currentScreen={currentScreen}
-            />
+            <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+            <Stack.Screen name="MondayScreen" component={MondayScreen} />
+            <Stack.Screen name="TuesdayScreen" component={TuesdayScreen} />
+            <Stack.Screen name="WednesdayScreen" component={WednesdayScreen} />
+            <Stack.Screen name="ThursdayScreen" component={ThursdayScreen} />
+            <Stack.Screen name="FridayScreen" component={FridayScreen} />
+            <Stack.Screen name="SaturdayScreen" component={SaturdayScreen} />
+            <Stack.Screen name="SundayScreen" component={SundayScreen} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
 
             <Stack.Screen
               name="SearchedRecipeScreen"
               component={SearchedRecipeScreen}
-              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="ShoppingListScreen"
               component={ShoppingListScreen}
-              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="TastedFoodScreen"
               component={TastedFoodScreen}
-              currentScreen={currentScreen}
             />
-            <Stack.Screen
-              name="FavoritesScreen"
-              component={FavoritesScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="PanicModeScreen"
-              component={PanicModeScreen}
-              currentScreen={currentScreen}
-            />
-            <Stack.Screen
-              name="SearchScreen"
-              component={SearchScreen}
-              currentScreen={currentScreen}
-            />
+            <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
+            <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
+            <Stack.Screen name="SearchScreen" component={SearchScreen} />
             <Stack.Screen
               name="RegenerateSearchScreen"
               component={RegenerateSearchScreen}
-              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="RegenerateFavScreen"
               component={RegenerateFavScreen}
-              currentScreen={currentScreen}
             />
           </Stack.Navigator>
-          <View onLayout={onLayoutRootView} currentScreen={currentScreen}>
+          <View onLayout={onLayoutRootView}>
             <StatusBar style="auto" />
           </View>
         </NavigationContainer>
