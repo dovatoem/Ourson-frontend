@@ -17,7 +17,8 @@ import {
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function DayScreen({ navigation }) {
   const theme = useTheme();
@@ -27,10 +28,36 @@ export default function DayScreen({ navigation }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [checked, setChecked] = useState("first");
 
-  let babyRecipe = {};
-  let adultRecipe = {};
+  let babyRecipes = {};
+  let adultRecipes = {};
+  const user = useSelector((state) => state.user.value);
+
+  useEffect(() => {
+    console.log("usertoken", user.token);
+    fetch("http://172.20.10.4:3000/recipes/weekly", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: user.token,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          babyRecipes = data.recipes.map((data, i) => {
+            return data.baby;
+          });
+          adultRecipes = data.recipes.map((data, i) => {
+            return data.adult;
+          });
+        }
+      });
+    console.log("I Only run once (When the component gets mounted)");
+  }, []);
 
   // FETCH APPEL BASE DE DONNEE POUR GET LES 4 RECETTES BABY/ADULT MIDI/SOIR
+  let babyRecipe = {};
+  let adultRecipe = {};
   if (activeMenu === "midi") {
     babyRecipe = {
       _id: {
@@ -159,7 +186,7 @@ export default function DayScreen({ navigation }) {
 
   const handleClickPortionsBaby = (data) => {
     if (data === "sub") {
-      setBabyCounter(babyCounter - 1);
+      if (babyCounter > 1) setBabyCounter(babyCounter - 1);
     } else {
       setBabyCounter(babyCounter + 1);
     }
@@ -167,7 +194,9 @@ export default function DayScreen({ navigation }) {
 
   const handleClickPortionsAdult = (data) => {
     if (data === "sub") {
-      setAdultCounter(adultCounter - 1);
+      if (adultCounter > 1) {
+        setAdultCounter(adultCounter - 1);
+      }
     } else {
       setAdultCounter(adultCounter + 1);
     }

@@ -1,20 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
- value: { hhSize: null, kidsCount: null, firstName: null },
+ value: { hhSize: null, kidsCount: null, kidsArray: [] },
 };
 
 export const householdSlice = createSlice({
  name: 'household',
  initialState,
  reducers: {
-   login: (state, action) => {
-    state.value.token = action.payload.token;
-    state.value.email = action.payload.email;
-    state.value.firstName = action.payload.firstName;
-   },
-   
+   addHousehold: (state, action) => {
+    state.value.hhSize = action.payload.hhSize;
+    state.value.kidsCount = action.payload.kidsCount;
+    state.value.kidsArray.push(action.payload.kidsArray);
+   },   
   }});
 
-export const { login } = householdSlice.actions;
-export default userSlice.reducer;
+export const { addHousehold } = householdSlice.actions;
+export default householdSlice.reducer;

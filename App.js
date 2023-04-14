@@ -15,6 +15,10 @@ import {
 
 import { IconButton } from "react-native-paper";
 
+//Redux
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
@@ -39,7 +43,7 @@ import {
 import HeroScreen from "./screens/HeroScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignInScreen from "./screens/SignInScreen";
-import DayScreen from "./screens/DayScreen";
+import DayScreen from "./screens/Day0Screen";
 import OnBoardingScreen1 from "./screens/OnBoardingScreen1";
 import OnBoardingScreen2 from "./screens/OnBoardingScreen2";
 import OnBoardingScreen3 from "./screens/OnBoardingScreen3";
@@ -54,6 +58,12 @@ import DashboardScreen from "./screens/DashboardScreen";
 import RegenerateSearchScreen from "./screens/RegenerateSearchScreen";
 import RegenerateFavScreen from "./screens/RegenerateFavScreen";
 import Header from "./components/Header";
+import user from "./reducers/user";
+import household from "./reducers/household";
+
+const store = configureStore({
+  reducer: { user, household },
+});
 
 //SplashScreen
 SplashScreen.preventAutoHideAsync();
@@ -109,7 +119,6 @@ export default function App(props) {
   const Stack = createNativeStackNavigator();
   const Tab = createMaterialTopTabNavigator();
   const [currentScreen, setCurrentScreen] = useState("Hero");
-  const [lastTabClicked, setLastTabClicked] = useState("Dashboard");
 
   const handleStateChange = (state) => {
     console.log(state);
@@ -143,37 +152,19 @@ export default function App(props) {
     return (
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 10 },
+          tabBarLabelStyle: {
+            fontSize: 13,
+            fontWeight: "bold",
+            textTransform: "capitalize",
+          },
           tabBarStyle: { backgroundColor: "#FDF0ED" },
           tabBarScrollEnabled: true,
+          tabBarIndicatorStyle: { backgroundColor: theme.colors.primary },
+          tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: theme.colors.outlineVariant,
         }}
-        backBehavior="history"
+        backBehavior="none"
       >
-        <Tab.Screen
-          name="Diversification"
-          component={TastedFoodScreen}
-          options={{ tabBarLabel: "Diversification" }}
-        />
-        <Tab.Screen
-          name="Liste de courses"
-          component={ShoppingListScreen}
-          options={{ tabBarLabel: "Liste de courses" }}
-        />
-        <Tab.Screen
-          name="Favoris"
-          component={FavoritesScreen}
-          options={{ tabBarLabel: "Favoris" }}
-        />
-        <Tab.Screen
-          name="Panic Mode"
-          component={PanicModeScreen}
-          options={{ tabBarLabel: "Panic Mode" }}
-        />
-        <Tab.Screen
-          name="Rechercher "
-          component={SearchScreen}
-          options={{ tabBarLabel: "Rechercher" }}
-        />
         <Tab.Screen
           name="Dashboard "
           component={DashboardScreen}
@@ -184,59 +175,89 @@ export default function App(props) {
           component={DayScreen}
           options={{ tabBarLabel: "Day" }}
         />
+        <Tab.Screen
+          name="Panic Mode"
+          component={PanicModeScreen}
+          options={{ tabBarLabel: "Panic Mode" }}
+        />
+        <Tab.Screen
+          name="Liste de courses"
+          component={ShoppingListScreen}
+          options={{ tabBarLabel: "Liste de courses" }}
+        />
+        <Tab.Screen
+          name="Diversification"
+          component={TastedFoodScreen}
+          options={{ tabBarLabel: "Diversification" }}
+        />
+        <Tab.Screen
+          name="Favoris"
+          component={FavoritesScreen}
+          options={{ tabBarLabel: "Favoris" }}
+        />
+        <Tab.Screen
+          name="Rechercher "
+          component={SearchScreen}
+          options={{ tabBarLabel: "Rechercher" }}
+        />
       </Tab.Navigator>
     );
   }
 
 return (
     <PaperProvider theme={theme}>
-      <NavigationContainer onStateChange={handleStateChange}>
-        {headerBar}
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Hero" component={HeroScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="DayScreen" component={DayScreen} />
-          <Stack.Screen
-            name="OnBoardingScreen1"
-            component={OnBoardingScreen1}
-          />
-          <Stack.Screen
-            name="OnBoardingScreen2"
-            component={OnBoardingScreen2}
-          />
-          <Stack.Screen
-            name="OnBoardingScreen3"
-            component={OnBoardingScreen3}
-          />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-          <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
-          <Stack.Screen
-            name="RegenerateSearchScreen"
-            component={RegenerateSearchScreen}
-          />
-          <Stack.Screen
-            name="RegenerateFavScreen"
-            component={RegenerateFavScreen}
-          />
-          <Stack.Screen name="SearchScreen " component={SearchScreen} />
-          <Stack.Screen
-            name="SearchedRecipeScreen"
-            component={SearchedRecipeScreen}
-          />
-          <Stack.Screen
-            name="ShoppingListScreen"
-            component={ShoppingListScreen}
-          />
-          <Stack.Screen name="TastedFoodScreen" component={TastedFoodScreen} />
-          <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
-          <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        </Stack.Navigator>
-        <View onLayout={onLayoutRootView}>
-          <StatusBar style="auto" />
-        </View>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer onStateChange={handleStateChange}>
+          {headerBar}
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Hero" component={HeroScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="DayScreen" component={DayScreen} />
+            <Stack.Screen
+              name="OnBoardingScreen1"
+              component={OnBoardingScreen1}
+            />
+            <Stack.Screen
+              name="OnBoardingScreen2"
+              component={OnBoardingScreen2}
+            />
+            <Stack.Screen
+              name="OnBoardingScreen3"
+              component={OnBoardingScreen3}
+            />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+            <Stack.Screen
+              name="RegenerateSearchScreen"
+              component={RegenerateSearchScreen}
+            />
+            <Stack.Screen
+              name="RegenerateFavScreen"
+              component={RegenerateFavScreen}
+            />
+            <Stack.Screen name="SearchScreen " component={SearchScreen} />
+            <Stack.Screen
+              name="SearchedRecipeScreen"
+              component={SearchedRecipeScreen}
+            />
+            <Stack.Screen
+              name="ShoppingListScreen"
+              component={ShoppingListScreen}
+            />
+            <Stack.Screen
+              name="TastedFoodScreen"
+              component={TastedFoodScreen}
+            />
+            <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
+            <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          </Stack.Navigator>
+          <View onLayout={onLayoutRootView}>
+            <StatusBar style="auto" />
+          </View>
+        </NavigationContainer>
+      </Provider>
     </PaperProvider>
   );
 }

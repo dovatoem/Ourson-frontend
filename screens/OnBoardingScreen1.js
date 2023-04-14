@@ -3,16 +3,17 @@ import { Button, TextInput, Text, ProgressBar } from "react-native-paper";
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { addHousehold } from '../reducers/household';
 
 export default function  OnBoardingScreen1({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  const household = useSelector((state) => state.household.value);
 
    // local states saving the user inputs
    const [hhSize, setHhSize] = useState('');
    const [kidsCount, setKidsCount] = useState('');
    const [kidFields, setKidFields] = useState([]);
-   
    
    useEffect(() => {
     generateKidInputs();
@@ -62,12 +63,11 @@ handleKidAge = (value, age) => {
 let kidsArray=[];
 const handleSubmit = () => {
   kidsArray.push(obj);
-  console.log('kidsArray', kidsArray);
+  dispatch(addHousehold({hhSize, kidsCount, kidsArray})); 
+  console.log('household', household);
   navigation.navigate("OnBoardingScreen2");
-  console.log('kidsArray', kidsArray);
   console.log('Onboarding1', user);
-  console.log('hhSize', hhSize, 'kidsCount', kidsCount );
-}
+ }
 
 return (
 
