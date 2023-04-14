@@ -204,7 +204,7 @@ export default function App(props) {
     );
   }
 
-  return (
+return (
     <PaperProvider theme={theme}>
       <Provider store={store}>
         <NavigationContainer onStateChange={handleStateChange}>
