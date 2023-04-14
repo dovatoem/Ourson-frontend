@@ -12,7 +12,7 @@ import Header from "../components/Header";
 export default function Day1MondayScreen({ navigation }) {
   return (
     <>
-      <Header navigation={navigation} />
+      <Header navigation={navigation} currentScreen="MondayScreen" />
       <Text style={styles.title}>Lundi</Text>
     </>
   );

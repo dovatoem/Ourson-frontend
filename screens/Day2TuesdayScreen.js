@@ -11,7 +11,7 @@ import Header from "../components/Header";
 export default function Day2TuesdayScreen({ navigation }) {
   return (
     <>
-      <Header navigation={navigation} />
+      <Header navigation={navigation} currentScreen="TuesdayScreen" />
       <Text style={styles.title}>Mardi</Text>
     </>
   );

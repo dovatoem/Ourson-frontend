@@ -19,7 +19,7 @@ import Header from "../components/Header";
 export default function ShoppingListScreen({ navigation }) {
   return (
     <>
-      <Header navigation={navigation} />
+      <Header navigation={navigation} currentScreen="ShoppingListScreen" />
       <Text style={styles.title}>Liste de courses</Text>
     </>
   );
