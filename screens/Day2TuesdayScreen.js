@@ -1,13 +1,34 @@
 import {
-  Chip,
-  useTheme,
-  Button,
-  Dialog,
-  Portal,
+  StyleSheet,
   Text,
-  Divider,
-  RadioButton,
-} from "react-native-paper";
+  SafeAreaView,
+  View,
+  TextInput,
+  ImageBackground,
+  Image,
+} from "react-native";
+import Header from "../components/Header";
 export default function Day2TuesdayScreen({ navigation }) {
-  return <Text>Mardi</Text>;
+  return (
+    <>
+      <Header navigation={navigation} currentScreen="TuesdayScreen" />
+      <Text style={styles.title}>Mardi</Text>
+    </>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffff",
+  },
+  title: {
+    fontFamily: "Bryndan_Write",
+    fontSize: 57,
+    fontWeight: 400,
+    lineHeight: 64,
+    textAlign: "center",
+  },
+});

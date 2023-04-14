@@ -1,7 +1,13 @@
-import { StyleSheet, ImageBackground, View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
-import { Button, Text, ProgressBar, TextInput, } from "react-native-paper"; 
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  StyleSheet,
+  ImageBackground,
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
+import { Button, Text, ProgressBar, TextInput } from "react-native-paper";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function OnBoardingScreen1({ navigation }) {
@@ -15,50 +21,93 @@ export default function OnBoardingScreen1({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = () => {
-    if (firstName && email && password ) {
-    fetch('https://back.ourson.app/users/signupGuest', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ firstName, email, password, token: user.token }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-        console.log('hh reducer', household); 
-        console.log('data', data);
-        console.log('user', data);        
-        navigation.navigate('OnBoardingScreen1')}       
-      });  
+    if (firstName && email && password) {
+      fetch("https://back.ourson.app/users/signupGuest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, email, password, token: user.token }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            console.log("hh reducer", household);
+            console.log("data", data);
+            console.log("user", data);
+            navigation.navigate("Dashboard");
+          }
+        });
     } else {
-      navigation.navigate('OnBoardingScreen1')
-    }      
+      navigation.navigate("OnBoardingScreen1");
+    }
   };
 
   return (
-
-  <View style={styles.fullContainer} >
-    <SafeAreaView style={styles.safeArea}/>
-    <ImageBackground source={require('../assets/onBoardingBackground.png')} style={styles.background}>
-    <Icon name="chevron-left" size={36} color="black" onPress={() => navigation.navigate("OnBoardingScreen2")} style={styles.chevron} />
-    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Dernière étape !</Text>  
-        <Text style={styles.headerText}>Voulez-vous partager votre compte avec d'autres personnes de votre foyer? </Text>     
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.title}>Partage de compte</Text>
-        <TextInput onChangeText={(value) => setFirstName(value)} mode="outlined" label="Prénom" style={styles.input} />
-        <TextInput onChangeText={(value) => setEmail(value)} mode="outlined" label="Email" style={styles.input} keyboardType="email-address"/>
-        <TextInput onChangeText={(value) => setPassword(value)} mode="outlined" label="Mot de passe" style={styles.input} 
-        secureTextEntry={!showPassword} right={<TextInput.Icon icon={showPassword ? 'eye' : 'eye-off'} onPress={() => setShowPassword(!showPassword)} color='#808080'/> }  />
-      </View>
-      <Button style={styles.button} mode="contained" onPress={() => handleSubmit()}>Terminer</Button>
-        <ProgressBar progress={0.75} style={styles.progressBar} />
+    <View style={styles.fullContainer}>
+      <SafeAreaView style={styles.safeArea} />
+      <ImageBackground
+        source={require("../assets/onBoardingBackground.png")}
+        style={styles.background}
+      >
+        <Icon
+          name="chevron-left"
+          size={36}
+          color="black"
+          onPress={() => navigation.navigate("OnBoardingScreen2")}
+          style={styles.chevron}
+        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.container}
+        >
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>Dernière étape !</Text>
+            <Text style={styles.headerText}>
+              Voulez-vous partager votre compte avec d'autres personnes de votre
+              foyer?{" "}
+            </Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.title}>Partage de compte</Text>
+            <TextInput
+              onChangeText={(value) => setFirstName(value)}
+              mode="outlined"
+              label="Prénom"
+              style={styles.input}
+            />
+            <TextInput
+              onChangeText={(value) => setEmail(value)}
+              mode="outlined"
+              label="Email"
+              style={styles.input}
+              keyboardType="email-address"
+            />
+            <TextInput
+              onChangeText={(value) => setPassword(value)}
+              mode="outlined"
+              label="Mot de passe"
+              style={styles.input}
+              secureTextEntry={!showPassword}
+              right={
+                <TextInput.Icon
+                  icon={showPassword ? "eye" : "eye-off"}
+                  onPress={() => setShowPassword(!showPassword)}
+                  color="#808080"
+                />
+              }
+            />
+          </View>
+          <Button
+            style={styles.button}
+            mode="contained"
+            onPress={() => handleSubmit()}
+          >
+            Terminer
+          </Button>
+          <ProgressBar progress={0.75} style={styles.progressBar} />
         </KeyboardAvoidingView>
-    </ImageBackground>
-  </View>
-
- );
+      </ImageBackground>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

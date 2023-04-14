@@ -1,3 +1,5 @@
+import Header from "../components/Header";
+
 import {
   StyleSheet,
   View,
@@ -55,10 +57,27 @@ export default function MondayScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      <Header navigation={navigation} currentScreen="MondayScreen" />
       <View style={styles.container}></View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffff",
+  },
+  title: {
+    fontFamily: "Bryndan_Write",
+    fontSize: 57,
+    fontWeight: 400,
+    lineHeight: 64,
+    textAlign: "center",
+  },
+});
 
 const styles = StyleSheet.create({
   container: {
