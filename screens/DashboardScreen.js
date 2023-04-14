@@ -24,7 +24,7 @@ export default function DashboardScreen({ navigation }) {
         source={require("../assets/dashboardBackground.png")}
         style={styles.background}
       >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View>
           <Searchbar
             style={styles.searchBar}
             placeholder="Rechercher une recette"
@@ -33,6 +33,8 @@ export default function DashboardScreen({ navigation }) {
             // icon={() => <MaterialCommunityIcons name="selection-search" size={30}/>}
           />
         </View>
+
+        <View style={styles.cardContainer}>
         <View style={styles.container}>
           <TouchableOpacity
             style={styles.card}
@@ -116,6 +118,7 @@ export default function DashboardScreen({ navigation }) {
             </View>
           </TouchableOpacity>
         </View>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -128,10 +131,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     backgroundColor: "#ffffff",
-    padding: 18,
+    padding: 14,
     marginTop: 20,
     borderRadius: 20,
   },
+  cardContainer: {
+    height: '78%',
+  }, 
   cardImage: {
     height: 75,
     width: 75,
@@ -158,7 +164,7 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     backgroundColor: "#ffff",
     width: "82%",
-    marginBottom: 20,
-    marginTop: 100,
+    marginBottom: 15,
+    marginTop: 20,
   },
 });

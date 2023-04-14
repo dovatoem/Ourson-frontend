@@ -15,6 +15,10 @@ import {
 
 import { IconButton } from "react-native-paper";
 
+//Redux
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
@@ -39,7 +43,7 @@ import {
 import HeroScreen from "./screens/HeroScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignInScreen from "./screens/SignInScreen";
-import DayScreen from "./screens/DayScreen";
+import DayScreen from "./screens/Day0Screen";
 import OnBoardingScreen1 from "./screens/OnBoardingScreen1";
 import OnBoardingScreen2 from "./screens/OnBoardingScreen2";
 import OnBoardingScreen3 from "./screens/OnBoardingScreen3";
@@ -54,8 +58,6 @@ import DashboardScreen from "./screens/DashboardScreen";
 import RegenerateSearchScreen from "./screens/RegenerateSearchScreen";
 import RegenerateFavScreen from "./screens/RegenerateFavScreen";
 import Header from "./components/Header";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import household from "./reducers/household";
 
@@ -117,7 +119,6 @@ export default function App(props) {
   const Stack = createNativeStackNavigator();
   const Tab = createMaterialTopTabNavigator();
   const [currentScreen, setCurrentScreen] = useState("Hero");
-  const [lastTabClicked, setLastTabClicked] = useState("Dashboard");
 
   const handleStateChange = (state) => {
    
@@ -151,37 +152,19 @@ export default function App(props) {
     return (
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 10 },
+          tabBarLabelStyle: {
+            fontSize: 13,
+            fontWeight: "bold",
+            textTransform: "capitalize",
+          },
           tabBarStyle: { backgroundColor: "#FDF0ED" },
           tabBarScrollEnabled: true,
+          tabBarIndicatorStyle: { backgroundColor: theme.colors.primary },
+          tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: theme.colors.outlineVariant,
         }}
-        backBehavior="history"
+        backBehavior="none"
       >
-        <Tab.Screen
-          name="Diversification"
-          component={TastedFoodScreen}
-          options={{ tabBarLabel: "Diversification" }}
-        />
-        <Tab.Screen
-          name="Liste de courses"
-          component={ShoppingListScreen}
-          options={{ tabBarLabel: "Liste de courses" }}
-        />
-        <Tab.Screen
-          name="Favoris"
-          component={FavoritesScreen}
-          options={{ tabBarLabel: "Favoris" }}
-        />
-        <Tab.Screen
-          name="Panic Mode"
-          component={PanicModeScreen}
-          options={{ tabBarLabel: "Panic Mode" }}
-        />
-        <Tab.Screen
-          name="Rechercher "
-          component={SearchScreen}
-          options={{ tabBarLabel: "Rechercher" }}
-        />
         <Tab.Screen
           name="Dashboard "
           component={DashboardScreen}
@@ -192,11 +175,36 @@ export default function App(props) {
           component={DayScreen}
           options={{ tabBarLabel: "Day" }}
         />
+        <Tab.Screen
+          name="Panic Mode"
+          component={PanicModeScreen}
+          options={{ tabBarLabel: "Panic Mode" }}
+        />
+        <Tab.Screen
+          name="Liste de courses"
+          component={ShoppingListScreen}
+          options={{ tabBarLabel: "Liste de courses" }}
+        />
+        <Tab.Screen
+          name="Diversification"
+          component={TastedFoodScreen}
+          options={{ tabBarLabel: "Diversification" }}
+        />
+        <Tab.Screen
+          name="Favoris"
+          component={FavoritesScreen}
+          options={{ tabBarLabel: "Favoris" }}
+        />
+        <Tab.Screen
+          name="Rechercher "
+          component={SearchScreen}
+          options={{ tabBarLabel: "Rechercher" }}
+        />
       </Tab.Navigator>
     );
   }
 
-  return (
+return (
     <PaperProvider theme={theme}>
       <Provider store={store}>
         <NavigationContainer onStateChange={handleStateChange}>

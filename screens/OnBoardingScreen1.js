@@ -1,11 +1,18 @@
-import { StyleSheet, KeyboardAvoidingView, ImageBackground, View, SafeAreaView, ScrollView } from 'react-native';
-import { Button, TextInput, Text, ProgressBar } from "react-native-paper"; 
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  ImageBackground,
+  View,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import { Button, TextInput, Text, ProgressBar } from "react-native-paper";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { addHousehold } from '../reducers/household';
+import { addHousehold } from "../reducers/household";
 
-export default function  OnBoardingScreen1({ navigation }) {
+export default function OnBoardingScreen1({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const household = useSelector((state) => state.household.value);
@@ -122,49 +129,49 @@ return (
 const styles = StyleSheet.create({
   fullContainer: {
     flex: 1,
-    backgroundColor: '#ffff',
+    backgroundColor: "#ffff",
   },
   safeArea: {
-    flex: 1, 
+    flex: 1,
     marginBottom: 35,
-  }, 
+  },
   background: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center', 
-    alignItems: 'center'
-  }, 
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   chevron: {
-    marginLeft: '5%',
-    alignSelf: 'flex-start',
+    marginLeft: "5%",
+    alignSelf: "flex-start",
   },
   container: {
     flex: 1,
-    width: '85%',
-    marginTop: '10%',
-    backgroundColor: '#ffff',
-    borderRadius: 10, 
-    alignItems: 'center',
+    width: "85%",
+    marginTop: "10%",
+    backgroundColor: "#ffff",
+    borderRadius: 10,
+    alignItems: "center",
   },
   header: {
-    marginLeft: '5%',
+    marginLeft: "5%",
   },
-  headerTitle : {
+  headerTitle: {
     fontFamily: "Roboto",
     fontSize: 36,
     fontWeight: 700,
-    marginTop: '5%',   
+    marginTop: "5%",
   },
   headerText: {
     fontFamily: "Roboto",
     fontSize: 14,
     fontWeight: 600,
-    marginRight: '5%',
-    marginTop: '3%',
+    marginRight: "5%",
+    marginTop: "3%",
   },
   inputContainer: {
-    marginLeft: '5%',
-    width: '85%',
+    marginLeft: "5%",
+    width: "85%",
   },
   title: {
     fontFamily: "Roboto",
@@ -174,20 +181,20 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 290,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     marginTop: 25,
   },
   button: {
     width: 180,
     height: 60,
-    borderRadius:60,
-    justifyContent: 'center',
+    borderRadius: 60,
+    justifyContent: "center",
     marginTop: 35,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   progressBar: {
     width: 290,
     marginTop: 35,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });

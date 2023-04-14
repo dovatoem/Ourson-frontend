@@ -4,16 +4,15 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function  OnBoardingScreen1({ navigation }) {
+export default function OnBoardingScreen1({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const household = useSelector((state) => state.household.value);
 
-  const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-    
 
   const handleSubmit = () => {
     if (firstName && email && password ) {
@@ -21,8 +20,9 @@ export default function  OnBoardingScreen1({ navigation }) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ firstName, email, password, token: user.token }),
-    }).then(response => response.json())
-      .then(data => {
+    })
+      .then((response) => response.json())
+      .then((data) => {
         if (data.result) {
         console.log('hh reducer', household); 
         console.log('data', data);
@@ -33,7 +33,6 @@ export default function  OnBoardingScreen1({ navigation }) {
       navigation.navigate('OnBoardingScreen1')
     }      
   };
-
 
   return (
 
@@ -65,49 +64,49 @@ export default function  OnBoardingScreen1({ navigation }) {
 const styles = StyleSheet.create({
   fullContainer: {
     flex: 1,
-    backgroundColor: '#ffff',
+    backgroundColor: "#ffff",
   },
   safeArea: {
-    flex: 1, 
+    flex: 1,
     marginBottom: 35,
-  }, 
+  },
   background: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center', 
-    alignItems: 'center'
-  }, 
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   chevron: {
-    marginLeft: '5%',
-    alignSelf: 'flex-start',
+    marginLeft: "5%",
+    alignSelf: "flex-start",
   },
   container: {
     flex: 1,
-    width: '85%',
-    marginTop: '10%',
-    backgroundColor: '#ffff',
-    borderRadius: 10, 
-    alignItems: 'center',
+    width: "85%",
+    marginTop: "10%",
+    backgroundColor: "#ffff",
+    borderRadius: 10,
+    alignItems: "center",
   },
   header: {
-    marginLeft: '5%',
+    marginLeft: "5%",
   },
-  headerTitle : {
+  headerTitle: {
     fontFamily: "Roboto",
     fontSize: 36,
     fontWeight: 700,
-    marginTop: '5%',   
+    marginTop: "5%",
   },
   headerText: {
     fontFamily: "Roboto",
     fontSize: 14,
     fontWeight: 600,
-    marginRight: '5%',
-    marginTop: '3%',
+    marginRight: "5%",
+    marginTop: "3%",
   },
   inputContainer: {
-    marginLeft: '5%',
-    width: '85%',
+    marginLeft: "5%",
+    width: "85%",
   },
   title: {
     fontFamily: "Roboto",
@@ -116,21 +115,21 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   input: {
-    margin: 5, 
-    width: '85%',
-    backgroundColor: 'white'
+    margin: 5,
+    width: "85%",
+    backgroundColor: "white",
   },
   button: {
     width: 180,
     height: 60,
-    borderRadius:60,
-    justifyContent: 'center',
+    borderRadius: 60,
+    justifyContent: "center",
     marginTop: 130,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   progressBar: {
     width: 290,
     marginTop: 35,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });

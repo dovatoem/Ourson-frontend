@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   text: {
-    fontFamily: "Roboto_Regular",
+    fontFamily: "Roboto",
   },
   background: {
     width: "100%",
