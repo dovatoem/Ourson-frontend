@@ -20,7 +20,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function DayScreen({ navigation }) {
+export default function DayScreen({ navigation, props }) {
   const theme = useTheme();
 
   const [activeMenu, setActiveMenu] = useState("midi");
@@ -28,118 +28,22 @@ export default function DayScreen({ navigation }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [checked, setChecked] = useState("first");
 
-  let babyRecipes = {};
-  let adultRecipes = {};
   const user = useSelector((state) => state.user.value);
 
-  useEffect(() => {
-    console.log("usertoken", user.token);
-    fetch("http://172.20.10.4:3000/recipes/weekly", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: user.token,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          babyRecipes = data.recipes.map((data, i) => {
-            return data.baby;
-          });
-          adultRecipes = data.recipes.map((data, i) => {
-            return data.adult;
-          });
-        }
-      });
-    console.log("I Only run once (When the component gets mounted)");
-  }, []);
-
   // FETCH APPEL BASE DE DONNEE POUR GET LES 4 RECETTES BABY/ADULT MIDI/SOIR
-  let babyRecipe = {};
-  let adultRecipe = {};
-  if (activeMenu === "midi") {
-    babyRecipe = {
-      _id: {
-        $oid: "6432dc34c38b94ff05a21bf9",
-      },
-      Page_URL: "https://www.cuisinez-pour-bebe.fr/puree-de-navet/",
-      title: "Purée de navet",
-      usage: "repas",
-      ageMonths: 4,
-      imageURL:
-        "https://cdn.cuisinez-pour-bebe.fr/wp-content/uploads/2021/10/puree-de-navet.jpg",
-      totalTime: 25,
-      portions: 1,
-      diet: null,
-      ingredients: [{ name: "navet", quantity: 150, unit: "g" }],
-      instructions:
-        "Laver et éplucher les navets. Les couper en petits morceaux.\nCuire les navets à la vapeur (15 à 20 minutes environ).\nVérifier la cuisson avec la pointe du couteau : les navets doivent être fondants.\nLorsqu’ils sont cuits, mixer les navets en purée lisse.",
-    };
-    adultRecipe = {
-      _id: {
-        $oid: "6432dc34c38b94ff05a21bf9",
-      },
-      Page_URL:
-        "https://www.cuisineactuelle.fr/recettes/gratin-de-legumes-dhiver-au-four-216169",
-      title: "Gratin de légumes d’hiver au four",
-      usage: "repas",
-      imageURL:
-        "https://www.cuisineactuelle.fr/imgre/fit/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fcac.2F2023.2F02.2F16.2F5900321a-c736-437f-b118-135442ba7194.2Ejpeg/555x276/quality/80/crop-from/center/gratin-de-legumes-d-hiver-au-four.jpeg",
-      totalTime: 85,
-      portions: 4,
-      diet: null,
-      ingredients: [
-        { name: "Betterave rouge crue", quantity: 1, unit: "unité" },
-        { name: "Navet blanc rond", quantity: 1, unit: "unité" },
-        { name: "Navet boule or", quantity: 1, unit: "unité" },
-        { name: "Petite patate douce", quantity: 1, unit: "unité" },
-        { name: "Chair de butternut", quantity: 200, unit: "g" },
-        { name: "Béchamel", quantity: 20, unit: "cl" },
-        { name: "Fromage de chèvre frais", quantity: 100, unit: "g" },
-        { name: "Pain de mie rassis", quantity: 2, unit: "tranches" },
-        { name: "Cacahuètes", quantity: 20, unit: "g" },
-        { name: "Parmesan râpé", quantity: 2, unit: "cuil. à soupe" },
-        { name: "Sel", quantity: null, unit: null },
-        { name: "Poivre", quantity: null, unit: null },
-      ],
-      instructions:
-        "Toastez les tranches de pain de mie. Mixez les tranches toastées avec les cacahuètes et le parmesan râpé. Pelez la betterave, les navets et la patate douce. Passez l’ensemble de vos légumes à la mandoline afin de réaliser des rondelles régulières. Dans un petit saladier, mélangez la béchamel avec le fromage de chèvre frais. Disposez harmonieusement vos rondelles de légumes en les alternant dans un plat à gratin. Nappez l’ensemble de béchamel. Enfournez à 180 °C pendant 50 minutes. Saupoudrez la surface de votre gratin de chapelure au parmesan. Enfournez pour 10 minutes de cuisson supplémentaires.",
-    };
-  } else {
-    babyRecipe = {
-      _id: {
-        $oid: "6432dc34c38b94ff05a21bf9",
-      },
-      Page_URL: "https://www.cuisinez-pour-bebe.fr/puree-de-navet/",
-      title: "Purée de poireaux",
-      usage: "repas",
-      ageMonths: 4,
-      imageURL:
-        "https://cdn.cuisinez-pour-bebe.fr/wp-content/uploads/2021/03/galettes-bretonnes-aux-poireaux-9.jpg",
-      totalTime: 25,
-      portions: 1,
-      diet: null,
-      ingredients: [{ name: "Poireaux", quantity: 150, unit: "g" }],
-      instructions: "Laver et éplucher les poireaux.",
-    };
+  let babyRecipe = "";
+  let adultRecipe = "";
+  let babyRecipeNoon = user.weeklyRecipes.baby[props.dayNumberNoon];
+  let adultRecipeNoon = user.weeklyRecipes.adult[props.dayNumberNoon];
+  let babyRecipeNight = user.weeklyRecipes.baby[props.dayNumberNight];
+  let adultRecipeNight = user.weeklyRecipes.adult[props.dayNumberNight];
 
-    adultRecipe = {
-      _id: {
-        $oid: "6432dc34c38b94ff05a21bf9",
-      },
-      Page_URL:
-        "https://www.cuisineactuelle.fr/recettes/gratin-de-legumes-dhiver-au-four-216169",
-      title: "Burger poulet",
-      usage: "repas",
-      imageURL:
-        "https://www.cuisineactuelle.fr/imgre/fit/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fcac.2F2021.2F04.2F26.2F3b724c0a-7e96-444d-b530-400baf20dc23.2Ejpeg/555x276/quality/80/crop-from/center/burger-de-poulet-au-coleslaw.jpeg",
-      totalTime: 85,
-      portions: 4,
-      diet: null,
-      ingredients: [{ name: "Steack haché", quantity: 1, unit: "unité" }],
-      instructions: "Toastez les tranches de pain de mie.",
-    };
+  if (activeMenu === "midi") {
+    babyRecipe = babyRecipeNoon;
+    adultRecipe = adultRecipeNoon;
+  } else {
+    babyRecipe = babyRecipeNight;
+    adultRecipe = adultRecipeNight;
   }
 
   const [babyCounter, setBabyCounter] = useState(babyRecipe.portions);
