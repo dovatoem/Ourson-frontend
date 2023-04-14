@@ -19,21 +19,19 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentScreen } from "../reducers/user";
 
-export default function Header({ navigation }) {
+export default function Header({ navigation, currentScreen }) {
   const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState(
-    useSelector((state) => state.user.currentScreen)
-  );
+  const [currentTab, setCurrentTab] = useState(currentScreen);
 
   let headerButton = "";
   console.log("currentTab", currentTab);
   if (currentTab === "DashboardScreen") {
     headerButton = (
       <TouchableOpacity
-        style={{ marginTop: 27.5, marginLeft: 10 }}
+        style={{ marginTop: 27.5, marginLeft: 25 }}
         onPress={() => navigation.goBack()}
       >
-        <IconButton icon="settings-outline" size={32} />
+        <IconButton icon="cog-outline" size={32} />
       </TouchableOpacity>
     );
   } else {

@@ -21,7 +21,7 @@ export default function DashboardScreen({ navigation }) {
   return (
     <View>
       <SafeAreaView />
-      <Header navigation={navigation} />
+      <Header navigation={navigation} currentScreen="DashboardScreen" />
       <ImageBackground
         source={require("../assets/dashboardBackground.png")}
         style={styles.background}
