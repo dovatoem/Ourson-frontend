@@ -78,11 +78,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 40,
-    marginLeft: 40,
-    marginRight: 40,
-  },
-});
