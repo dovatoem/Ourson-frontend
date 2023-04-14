@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, View, SafeAreaView } from 'react-native';
+import { StyleSheet, ImageBackground, View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { Button, Text, ProgressBar, RadioButton, } from "react-native-paper"; 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,9 +10,10 @@ export default function  OnBoardingScreen1({ navigation }) {
   const household = useSelector((state) => state.household.value);
 
   const [checked, setChecked] = useState("null");
-  const [diet, setDiet] = useState("null")
+  const [diet, setDiet] = useState("")
     
   const handleSubmit = () => {
+    // console.log('household.kidsArray', household.kidsArray);  
     fetch('https://back.ourson.app/users/profile', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -21,12 +22,12 @@ export default function  OnBoardingScreen1({ navigation }) {
         dietName: diet, 
         hhSize: household.hhSize, 
         kidsCount: household.kidsCount,
-        kidsArray: household.kidsArray
+        // kidsArray: household.kidsArray
        }),
     }).then(response => response.json())
       .then(data => {
-        if (data.result) {    
-        console.log(data.household);  
+        if (data.result) {
+        console.log('hh reducer', household);   
         navigation.navigate("OnBoardingScreen3")}       
       });     
   }
@@ -36,7 +37,7 @@ export default function  OnBoardingScreen1({ navigation }) {
     <SafeAreaView style={styles.safeArea}/>
     <ImageBackground source={require('../assets/onBoardingBackground.png')} style={styles.background}>
     <Icon name="chevron-left" size={36} color="black" onPress={() => navigation.navigate("OnBoardingScreen1")} style={styles.chevron} />
-    <View style={styles.container} >
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Bienvenue {user.firstName}!</Text>  
         <Text style={styles.headerText}>Pour vous offrir une expérience unique, nous avons besoin de quelques précisions</Text>     
@@ -82,9 +83,9 @@ export default function  OnBoardingScreen1({ navigation }) {
               </RadioButton.Group>
         
       </View>
-      <Button style={styles.button} mode="outlined" onPress={() => handleSubmit()}>Continuer</Button>
+      <Button style={styles.button} mode="outlined" onPress={() => navigation.navigate("OnBoardingScreen3")}>Continuer</Button>
         <ProgressBar progress={0.5} style={styles.progressBar} />
-      </View>
+        </KeyboardAvoidingView>
     </ImageBackground>
   </View>
 

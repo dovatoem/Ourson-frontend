@@ -14,7 +14,15 @@ export default function  OnBoardingScreen1({ navigation }) {
    const [hhSize, setHhSize] = useState('');
    const [kidsCount, setKidsCount] = useState('');
    const [kidFields, setKidFields] = useState([]);
-   
+   const [kidNames, setKidNames] = useState([]);
+   const [kidAges, setKidAges] = useState([]);
+    
+   const handleNumKidsChange = (value) => {
+    setKidsCount(value);
+    setKidNames(Array(value).fill(""));
+    setKidAges(Array(value).fill(""));
+  };
+
    useEffect(() => {
     generateKidInputs();
   }, [kidsCount]);
@@ -34,12 +42,12 @@ export default function  OnBoardingScreen1({ navigation }) {
   inputs.push(
     <View key={i}>
    <TextInput 
-          onChangeText={(value) => handleKidName(value,`kidName${i}`)} 
+          onChangeText={(value) => handleKidNameChange(value,i)} 
           mode="outlined" 
           label={prenom}
           style={styles.input} />
    <TextInput 
-          onChangeText={(value) => handleKidAge(value,`ageMonths${i}`)} 
+          onChangeText={(value) => handleKidAgeChange(value,i)} 
           mode="outlined" 
           label={age}
           style={styles.input}
@@ -49,22 +57,27 @@ export default function  OnBoardingScreen1({ navigation }) {
   setKidFields(inputs);
 }
 
-let obj={};
-handleKidName = (value, name) => {
-  obj[name]=value;
-  console.log('obj name', obj);
+const handleKidNameChange = (value, index) => {
+  const names = [...kidNames];
+  console.log('names', names);
+  console.log('index', index);
+  console.log('index', index);
+  names[index] = value;
+  setKidNames(names);
+  console.log('names', names);
 };
 
-handleKidAge = (value, age) => {
-  obj[age]=value;
-  console.log('obj age', obj);
+const handleKidAgeChange = (value, index) => {
+  const ages = [...kidAges];
+  ages[index] = value;
+  setKidAges(ages);
+  
 };
 
-let kidsArray=[];
 const handleSubmit = () => {
-  kidsArray.push(obj);
-  dispatch(addHousehold({hhSize, kidsCount, kidsArray})); 
-  console.log('household', household);
+  console.log('kidNames', kidNames);
+  console.log('kidAges', kidAges);
+  dispatch(addHousehold({hhSize, kidsCount}));
   navigation.navigate("OnBoardingScreen2");
   console.log('Onboarding1', user);
  }
@@ -75,7 +88,7 @@ return (
     <SafeAreaView style={styles.safeArea}/>
     <ImageBackground source={require('../assets/onBoardingBackground.png')} style={styles.background}>
     <Icon name="chevron-left" size={36} color="black" onPress={() => navigation.navigate('SignUp')} style={styles.chevron} />
-    <View style={styles.container} >
+    <KeyboardAvoidingView keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container }>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Bienvenue {user.firstName}!</Text>       
       </View>
@@ -90,7 +103,7 @@ return (
           style={styles.input} />
         <Text style={styles.title}>Vos enfants</Text>
         <TextInput
-          onChangeText={(value) => setKidsCount(value)} 
+          onChangeText={(value) => handleNumKidsChange(value)} 
           mode="outlined" 
           label="Nombre d'enfants(s)" 
           keyboardType="numeric"
@@ -99,7 +112,7 @@ return (
           <Button style={styles.button} mode="outlined" onPress={() => handleSubmit()}>Continuer</Button>
         <ProgressBar progress={0.25} style={styles.progressBar} />
         </ScrollView>
-      </View>
+        </KeyboardAvoidingView>
     </ImageBackground>
   </View>
 

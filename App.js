@@ -15,14 +15,6 @@ import {
 
 import { IconButton } from "react-native-paper";
 
-//Redux
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-
-const store = configureStore({
-  reducer: { user, household },
- });
-
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
@@ -121,14 +113,14 @@ const theme = {
 };
 
 export default function App(props) {
-  console.log(props);
+  
   const Stack = createNativeStackNavigator();
   const Tab = createMaterialTopTabNavigator();
   const [currentScreen, setCurrentScreen] = useState("Hero");
   const [lastTabClicked, setLastTabClicked] = useState("Dashboard");
 
   const handleStateChange = (state) => {
-    console.log(state);
+   
     setCurrentScreen(state.routes[state.index].name);
   };
 

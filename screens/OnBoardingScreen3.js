@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, View, SafeAreaView } from 'react-native';
+import { StyleSheet, ImageBackground, View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { Button, Text, ProgressBar, TextInput, } from "react-native-paper"; 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 export default function  OnBoardingScreen1({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  const household = useSelector((state) => state.household.value);
 
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
@@ -15,6 +16,7 @@ export default function  OnBoardingScreen1({ navigation }) {
     
 
   const handleSubmit = () => {
+    if (firstName && email && password ) {
     fetch('https://back.ourson.app/users/signupGuest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -22,10 +24,14 @@ export default function  OnBoardingScreen1({ navigation }) {
     }).then(response => response.json())
       .then(data => {
         if (data.result) {
+        console.log('hh reducer', household); 
         console.log('data', data);
         console.log('user', data);        
         navigation.navigate('OnBoardingScreen1')}       
-      });    
+      });  
+    } else {
+      navigation.navigate('OnBoardingScreen1')
+    }      
   };
 
 
@@ -35,7 +41,7 @@ export default function  OnBoardingScreen1({ navigation }) {
     <SafeAreaView style={styles.safeArea}/>
     <ImageBackground source={require('../assets/onBoardingBackground.png')} style={styles.background}>
     <Icon name="chevron-left" size={36} color="black" onPress={() => navigation.navigate("OnBoardingScreen2")} style={styles.chevron} />
-    <View style={styles.container} >
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Dernière étape !</Text>  
         <Text style={styles.headerText}>Voulez-vous partager votre compte avec d'autres personnes de votre foyer? </Text>     
@@ -49,7 +55,7 @@ export default function  OnBoardingScreen1({ navigation }) {
       </View>
       <Button style={styles.button} mode="contained" onPress={() => handleSubmit()}>Terminer</Button>
         <ProgressBar progress={0.75} style={styles.progressBar} />
-      </View>
+        </KeyboardAvoidingView>
     </ImageBackground>
   </View>
 
