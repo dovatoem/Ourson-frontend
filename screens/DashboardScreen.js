@@ -1,21 +1,49 @@
 import {
-  Button,
   StyleSheet,
   Text,
   SafeAreaView,
   View,
-  TextInput,
   ImageBackground,
   TouchableOpacity,
   Image,
 } from "react-native";
-import { Searchbar, IconButton } from "react-native-paper";
+import { Searchbar, Menu, Divider } from "react-native-paper";
 import { useState } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { addSearchedRecipe } from '../reducers/recipes';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function DashboardScreen({ navigation }) {
+
+  const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
-  const onChangeSearch = (researchText) => setSearchValue(researchText);
+  const [recipeTitles, setRecipeTitles] = useState([]);
+
+  const [visible, setVisible] = useState(false);
+
+  const handleSubmit = () => {
+    console.log('handleSubmit') 
+    console.log(searchValue)
+    if (searchValue){
+    //request : get all the recipe titles corresponding to the searchValue of the SearchBar
+    fetch('https://back.ourson.app/recipes/searchKeyWord', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({request: searchValue}),
+    })
+    .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          const titles = data.recipes.map(recipe => ({ title: recipe.title}))
+          console.log(titles)
+          setRecipeTitles(titles)
+          dispatch(addSearchedRecipe(data.recipes));// Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchScreen
+        }
+      });
+    }
+  }
+
+const onRecipeSelected = (selectedTitle) => {console.log(selectedTitle)}
 
   return (
     <View>
@@ -28,10 +56,31 @@ export default function DashboardScreen({ navigation }) {
           <Searchbar
             style={styles.searchBar}
             placeholder="Rechercher une recette"
-            onChangeText={onChangeSearch}
+            onChangeText={(text) => setSearchValue(text)}
             value={searchValue}
+            onIconPress={ () => handleSubmit()}
             // icon={() => <MaterialCommunityIcons name="selection-search" size={30}/>}
           />
+          <Menu
+              visible={visible}
+              onDismiss={() => setVisible(false)}
+              anchor={
+                <View style={{ paddingTop: 10 }}>
+                  <Divider />
+                </View>
+              }
+            >
+              {recipeTitles.map((title) => (
+                <Menu.Item
+                  key={title}
+                  title={title}
+                  onPress={() => {
+                    onRecipeSelected(title);
+                    setVisible(false);
+                  }}
+                />
+              ))}
+            </Menu>
         </View>
 
         <View style={styles.cardContainer}>

@@ -35,7 +35,7 @@ export default function SignUpScreen({ navigation }) {
             login({ token: data.token, email, firstName: data.firstName })
           );
           console.log("signinSreen", user);
-          navigation.navigate("OnBoardingScreen1");
+          navigation.navigate("TabNavigator");
         }
       });
   };
