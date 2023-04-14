@@ -16,12 +16,8 @@ import {
 import { IconButton } from "react-native-paper";
 
 //Redux
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-
-const store = configureStore({
-  reducer: { user, household },
- });
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 
 import {
   MD3LightTheme as DefaultTheme,
@@ -47,7 +43,7 @@ import {
 import HeroScreen from "./screens/HeroScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignInScreen from "./screens/SignInScreen";
-import DayScreen from "./screens/DayScreen";
+import DayScreen from "./screens/Day0Screen";
 import OnBoardingScreen1 from "./screens/OnBoardingScreen1";
 import OnBoardingScreen2 from "./screens/OnBoardingScreen2";
 import OnBoardingScreen3 from "./screens/OnBoardingScreen3";
@@ -62,8 +58,6 @@ import DashboardScreen from "./screens/DashboardScreen";
 import RegenerateSearchScreen from "./screens/RegenerateSearchScreen";
 import RegenerateFavScreen from "./screens/RegenerateFavScreen";
 import Header from "./components/Header";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import household from "./reducers/household";
 
