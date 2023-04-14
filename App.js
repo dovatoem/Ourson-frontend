@@ -17,6 +17,7 @@ import { IconButton } from "react-native-paper";
 
 //Redux
 import { Provider } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 
 import {
@@ -43,10 +44,17 @@ import {
 import HeroScreen from "./screens/HeroScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignInScreen from "./screens/SignInScreen";
-import DayScreen from "./screens/Day0Screen";
+
 import OnBoardingScreen1 from "./screens/OnBoardingScreen1";
 import OnBoardingScreen2 from "./screens/OnBoardingScreen2";
 import OnBoardingScreen3 from "./screens/OnBoardingScreen3";
+import MondayScreen from "./screens/Day1MondayScreen";
+import TuesdayScreen from "./screens/Day2TuesdayScreen";
+import WednesdayScreen from "./screens/Day3WednesdayScreen";
+import ThursdayScreen from "./screens/Day4ThursdayScreen";
+import FridayScreen from "./screens/Day5FridayScreen";
+import SaturdayScreen from "./screens/Day6SaturdayScreen";
+import SundayScreen from "./screens/Day7SundayScreen";
 import TastedFoodScreen from "./screens/TastedFoodScreen";
 import ShoppingListScreen from "./screens/ShoppingListScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
@@ -114,28 +122,25 @@ const theme = {
   },
 };
 
-export default function App(props) {
-  
+export default function App() {
   const Stack = createNativeStackNavigator();
-  const Tab = createMaterialTopTabNavigator();
   const [currentScreen, setCurrentScreen] = useState("Hero");
 
   const handleStateChange = (state) => {
-   
     setCurrentScreen(state.routes[state.index].name);
   };
 
-  let headerBar = "";
-
-  if (currentScreen === "TabNavigator") {
-    headerBar = <Header />;
-  }
   // utiliser currentScreen avec un if pour stocker dans une variable
   // le header qui se declenchera uniquement si currentScreen===TabNavigator
 
   const [fontsLoaded] = useFonts({
     Bryndan_Write: require("./assets/fonts/Bryndan_Write.ttf"),
-    Roboto: require("./assets/fonts/Roboto.ttf"),
+    Roboto: require("./assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+    "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
+    "Roboto-Light": require("./assets/fonts/Roboto-Light.ttf"),
+    "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+    "Roboto-Thin": require("./assets/fonts/Roboto-Thin.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -148,112 +153,130 @@ export default function App(props) {
     return null;
   }
 
-  function TabNavigator() {
-    return (
-      <Tab.Navigator
-        screenOptions={{
-          tabBarLabelStyle: {
-            fontSize: 13,
-            fontWeight: "bold",
-            textTransform: "capitalize",
-          },
-          tabBarStyle: { backgroundColor: "#FDF0ED" },
-          tabBarScrollEnabled: true,
-          tabBarIndicatorStyle: { backgroundColor: theme.colors.primary },
-          tabBarActiveTintColor: theme.colors.primary,
-          tabBarInactiveTintColor: theme.colors.outlineVariant,
-        }}
-        backBehavior="none"
-      >
-        <Tab.Screen
-          name="Dashboard "
-          component={DashboardScreen}
-          options={{ tabBarLabel: "Dashboard" }}
-        />
-        <Tab.Screen
-          name="Day"
-          component={DayScreen}
-          options={{ tabBarLabel: "Day" }}
-        />
-        <Tab.Screen
-          name="Panic Mode"
-          component={PanicModeScreen}
-          options={{ tabBarLabel: "Panic Mode" }}
-        />
-        <Tab.Screen
-          name="Liste de courses"
-          component={ShoppingListScreen}
-          options={{ tabBarLabel: "Liste de courses" }}
-        />
-        <Tab.Screen
-          name="Diversification"
-          component={TastedFoodScreen}
-          options={{ tabBarLabel: "Diversification" }}
-        />
-        <Tab.Screen
-          name="Favoris"
-          component={FavoritesScreen}
-          options={{ tabBarLabel: "Favoris" }}
-        />
-        <Tab.Screen
-          name="Rechercher "
-          component={SearchScreen}
-          options={{ tabBarLabel: "Rechercher" }}
-        />
-      </Tab.Navigator>
-    );
-  }
-
-return (
+  return (
     <PaperProvider theme={theme}>
       <Provider store={store}>
         <NavigationContainer onStateChange={handleStateChange}>
-          {headerBar}
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Hero" component={HeroScreen} />
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="DayScreen" component={DayScreen} />
+            <Stack.Screen
+              name="Hero"
+              component={HeroScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="SignIn"
+              component={SignInScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+              currentScreen={currentScreen}
+            />
+
             <Stack.Screen
               name="OnBoardingScreen1"
               component={OnBoardingScreen1}
+              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="OnBoardingScreen2"
               component={OnBoardingScreen2}
+              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="OnBoardingScreen3"
               component={OnBoardingScreen3}
-            />
-            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-            <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
-            <Stack.Screen
-              name="RegenerateSearchScreen"
-              component={RegenerateSearchScreen}
+              currentScreen={currentScreen}
             />
             <Stack.Screen
-              name="RegenerateFavScreen"
-              component={RegenerateFavScreen}
+              name="DashboardScreen"
+              component={DashboardScreen}
+              currentScreen={currentScreen}
             />
-            <Stack.Screen name="SearchScreen " component={SearchScreen} />
+            <Stack.Screen
+              name="MondayScreen"
+              component={MondayScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="TuesdayScreen"
+              component={TuesdayScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="WednesdayScreen"
+              component={WednesdayScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="ThursdayScreen"
+              component={ThursdayScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="FridayScreen"
+              component={FridayScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="SaturdayScreen"
+              component={SaturdayScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="SundayScreen"
+              component={SundayScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
+              currentScreen={currentScreen}
+            />
+
             <Stack.Screen
               name="SearchedRecipeScreen"
               component={SearchedRecipeScreen}
+              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="ShoppingListScreen"
               component={ShoppingListScreen}
+              currentScreen={currentScreen}
             />
             <Stack.Screen
               name="TastedFoodScreen"
               component={TastedFoodScreen}
+              currentScreen={currentScreen}
             />
-            <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
-            <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
-            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen
+              name="FavoritesScreen"
+              component={FavoritesScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="PanicModeScreen"
+              component={PanicModeScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="SearchScreen"
+              component={SearchScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="RegenerateSearchScreen"
+              component={RegenerateSearchScreen}
+              currentScreen={currentScreen}
+            />
+            <Stack.Screen
+              name="RegenerateFavScreen"
+              component={RegenerateFavScreen}
+              currentScreen={currentScreen}
+            />
           </Stack.Navigator>
-          <View onLayout={onLayoutRootView}>
+          <View onLayout={onLayoutRootView} currentScreen={currentScreen}>
             <StatusBar style="auto" />
           </View>
         </NavigationContainer>
@@ -268,13 +291,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#ffff",
-  },
-  tabBar: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "red",
   },
   background: {
     width: "100%",

@@ -14,26 +14,14 @@ import {
   useTabIndex,
   useTabNavigation,
 } from "react-native-paper-tabs";
+import Header from "../components/Header";
 
 export default function SearchScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={styles.safeArea} />
-      <ImageBackground
-        source={require("../assets/headerOursonBackground.png")}
-        style={styles.background}
-      >
-        <Text style={styles.title}>SearchScreen</Text>
-        <Button
-          style={styles.button}
-          mode="contained"
-          title="Go to SearchedRecipeScreen"
-          onPress={() => navigation.navigate("SearchedRecipeScreen")}
-        >
-          Go to SearchedRecipeScreen
-        </Button>
-      </ImageBackground>
-    </View>
+    <>
+      <Header navigation={navigation} />
+      <Text style={styles.title}>Rechercher</Text>
+    </>
   );
 }
 
@@ -50,33 +38,5 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     lineHeight: 64,
     textAlign: "center",
-    marginTop: 100,
-    marginBottom: 100,
-  },
-  text: {
-    fontFamily: "Roboto",
-  },
-  background: {
-    width: "100%",
-    height: "100%",
-  },
-  button: {
-    width: 180,
-    height: 60,
-    borderRadius: 60,
-    marginTop: 20,
-    justifyContent: "center",
-  },
-  safeArea: {
-    flex: 1,
-    marginBottom: 35,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 10,
-    width: "80%",
   },
 });

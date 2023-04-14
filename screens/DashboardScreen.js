@@ -12,6 +12,7 @@ import {
 import { Searchbar, IconButton } from "react-native-paper";
 import { useState } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Header from "../components/Header";
 
 export default function DashboardScreen({ navigation }) {
   const [searchValue, setSearchValue] = useState("");
@@ -20,6 +21,7 @@ export default function DashboardScreen({ navigation }) {
   return (
     <View>
       <SafeAreaView />
+      <Header navigation={navigation} />
       <ImageBackground
         source={require("../assets/dashboardBackground.png")}
         style={styles.background}
@@ -35,89 +37,91 @@ export default function DashboardScreen({ navigation }) {
         </View>
 
         <View style={styles.cardContainer}>
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.card}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("ShoppingListScreen")}
-          >
-            <View style={styles.imageView}>
-              <Image
-                source={require("../assets/shoppinglist.png")}
-                style={styles.cardImage}
-              />
-            </View>
-            <View>
-              <Text style={styles.screenName}>Liste de courses</Text>
-              <Text style={styles.screenDescription} numberOfLines={3}>
-                Consulter les ingrédients dont j'ai besoin pour ma semaine
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.card}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("ShoppingListScreen")}
+            >
+              <View style={styles.imageView}>
+                <Image
+                  source={require("../assets/shoppinglist.png")}
+                  style={styles.cardImage}
+                />
+              </View>
+              <View>
+                <Text style={styles.screenName}>Liste de courses</Text>
+                <Text style={styles.screenDescription} numberOfLines={3}>
+                  Consulter les ingrédients dont j'ai besoin pour ma semaine
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.card}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("TastedFoodScreen")}
-          >
-            <View style={styles.imageView}>
-              <Image
-                source={require("../assets/diversification.png")}
-                style={styles.cardImage}
-              />
-            </View>
-            <View>
-              <Text style={styles.screenName}>Diversification alimentaire</Text>
-              <Text style={styles.screenDescription} numberOfLines={2}>
-                Suivre ce que mon enfant a déjà goûté
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.card}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("TastedFoodScreen")}
+            >
+              <View style={styles.imageView}>
+                <Image
+                  source={require("../assets/diversification.png")}
+                  style={styles.cardImage}
+                />
+              </View>
+              <View>
+                <Text style={styles.screenName}>
+                  Diversification alimentaire
+                </Text>
+                <Text style={styles.screenDescription} numberOfLines={2}>
+                  Suivre ce que mon enfant a déjà goûté
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.card}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("FavoritesScreen")}
-          >
-            <View style={styles.imageView}>
-              <Image
-                source={require("../assets/fav.png")}
-                style={styles.cardImage}
-              />
-            </View>
-            <View>
-              <Text style={styles.screenName}>Favoris</Text>
-              <Text style={styles.screenDescription} numberOfLines={3}>
-                Consulter mes recettes favorites
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.card}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("FavoritesScreen")}
+            >
+              <View style={styles.imageView}>
+                <Image
+                  source={require("../assets/fav.png")}
+                  style={styles.cardImage}
+                />
+              </View>
+              <View>
+                <Text style={styles.screenName}>Favoris</Text>
+                <Text style={styles.screenDescription} numberOfLines={3}>
+                  Consulter mes recettes favorites
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.card}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("PanicModeScreen")}
-          >
-            <View style={styles.imageView}>
-              <Image
-                source={require("../assets/panicmode.png")}
-                style={styles.cardImage}
-              />
-            </View>
-            <View>
-              <Text style={styles.screenName}>Panic Mode</Text>
-              <Text style={styles.screenDescription} numberOfLines={2}>
-                Générer une recette avec ce que j'ai dans mon frigo
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.card}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("PanicModeScreen")}
+            >
+              <View style={styles.imageView}>
+                <Image
+                  source={require("../assets/panicmode.png")}
+                  style={styles.cardImage}
+                />
+              </View>
+              <View>
+                <Text style={styles.screenName}>Panic Mode</Text>
+                <Text style={styles.screenDescription} numberOfLines={2}>
+                  Générer une recette avec ce que j'ai dans mon frigo
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
     </View>
@@ -136,8 +140,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   cardContainer: {
-    height: '78%',
-  }, 
+    height: "78%",
+  },
   cardImage: {
     height: 75,
     width: 75,
