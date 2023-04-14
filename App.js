@@ -44,6 +44,13 @@ import HeroScreen from "./screens/HeroScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignInScreen from "./screens/SignInScreen";
 import DayScreen from "./screens/Day0Screen";
+import MondayScreen from "./screens/Day1MondayScreen";
+import TuesdayScreen from "./screens/Day2TuesdayScreen";
+import WednesdayScreen from "./screens/Day3WednesdayScreen";
+import ThursdayScreen from "./screens/Day4ThursdayScreen";
+import FridayScreen from "./screens/Day5FridayScreen";
+import SaturdayScreen from "./screens/Day6SaturdayScreen";
+import SundayScreen from "./screens/Day7SundayScreen";
 import OnBoardingScreen1 from "./screens/OnBoardingScreen1";
 import OnBoardingScreen2 from "./screens/OnBoardingScreen2";
 import OnBoardingScreen3 from "./screens/OnBoardingScreen3";
@@ -176,6 +183,41 @@ export default function App(props) {
           options={{ tabBarLabel: "Day" }}
         />
         <Tab.Screen
+          name="Lundi"
+          component={MondayScreen}
+          options={{ tabBarLabel: "Lundi" }}
+        />
+        <Tab.Screen
+          name="Mardi"
+          component={TuesdayScreen}
+          options={{ tabBarLabel: "Mardi" }}
+        />
+        <Tab.Screen
+          name="Mercredi"
+          component={WednesdayScreen}
+          options={{ tabBarLabel: "Mercredi" }}
+        />
+        <Tab.Screen
+          name="Jeudi"
+          component={ThursdayScreen}
+          options={{ tabBarLabel: "Jeudi" }}
+        />
+        <Tab.Screen
+          name="Vendredi"
+          component={FridayScreen}
+          options={{ tabBarLabel: "Vendredi" }}
+        />
+        <Tab.Screen
+          name="Samedi"
+          component={SaturdayScreen}
+          options={{ tabBarLabel: "Samedi" }}
+        />
+        <Tab.Screen
+          name="Dimanche"
+          component={SundayScreen}
+          options={{ tabBarLabel: "Dimanche" }}
+        />
+        <Tab.Screen
           name="Panic Mode"
           component={PanicModeScreen}
           options={{ tabBarLabel: "Panic Mode" }}
@@ -204,7 +246,7 @@ export default function App(props) {
     );
   }
 
-return (
+  return (
     <PaperProvider theme={theme}>
       <Provider store={store}>
         <NavigationContainer onStateChange={handleStateChange}>
