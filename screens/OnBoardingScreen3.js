@@ -20,6 +20,37 @@ export default function OnBoardingScreen1({ navigation }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [todayDay, setTodayDay] = useState("");
+
+  useEffect(() => {
+    const dayOfWeek = new Date().getDay();
+    switch (dayOfWeek) {
+      case 0:
+        setTodayDay("SundayScreen");
+        break;
+      case 1:
+        setTodayDay("MondayScreen");
+        break;
+      case 2:
+        setTodayDay("TuesdayScreen");
+        break;
+      case 3:
+        setTodayDay("WednesdayScreen");
+        break;
+      case 4:
+        setTodayDay("ThursdayScreen");
+        break;
+      case 5:
+        setTodayDay("FridayScreen");
+        break;
+      case 6:
+        setTodayDay("SaturdayScreen");
+        break;
+      default:
+        break;
+    }
+  }, []);
+
   const handleSubmit = () => {
     if (firstName && email && password) {
       fetch("https://back.ourson.app/users/signupGuest", {
@@ -33,7 +64,7 @@ export default function OnBoardingScreen1({ navigation }) {
             console.log("hh reducer", household);
             console.log("data", data);
             console.log("user", data);
-            navigation.navigate("Dashboard");
+            navigation.navigate(todayDay);
           }
         });
     } else {

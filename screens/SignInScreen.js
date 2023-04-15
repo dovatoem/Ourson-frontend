@@ -5,7 +5,7 @@ import {
   View,
 } from "react-native";
 import { Button, TextInput, Text } from "react-native-paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../reducers/user";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -19,6 +19,36 @@ export default function SignUpScreen({ navigation }) {
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+  const [todayDay, setTodayDay] = useState("");
+
+  useEffect(() => {
+    const dayOfWeek = new Date().getDay();
+    switch (dayOfWeek) {
+      case 0:
+        setTodayDay("SundayScreen");
+        break;
+      case 1:
+        setTodayDay("MondayScreen");
+        break;
+      case 2:
+        setTodayDay("TuesdayScreen");
+        break;
+      case 3:
+        setTodayDay("WednesdayScreen");
+        break;
+      case 4:
+        setTodayDay("ThursdayScreen");
+        break;
+      case 5:
+        setTodayDay("FridayScreen");
+        break;
+      case 6:
+        setTodayDay("SaturdayScreen");
+        break;
+      default:
+        break;
+    }
+  }, []);
 
   // Check if user is registered
   const handleSubmit = () => {
@@ -35,7 +65,7 @@ export default function SignUpScreen({ navigation }) {
             login({ token: data.token, email, firstName: data.firstName })
           );
           console.log("signinSreen", user);
-          navigation.navigate("DashboardScreen");
+          navigation.navigate(todayDay);
         }
       });
   };
