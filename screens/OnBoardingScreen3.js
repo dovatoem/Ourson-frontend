@@ -129,6 +129,7 @@ export default function OnBoardingScreen1({ navigation }) {
           </View>
           <Button
             style={styles.button}
+            contentStyle={{ width: 180, height: 60 }}
             mode="contained"
             onPress={() => handleSubmit()}
           >
@@ -200,8 +201,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   button: {
-    width: 180,
-    height: 60,
     borderRadius: 60,
     justifyContent: "center",
     marginTop: 130,

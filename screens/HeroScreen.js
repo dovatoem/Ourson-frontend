@@ -22,6 +22,7 @@ export default function HeroScreen({ navigation }) {
             <View style={styles.circle}></View>
             <Button
               style={styles.button}
+              contentStyle={{ width: 180, height: 60 }}
               mode="contained"
               onPress={() => navigation.navigate("SignIn")}
               title="Se connecter"
@@ -30,6 +31,7 @@ export default function HeroScreen({ navigation }) {
             </Button>
             <Button
               style={styles.button}
+              contentStyle={{ width: 180, height: 60 }}
               mode="outlined"
               onPress={() => navigation.navigate("SignUp")}
               title="S'inscrire"
@@ -84,8 +86,6 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: 180,
-    height: 60,
     borderRadius: 60,
     marginTop: 20,
     justifyContent: "center",

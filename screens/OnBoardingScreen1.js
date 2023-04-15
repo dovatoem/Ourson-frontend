@@ -17,113 +17,138 @@ export default function OnBoardingScreen1({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const household = useSelector((state) => state.household.value);
 
-   // local states saving the user inputs
-   const [hhSize, setHhSize] = useState('');
-   const [kidsCount, setKidsCount] = useState('');
-   const [kidFields, setKidFields] = useState([]);
-   const [kidNames, setKidNames] = useState([]);
-   const [kidAges, setKidAges] = useState([]);
-    
-   const handleNumKidsChange = (value) => {
+  // local states saving the user inputs
+  const [hhSize, setHhSize] = useState("");
+  const [kidsCount, setKidsCount] = useState("");
+  const [kidFields, setKidFields] = useState([]);
+  const [kidNames, setKidNames] = useState([]);
+  const [kidAges, setKidAges] = useState([]);
+
+  const handleNumKidsChange = (value) => {
     setKidsCount(value);
     setKidNames(Array(value).fill(""));
     setKidAges(Array(value).fill(""));
   };
 
-   useEffect(() => {
+  useEffect(() => {
     generateKidInputs();
   }, [kidsCount]);
 
   const generateKidInputs = () => {
-   let inputs = [];
-   let prenom;
-   let age;
- for (let i=1; i<=kidsCount; i++) {
-  if (i===1) {
-    prenom = 'Prénom du 1er enfant';
-    age = 'Age du 1er enfant'
-  } else {
-    prenom = `Prénom du ${i}ème enfant`;
-    age = `Age du ${i}ème enfant`
-  } 
-  inputs.push(
-    <View key={i}>
-   <TextInput 
-          onChangeText={(value) => handleKidNameChange(value,i)} 
-          mode="outlined" 
-          label={prenom}
-          style={styles.input} />
-   <TextInput 
-          onChangeText={(value) => handleKidAgeChange(value,i)} 
-          mode="outlined" 
-          label={age}
-          style={styles.input}
-          keyboardType="numeric" />
-  </View>
-  )}
-  setKidFields(inputs);
-}
+    let inputs = [];
+    let prenom;
+    let age;
+    for (let i = 1; i <= kidsCount; i++) {
+      if (i === 1) {
+        prenom = "Prénom du 1er enfant";
+        age = "Age du 1er enfant";
+      } else {
+        prenom = `Prénom du ${i}ème enfant`;
+        age = `Age du ${i}ème enfant`;
+      }
+      inputs.push(
+        <View key={i}>
+          <TextInput
+            onChangeText={(value) => handleKidNameChange(value, i)}
+            mode="outlined"
+            label={prenom}
+            style={styles.input}
+          />
+          <TextInput
+            onChangeText={(value) => handleKidAgeChange(value, i)}
+            mode="outlined"
+            label={age}
+            style={styles.input}
+            keyboardType="numeric"
+          />
+        </View>
+      );
+    }
+    setKidFields(inputs);
+  };
 
-const handleKidNameChange = (value, index) => {
-  const names = [...kidNames];
-  console.log('names', names);
-  console.log('index', index);
-  console.log('index', index);
-  names[index] = value;
-  setKidNames(names);
-  console.log('names', names);
-};
+  const handleKidNameChange = (value, index) => {
+    const names = [...kidNames];
+    console.log("names", names);
+    console.log("index", index);
+    console.log("index", index);
+    names[index] = value;
+    setKidNames(names);
+    console.log("names", names);
+  };
 
-const handleKidAgeChange = (value, index) => {
-  const ages = [...kidAges];
-  ages[index] = value;
-  setKidAges(ages);
-  
-};
+  const handleKidAgeChange = (value, index) => {
+    const ages = [...kidAges];
+    ages[index] = value;
+    setKidAges(ages);
+  };
 
-const handleSubmit = () => {
-  console.log('kidNames', kidNames);
-  console.log('kidAges', kidAges);
-  dispatch(addHousehold({hhSize, kidsCount}));
-  navigation.navigate("OnBoardingScreen2");
-  console.log('Onboarding1', user);
- }
+  const handleSubmit = () => {
+    console.log("kidNames", kidNames);
+    console.log("kidAges", kidAges);
+    dispatch(addHousehold({ hhSize, kidsCount }));
+    navigation.navigate("OnBoardingScreen2");
+    console.log("Onboarding1", user);
+  };
 
-return (
-
-  <View style={styles.fullContainer} >
-    <SafeAreaView style={styles.safeArea}/>
-    <ImageBackground source={require('../assets/onBoardingBackground.png')} style={styles.background}>
-    <Icon name="chevron-left" size={36} color="black" onPress={() => navigation.navigate('SignUp')} style={styles.chevron} />
-    <KeyboardAvoidingView keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container }>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Bienvenue {user.firstName}!</Text>       
-      </View>
-      <ScrollView contentContainerStyle={styles.inputContainer}>
-      <Text style={styles.headerText}>Pour vous offrir une expérience unique, nous avons besoin de quelques précisions</Text>
-        <Text style={styles.title}>Votre foyer</Text>
-        <TextInput 
-          onChangeText={(value) => setHhSize(value)} 
-          mode="outlined" 
-          label="Nombre de personnes" 
-          keyboardType="numeric"
-          style={styles.input} />
-        <Text style={styles.title}>Vos enfants</Text>
-        <TextInput
-          onChangeText={(value) => handleNumKidsChange(value)} 
-          mode="outlined" 
-          label="Nombre d'enfants(s)" 
-          keyboardType="numeric"
-          style={styles.input} />
-          {kidFields}
-          <Button style={styles.button} mode="outlined" onPress={() => handleSubmit()}>Continuer</Button>
-        <ProgressBar progress={0.25} style={styles.progressBar} />
-        </ScrollView>
+  return (
+    <View style={styles.fullContainer}>
+      <SafeAreaView style={styles.safeArea} />
+      <ImageBackground
+        source={require("../assets/onBoardingBackground.png")}
+        style={styles.background}
+      >
+        <Icon
+          name="chevron-left"
+          size={36}
+          color="black"
+          onPress={() => navigation.navigate("SignUp")}
+          style={styles.chevron}
+        />
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.container}
+        >
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>Bienvenue {user.firstName}!</Text>
+          </View>
+          <ScrollView contentContainerStyle={styles.inputContainer}>
+            <Text style={styles.headerText}>
+              Pour vous offrir une expérience unique, nous avons besoin de
+              quelques précisions
+            </Text>
+            <Text style={styles.title}>Votre foyer</Text>
+            <TextInput
+              onChangeText={(value) => setHhSize(value)}
+              mode="outlined"
+              label="Nombre de personnes"
+              keyboardType="numeric"
+              style={styles.input}
+            />
+            <Text style={styles.title}>Vos enfants</Text>
+            <TextInput
+              onChangeText={(value) => handleNumKidsChange(value)}
+              mode="outlined"
+              label="Nombre d'enfants(s)"
+              keyboardType="numeric"
+              style={styles.input}
+            />
+            {kidFields}
+            <Button
+              style={styles.button}
+              contentStyle={{ width: 180, height: 60 }}
+              mode="outlined"
+              onPress={() => handleSubmit()}
+            >
+              Continuer
+            </Button>
+            <ProgressBar progress={0.25} style={styles.progressBar} />
+          </ScrollView>
         </KeyboardAvoidingView>
-    </ImageBackground>
-  </View>
-
- );
+      </ImageBackground>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -185,8 +210,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   button: {
-    width: 180,
-    height: 60,
     borderRadius: 60,
     justifyContent: "center",
     marginTop: 35,
