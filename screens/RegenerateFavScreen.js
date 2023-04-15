@@ -13,8 +13,8 @@ export default function RegenerateFavScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>RegenerateFavScreen</Text>
       <Button
-        title="Go to DayScreen"
-        onPress={() => navigation.navigate("DayScreen")}
+        title="Go to Dashboard"
+        onPress={() => navigation.navigate("Dashboard")}
       />
     </SafeAreaView>
   );

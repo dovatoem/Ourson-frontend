@@ -19,7 +19,7 @@ import Header from "../components/Header";
 export default function SearchScreen({ navigation }) {
   return (
     <>
-      <Header navigation={navigation} currentScreen="SearchScreen" />
+      <Header navigation={navigation} />
       <Text style={styles.title}>Rechercher</Text>
     </>
   );

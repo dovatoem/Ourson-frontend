@@ -19,7 +19,7 @@ import Header from "../components/Header";
 export default function FavoritesScreen({ navigation }) {
   return (
     <>
-      <Header navigation={navigation} currentScreen="FavoritesScreen" />
+      <Header navigation={navigation} />
 
       <Text style={styles.title}>Favoris</Text>
     </>

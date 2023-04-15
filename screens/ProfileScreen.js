@@ -26,7 +26,7 @@ export default function ProfileScreen({ navigation }) {
             name="chevron-left"
             size={36}
             color="black"
-            onPress={() => navigation.navigate("SignUp")}
+            onPress={() => navigation.goBack()}
             style={styles.chevron}
           />
           <Text style={styles.bigTitle}>Paramètres</Text>

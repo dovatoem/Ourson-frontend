@@ -57,7 +57,7 @@ export default function MondayScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
-      <Header navigation={navigation} currentScreen="MondayScreen" />
+      <Header navigation={navigation} />
       <View style={styles.container}></View>
     </View>
   );

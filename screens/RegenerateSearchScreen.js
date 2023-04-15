@@ -13,8 +13,8 @@ export default function RegenerateSearchScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>RegenerateSearchScreen</Text>
       <Button
-        title="Go to DayScreen"
-        onPress={() => navigation.navigate("DayScreen")}
+        title="Go to Dashboard"
+        onPress={() => navigation.navigate("Dashboard")}
       />
     </SafeAreaView>
   );
