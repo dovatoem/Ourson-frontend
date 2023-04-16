@@ -8,10 +8,16 @@ import {
   Image,
   FlatList,
   ScrollView, 
+  FlatList,
+  ScrollView, 
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { useState, useEffect } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Header from "../components/Header";
+import { addSearchedRecipe } from "../reducers/recipes";
+import { useDispatch, useSelector } from "react-redux";
+
 import Header from "../components/Header";
 import { addSearchedRecipe } from "../reducers/recipes";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,6 +71,7 @@ export default function DashboardScreen({ navigation }) {
 
   return (
     <View >
+    <View >
       <SafeAreaView />
       <Header navigation={navigation} />
       <ImageBackground
@@ -72,11 +79,21 @@ export default function DashboardScreen({ navigation }) {
         style={styles.background}
       >
         <View styles={{flex:1}}>
+        <View styles={{flex:1}}>
           <Searchbar
             style={styles.searchBar}
             placeholder="Rechercher une recette"
             onChangeText={(text) => setSearchValue(text)}
             value={searchValue}
+            onIconPress={() => {
+              handleSubmit(),
+              setFlatListVisible(true),
+              setDashboardVisible(false)
+            }}
+            onClearIconPress= {() => {
+              setFlatListVisible(false),
+              setDashboardVisible(true)
+            }}
             onIconPress={() => {
               handleSubmit(),
               setFlatListVisible(true),
@@ -120,6 +137,7 @@ export default function DashboardScreen({ navigation }) {
           </View>
         </View>
 
+    {dashboardVisible && (
     {dashboardVisible && (
         <View style={styles.cardContainer}>
           <View style={styles.container}>
