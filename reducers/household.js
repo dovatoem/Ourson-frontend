@@ -5,7 +5,7 @@ const initialState = {
     hhSize: null,
     kidsCount: null,
     kidsArray: [],
-    weeklyRecipes: [],
+    savedWeeklyRecipes: { baby: [], adult: [] },
     likedRecipes: [],
   },
 };
@@ -20,7 +20,7 @@ export const householdSlice = createSlice({
       state.value.kidsArray.push(action.payload.kidsArray);
     },
     addWeeklyRecipes: (state, action) => {
-      state.value.weeklyRecipes.push(action.payload);
+      state.value.savedWeeklyRecipes = action.payload;
     },
     addLikedRecipe: (state, action) => {
       state.value.likedRecipes.push(action.payload);

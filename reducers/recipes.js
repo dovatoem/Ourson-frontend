@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: { searchedRecipes: [], savedWeeklyRecipes: { baby: [], adult: [] } },
+  value: { searchedRecipes: [] },
 };
 
 export const recipesSlice = createSlice({
@@ -11,11 +11,8 @@ export const recipesSlice = createSlice({
     addSearchedRecipe: (state, action) => {
       state.value.searchedRecipes.push(action.payload);
     },
-    addWeeklyRecipes: (state, action) => {
-      state.value.savedWeeklyRecipes = action.payload;
-    },
   },
 });
 
-export const { addSearchedRecipe, addWeeklyRecipes } = recipesSlice.actions;
+export const { addSearchedRecipe } = recipesSlice.actions;
 export default recipesSlice.reducer;

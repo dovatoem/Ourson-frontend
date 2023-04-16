@@ -20,7 +20,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigationState } from "@react-navigation/native";
-import { addWeeklyRecipes } from "../reducers/recipes";
+import { addWeeklyRecipes } from "../reducers/household";
 
 export default function DayScreen({ navigation }) {
   const currentScreen = useNavigationState(
@@ -31,7 +31,7 @@ export default function DayScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const savedWeeklyRecipes = useSelector(
-    (state) => state.recipes.value.savedWeeklyRecipes
+    (state) => state.household.value.savedWeeklyRecipes
   );
   const [activeMenu, setActiveMenu] = useState(
     new Date().getHours() >= 15 ? "soir" : "midi"
