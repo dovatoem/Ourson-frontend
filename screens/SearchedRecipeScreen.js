@@ -31,7 +31,8 @@ import { addSearchedRecipe } from "../reducers/recipes";
 export default function SearchedRecipeScreen({ navigation }) {
   const theme = useTheme();
 
- const babyRecipe = useSelector((state) => state.recipes.value);
+  const babyRecipe = useSelector((state) => state.recipes.value);
+  console.log(babyRecipe)
 
   const [babyCounter, setBabyCounter] = useState(babyRecipe.portions);
 
@@ -115,7 +116,6 @@ export default function SearchedRecipeScreen({ navigation }) {
             
           </View>
           <View style={styles.mainRecipe}>
-            <Text style={styles.titleMainRecipe}>{babyRecipe.title}</Text>
             <Text style={styles.ingredientsMainRecipe}>Ingrédients :</Text>
             <View style={styles.ingredientsChipsContainer}>
               {babyIngredientsChips}

@@ -10,7 +10,7 @@ import {
   ScrollView, 
 } from "react-native";
 import { Searchbar } from "react-native-paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Header from "../components/Header";
 import { addSearchedRecipe } from "../reducers/recipes";
@@ -21,6 +21,7 @@ export default function DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const [recipeTitles, setRecipeTitles] = useState([]);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [searchedRecipes, setSearchedRecipes] = useState([]); //all the recipes corresponding to searched keyword
   const [FlatListVisible, setFlatListVisible] = useState(false);
   const [dashboardVisible, setDashboardVisible] = useState(true);
@@ -43,9 +44,8 @@ export default function DashboardScreen({ navigation }) {
             const titles = data.recipes.map((recipe) => ({
               title: recipe.title,
             }));
-            console.log(titles);
             setRecipeTitles(titles);
-            console.log(recipeTitles)
+            console.log(recipeTitles);
             setSearchedRecipes(data.recipes); 
           }
         });
@@ -55,7 +55,13 @@ export default function DashboardScreen({ navigation }) {
   // const onRecipeSelected = (selectedTitle) => {
   //   console.log(selectedTitle);
   // };
-
+  useEffect(() => { //
+    if (recipe.searchedRecipe) {
+      console.log(recipe.searchedRecipe)
+      // navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe });
+      //setSelectedRecipe(null)
+    }
+  }, [recipe.searchedRecipe]);
 
   return (
     <View >
@@ -93,11 +99,12 @@ export default function DashboardScreen({ navigation }) {
                   console.log("recipe clicked:", item.title)
                   searchedRecipes.map((recipe) => {
                     if(recipe.title === item.title){
-                      dispatch(addSearchedRecipe(recipe)) // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchScreen
+                      dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchScreen
+                      //setSelectedRecipe(recipe); 
                     }
                   })
-                  console.log(recipe.searchedRecipe) //display the entire object recipe corrsponding to the title clicked on by the user
-                }} 
+                }
+              } 
                 
                 style={styles.titresRecettes}>{item.title}</Text>
               )}
