@@ -89,8 +89,7 @@ export default function OnBoardingScreen1({ navigation }) {
 const handleSubmit = () => {
   dispatch(addHousehold({hhSize, kidsCount, kidsArray} ));
   navigation.navigate("OnBoardingScreen2");
-  console.log('handleSubmit kidsArray', kidsArray);
-  console.log('household', household);
+  console.log('Onboardung1 kidsArray', kidsArray); 
  }
 
   return (

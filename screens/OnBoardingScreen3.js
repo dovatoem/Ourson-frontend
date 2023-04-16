@@ -60,10 +60,8 @@ export default function OnBoardingScreen1({ navigation }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.result) {
-            console.log("hh reducer", household);
-            console.log("data", data);
-            console.log("user", data);
+          if (data.result) {          
+            console.log("data guest user", data);            
             navigation.navigate(todayDay);
           }
         });

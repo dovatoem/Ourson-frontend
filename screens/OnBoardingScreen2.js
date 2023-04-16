@@ -34,7 +34,7 @@ export default function OnBoardingScreen1({ navigation }) {
       .then(data => {
         if (data.result) {
         console.log('hh reducer', household);  
-        console.log('data', data); 
+        console.log('data post fetch profile', data); 
         navigation.navigate("OnBoardingScreen3")}       
       });      
   }
@@ -110,7 +110,7 @@ export default function OnBoardingScreen1({ navigation }) {
             style={styles.button}
             contentStyle={{ width: 180, height: 60 }}
             mode="outlined"
-            onPress={() => navigation.navigate("OnBoardingScreen3")}
+            onPress={() => handleSubmit()}
           >
             Continuer
           </Button>
