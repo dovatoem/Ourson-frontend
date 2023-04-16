@@ -126,10 +126,6 @@ export default function App() {
   const Stack = createNativeStackNavigator();
   const [currentScreen, setCurrentScreen] = useState("Hero");
 
-  const handleStateChange = (state) => {
-    setCurrentScreen(state.routes[state.index].name);
-  };
-
   // utiliser currentScreen avec un if pour stocker dans une variable
   // le header qui se declenchera uniquement si currentScreen===TabNavigator
 
@@ -156,7 +152,7 @@ export default function App() {
   return (
     <PaperProvider theme={theme}>
       <Provider store={store}>
-        <NavigationContainer onStateChange={handleStateChange}>
+        <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Hero" component={HeroScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />

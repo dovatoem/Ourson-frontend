@@ -1,20 +1,14 @@
-import {
-  Button,
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  View,
-  TextInput,
-} from "react-native";
-// import { Button } from "react-native-paper";
+import { StyleSheet, SafeAreaView, View } from "react-native";
+import { Button, TextInput, Text, ProgressBar } from "react-native-paper";
 
 export default function RegenerateSearchScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>RegenerateSearchScreen</Text>
       <Button
-        title="Go to DayScreen"
-        onPress={() => navigation.navigate("DayScreen")}
+        title="Go to Dashboard"
+        contentStyle={{ width: 180, height: 60 }}
+        onPress={() => navigation.navigate("Dashboard")}
       />
     </SafeAreaView>
   );

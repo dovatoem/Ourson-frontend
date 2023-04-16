@@ -15,7 +15,7 @@ export default function PanicModeScreen({ navigation }) {
 
   return (
     <>
-      <Header navigation={navigation} currentScreen="PanicModeScreen" />
+      <Header navigation={navigation} />
       <Text style={styles.title}>Panic Mode</Text>
     </>
   );

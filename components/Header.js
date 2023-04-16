@@ -15,39 +15,121 @@ import {
   useTabNavigation,
 } from "react-native-paper-tabs";
 import { IconButton } from "react-native-paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentScreen } from "../reducers/user";
+import { useNavigationState } from "@react-navigation/native";
 
-export default function Header({ navigation, currentScreen }) {
-  const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState(currentScreen);
+export default function Header({ navigation }) {
+  //Defini grâce à la navigation quel est l'écran actuel et l'écran précedent
+  const previousScreen = useNavigationState(
+    (state) => state.routes[state.index - 1]?.name
+  );
 
-  let headerButton = "";
-  console.log("currentTab", currentTab);
-  if (currentTab === "DashboardScreen") {
-    headerButton = (
+  const currentScreen = useNavigationState(
+    (state) => state.routes[state.index].name
+  );
+
+  //Défini quel sera le bouton du header en fonction de la ou on est, RESET la navigation (=clean l'historique)
+  //dans le cas où l'on vient de SignIn ou OnBoarding3 afin de ne pas pouvoir revenir sur ces écrans.
+  const [headerButton, setHeaderButton] = useState(null);
+
+  useEffect(() => {
+    if (currentScreen === "DashboardScreen") {
+      setHeaderButton(
+        <TouchableOpacity
+          style={{ marginTop: 22, marginLeft: 25 }}
+          onPress={() => navigation.navigate("ProfileScreen")}
+        >
+          <IconButton icon="cog-outline" size={32} />
+        </TouchableOpacity>
+      );
+    } else if (
+      currentScreen !== "DashboardScreen" &&
+      (previousScreen === "SignIn" || previousScreen === "OnBoardingScreen3")
+    ) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: currentScreen }],
+      });
+    } else if (previousScreen === undefined) {
+      setHeaderButton(
+        <Text
+          style={{
+            fontFamily: "Bryndan_Write",
+            fontSize: 36,
+            marginTop: 32,
+            marginLeft: 45,
+          }}
+        >
+          Bienvenue !
+        </Text>
+      );
+    } else {
+      setHeaderButton(
+        <TouchableOpacity
+          style={{ marginTop: 22, marginLeft: 10 }}
+          onPress={() => navigation.goBack()}
+        >
+          <IconButton icon="chevron-left" size={32} />
+        </TouchableOpacity>
+      );
+    }
+  }, [currentScreen, previousScreen, navigation]);
+
+  //Défini un index pour chaque écran afin de pouvoir setter le premier onglet sur chaque screen
+  const index = [
+    "DashboardScreen",
+    "MondayScreen",
+    "TuesdayScreen",
+    "WednesdayScreen",
+    "ThursdayScreen",
+    "FridayScreen",
+    "SaturdayScreen",
+    "SundayScreen",
+    "FavoritesScreen",
+    "PanicModeScreen",
+    "ShoppingListScreen",
+    "TastedFoodScreen",
+    "SearchScreen",
+  ].indexOf(currentScreen);
+
+  //Défini la liste des écrans afin de pouvoir ensuite définir quel est l'onglet actif et lui appliquer son style.
+  let screens = [
+    { screenName: "DashboardScreen", label: "Dashboard" },
+    { screenName: "MondayScreen", label: "Lundi" },
+    { screenName: "TuesdayScreen", label: "Mardi" },
+    { screenName: "WednesdayScreen", label: "Mercredi" },
+    { screenName: "ThursdayScreen", label: "Jeudi" },
+    { screenName: "FridayScreen", label: "Vendredi" },
+    { screenName: "SaturdayScreen", label: "Samedi" },
+    { screenName: "SundayScreen", label: "Dimanche" },
+    { screenName: "FavoritesScreen", label: "Favoris" },
+    { screenName: "PanicModeScreen", label: "Panic Mode" },
+    { screenName: "ShoppingListScreen", label: "Liste de course" },
+    { screenName: "TastedFoodScreen", label: "Diversification" },
+    { screenName: "SearchScreen", label: "Rechercher" },
+  ];
+
+  let menuTopBar = screens.map((item) => {
+    const isActive = currentScreen === item.screenName;
+    return (
       <TouchableOpacity
-        style={{ marginTop: 27.5, marginLeft: 25 }}
-        onPress={() => navigation.goBack()}
+        key={item.screenName}
+        style={[styles.tabItem, isActive && styles.tabItemActive]}
+        onPress={() => navigation.navigate(item.screenName)}
       >
-        <IconButton icon="cog-outline" size={32} />
+        <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
+          {item.label}
+        </Text>
       </TouchableOpacity>
     );
-  } else {
-    headerButton = (
-      <TouchableOpacity
-        style={{ marginTop: 27.5, marginLeft: 10 }}
-        onPress={() => navigation.goBack()}
-      >
-        <IconButton icon="chevron-left" size={32} />
-      </TouchableOpacity>
-    );
-  }
+  });
+
   return (
     <View>
       <SafeAreaView></SafeAreaView>
-      <View style={{ width: "100%", height: 180, marginBottom: -70 }}>
+      <View style={{ width: "100%", height: 180, marginBottom: -80 }}>
         <ImageBackground
           source={require("../assets/headerOursonBackground.png")}
           style={styles.background}
@@ -56,96 +138,22 @@ export default function Header({ navigation, currentScreen }) {
         </ImageBackground>
       </View>
 
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        contentOffset={{ x: index * 110, y: 0 }}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
+      >
         <View
           style={{
             backgroundColor: "#FDF0ED",
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-around",
             alignItems: "center",
             height: 60,
-            paddingLeft: 45,
           }}
         >
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("DashboardScreen")}
-          >
-            <Text style={styles.tabLabel}>Dashboard</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("MondayScreen")}
-          >
-            <Text style={styles.tabLabel}>Lundi</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("TuesdayScreen")}
-          >
-            <Text style={styles.tabLabel}>Mardi</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("WednesdayScreen")}
-          >
-            <Text style={styles.tabLabel}>Mercredi</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("ThursdayScreen")}
-          >
-            <Text style={styles.tabLabel}>Jeudi</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("FridayScreen")}
-          >
-            <Text style={styles.tabLabel}>Vendredi</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("SaturdayScreen")}
-          >
-            <Text style={styles.tabLabel}>Samedi</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("SundayScreen")}
-          >
-            <Text style={styles.tabLabel}>Dimanche</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("FavoritesScreen")}
-          >
-            <Text style={styles.tabLabel}>Favoris</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("PanicModeScreen")}
-          >
-            <Text style={styles.tabLabel}>Panic Mode</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("ShoppingListScreen")}
-          >
-            <Text style={styles.tabLabel}>Liste de course</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("TastedFoodScreen")}
-          >
-            <Text style={styles.tabLabel}>Diversification</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabItem}
-            onPress={() => navigation.navigate("SearchScreen")}
-          >
-            <Text style={styles.tabLabel}>Rechercher</Text>
-          </TouchableOpacity>
+          {menuTopBar}
         </View>
       </ScrollView>
     </View>
@@ -184,6 +192,27 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: "80%",
   },
-  tabItem: { backgroundColor: "#FDF0ED", marginRight: 45 },
-  tabLabel: { fontFamily: "Roboto-Bold", fontSize: 14 },
+  tabItem: {
+    backgroundColor: "#FDF0ED",
+    height: "100%",
+    width: 110,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  tabItemActive: {
+    borderBottomColor: "#FF6B57",
+    borderBottomWidth: 3,
+  },
+  tabLabel: {
+    fontFamily: "Roboto-Bold",
+    fontSize: 14,
+    color: "#E7BDB6",
+  },
+  tabLabelActive: {
+    fontFamily: "Roboto-Bold",
+    fontSize: 14,
+    color: "#FF6B57",
+  },
 });

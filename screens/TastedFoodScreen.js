@@ -13,7 +13,7 @@ import Header from "../components/Header";
 export default function TastedFoodScreen({ navigation }) {
   return (
     <>
-      <Header navigation={navigation} currentScreen="TastedFoodScreen" />
+      <Header navigation={navigation} />
       <Text style={styles.title}>Diversification</Text>
     </>
   );

@@ -20,6 +20,37 @@ export default function OnBoardingScreen1({ navigation }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [todayDay, setTodayDay] = useState("");
+
+  useEffect(() => {
+    const dayOfWeek = new Date().getDay();
+    switch (dayOfWeek) {
+      case 0:
+        setTodayDay("SundayScreen");
+        break;
+      case 1:
+        setTodayDay("MondayScreen");
+        break;
+      case 2:
+        setTodayDay("TuesdayScreen");
+        break;
+      case 3:
+        setTodayDay("WednesdayScreen");
+        break;
+      case 4:
+        setTodayDay("ThursdayScreen");
+        break;
+      case 5:
+        setTodayDay("FridayScreen");
+        break;
+      case 6:
+        setTodayDay("SaturdayScreen");
+        break;
+      default:
+        break;
+    }
+  }, []);
+
   const handleSubmit = () => {
     if (firstName && email && password) {
       fetch("https://back.ourson.app/users/signupGuest", {
@@ -30,7 +61,10 @@ export default function OnBoardingScreen1({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            navigation.navigate("SignUp");
+            console.log("hh reducer", household);
+            console.log("data", data);
+            console.log("user", data);
+            navigation.navigate(todayDay);
           }
         });
     } else {
@@ -95,6 +129,7 @@ export default function OnBoardingScreen1({ navigation }) {
           </View>
           <Button
             style={styles.button}
+            contentStyle={{ width: 180, height: 60 }}
             mode="contained"
             onPress={() => handleSubmit()}
           >
@@ -166,8 +201,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   button: {
-    width: 180,
-    height: 60,
     borderRadius: 60,
     justifyContent: "center",
     marginTop: 130,

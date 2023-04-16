@@ -11,7 +11,7 @@ import Header from "../components/Header";
 export default function Day7SundayScreen({ navigation }) {
   return (
     <>
-      <Header navigation={navigation} currentScreen="SundayScreen" />
+      <Header navigation={navigation} />
       <Text style={styles.title}>Dimanche</Text>
     </>
   );

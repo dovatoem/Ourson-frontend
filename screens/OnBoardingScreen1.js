@@ -93,41 +93,64 @@ const handleSubmit = () => {
   console.log('household', household);
  }
 
-return (
-
-  <View style={styles.fullContainer} >
-    <SafeAreaView style={styles.safeArea}/>
-    <ImageBackground source={require('../assets/onBoardingBackground.png')} style={styles.background}>
-    <Icon name="chevron-left" size={36} color="black" onPress={() => navigation.navigate('SignUp')} style={styles.chevron} />
-    <KeyboardAvoidingView keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container }>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Bienvenue {user.firstName}!</Text>       
-      </View>
-      <ScrollView contentContainerStyle={styles.inputContainer}>
-      <Text style={styles.headerText}>Pour vous offrir une expérience unique, nous avons besoin de quelques précisions</Text>
-        <Text style={styles.title}>Votre foyer</Text>
-        <TextInput 
-          onChangeText={(value) => setHhSize(value)} 
-          mode="outlined" 
-          label="Nombre de personnes" 
-          keyboardType="numeric"
-          style={styles.input} />
-        <Text style={styles.title}>Vos enfants</Text>
-        <TextInput
-          onChangeText={(value) => handleNumKidsChange(value)} 
-          mode="outlined" 
-          label="Nombre d'enfants(s)" 
-          keyboardType="numeric"
-          style={styles.input} />
-          {kidFields}
-          <Button style={styles.button} mode="outlined" onPress={() => handleSubmit()}>Continuer</Button>
-        <ProgressBar progress={0.25} style={styles.progressBar} />
-        </ScrollView>
+  return (
+    <View style={styles.fullContainer}>
+      <SafeAreaView style={styles.safeArea} />
+      <ImageBackground
+        source={require("../assets/onBoardingBackground.png")}
+        style={styles.background}
+      >
+        <Icon
+          name="chevron-left"
+          size={36}
+          color="black"
+          onPress={() => navigation.navigate("SignUp")}
+          style={styles.chevron}
+        />
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.container}
+        >
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>Bienvenue {user.firstName}!</Text>
+          </View>
+          <ScrollView contentContainerStyle={styles.inputContainer}>
+            <Text style={styles.headerText}>
+              Pour vous offrir une expérience unique, nous avons besoin de
+              quelques précisions
+            </Text>
+            <Text style={styles.title}>Votre foyer</Text>
+            <TextInput
+              onChangeText={(value) => setHhSize(value)}
+              mode="outlined"
+              label="Nombre de personnes"
+              keyboardType="numeric"
+              style={styles.input}
+            />
+            <Text style={styles.title}>Vos enfants</Text>
+            <TextInput
+              onChangeText={(value) => handleNumKidsChange(value)}
+              mode="outlined"
+              label="Nombre d'enfants(s)"
+              keyboardType="numeric"
+              style={styles.input}
+            />
+            {kidFields}
+            <Button
+              style={styles.button}
+              contentStyle={{ width: 180, height: 60 }}
+              mode="outlined"
+              onPress={() => handleSubmit()}
+            >
+              Continuer
+            </Button>
+            <ProgressBar progress={0.25} style={styles.progressBar} />
+          </ScrollView>
         </KeyboardAvoidingView>
-    </ImageBackground>
-  </View>
-
- );
+      </ImageBackground>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -189,8 +212,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   button: {
-    width: 180,
-    height: 60,
     borderRadius: 60,
     justifyContent: "center",
     marginTop: 35,
