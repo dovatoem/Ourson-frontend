@@ -6,20 +6,26 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  FlatList,
+  ScrollView, 
 } from "react-native";
-import { Searchbar, Menu, Divider } from "react-native-paper";
+import { Searchbar } from "react-native-paper";
 import { useState } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Header from "../components/Header";
 import { addSearchedRecipe } from "../reducers/recipes";
 import { useDispatch, useSelector } from "react-redux";
 
+
 export default function DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const [recipeTitles, setRecipeTitles] = useState([]);
-
-  const [visible, setVisible] = useState(false);
+  const [searchedRecipes, setSearchedRecipes] = useState([]); //all the recipes corresponding to searched keyword
+  const [FlatListVisible, setFlatListVisible] = useState(false);
+  const [dashboardVisible, setDashboardVisible] = useState(true);
+ 
+  const recipe = useSelector((state) => state.recipes.value);
 
   const handleSubmit = () => {
     console.log("handleSubmit");
@@ -39,55 +45,75 @@ export default function DashboardScreen({ navigation }) {
             }));
             console.log(titles);
             setRecipeTitles(titles);
-            dispatch(addSearchedRecipe(data.recipes)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchScreen
+            console.log(recipeTitles)
+            setSearchedRecipes(data.recipes); 
           }
         });
     }
   };
+//when title is clicked => navigate to SearchedRecipeScreen that will display the full recipe 
+  // const onRecipeSelected = (selectedTitle) => {
+  //   console.log(selectedTitle);
+  // };
 
-  const onRecipeSelected = (selectedTitle) => {
-    console.log(selectedTitle);
-  };
 
   return (
-    <View>
+    <View >
       <SafeAreaView />
       <Header navigation={navigation} />
       <ImageBackground
         source={require("../assets/dashboardBackground.png")}
         style={styles.background}
       >
-        <View>
+        <View styles={{flex:1}}>
           <Searchbar
             style={styles.searchBar}
             placeholder="Rechercher une recette"
             onChangeText={(text) => setSearchValue(text)}
             value={searchValue}
-            onIconPress={() => handleSubmit()}
-            // icon={() => <MaterialCommunityIcons name="selection-search" size={30}/>}
+            onIconPress={() => {
+              handleSubmit(),
+              setFlatListVisible(true),
+              setDashboardVisible(false)
+            }}
+            onClearIconPress= {() => {
+              setFlatListVisible(false),
+              setDashboardVisible(true)
+            }}
           />
-          <Menu
-            visible={visible}
-            onDismiss={() => setVisible(false)}
-            anchor={
-              <View style={{ paddingTop: 10 }}>
-                <Divider />
-              </View>
-            }
-          >
-            {recipeTitles.map((title) => (
-              <Menu.Item
-                key={title}
-                title={title}
+          <View style={{ flex: 0, height: 0 }}>
+            {/* empty view to prevent top of list from being cut off */}
+          </View>
+          {FlatListVisible && (
+            <FlatList
+              data={recipeTitles}
+              renderItem={({ item }) => (
+                <Text 
                 onPress={() => {
-                  onRecipeSelected(title);
-                  setVisible(false);
-                }}
-              />
-            ))}
-          </Menu>
+                  console.log("recipe clicked:", item.title)
+                  searchedRecipes.map((recipe) => {
+                    if(recipe.title === item.title){
+                      dispatch(addSearchedRecipe(recipe)) // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchScreen
+                    }
+                  })
+                  console.log(recipe.searchedRecipe) //display the entire object recipe corrsponding to the title clicked on by the user
+                }} 
+                
+                style={styles.titresRecettes}>{item.title}</Text>
+              )}
+              keyExtractor={(item) => item.title}
+              style={styles.dropDownMenu}
+            />
+          )}
+          {!FlatListVisible && (
+            <View style={{height: 0, flexShrink: 1}}/>
+          )}
+          <View style={{ flex: 1 }}>
+            {/* empty view to push list to bottom of screen */}
+          </View>
         </View>
 
+    {dashboardVisible && (
         <View style={styles.cardContainer}>
           <View style={styles.container}>
             <TouchableOpacity
@@ -174,7 +200,9 @@ export default function DashboardScreen({ navigation }) {
               </View>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> 
+        )}
+
       </ImageBackground>
     </View>
   );
@@ -192,7 +220,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   cardContainer: {
-    height: "78%",
+    height: "45%",
+    marginTop: '20%',
   },
   cardImage: {
     height: 75,
@@ -207,7 +236,22 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
+  dropDownMenu :{
+    position: 'relative',
+    left: "10%",
+    right: "10%",
+    maxHeight: '50%',
+    width: "80%",
+    backgroundColor: 'white',
+    opacity: 0.6,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 20,
+    zIndex: 1, 
+    marginTop: '20%',
+  },
   screenName: {
+    fontFamily: 'Roboto',
     fontWeight: "bold",
     marginBottom: 10,
     fontSize: 15,
@@ -218,9 +262,21 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     marginLeft: 35,
-    backgroundColor: "#ffff",
+    backgroundColor: "white",
     width: "82%",
     marginBottom: 15,
     marginTop: 20,
+    position: 'absolute',
   },
+  title: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black'
+  }, 
+  titresRecettes: {
+    fontSize: 16,
+    color: 'black',
+    marginVertical: 10,
+    marginHorizontal: 20,
+  }
 });
