@@ -20,6 +20,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigationState } from "@react-navigation/native";
+import { addWeeklyRecipes } from "../reducers/recipes";
 
 export default function DayScreen({ navigation }) {
   const currentScreen = useNavigationState(
@@ -27,8 +28,11 @@ export default function DayScreen({ navigation }) {
   );
 
   const theme = useTheme();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-
+  const savedWeeklyRecipes = useSelector(
+    (state) => state.recipes.value.savedWeeklyRecipes
+  );
   const [activeMenu, setActiveMenu] = useState(
     new Date().getHours() >= 15 ? "soir" : "midi"
   );
@@ -39,28 +43,41 @@ export default function DayScreen({ navigation }) {
 
   useEffect(() => {
     console.log("usertoken", user.token);
-    fetch("https://back.ourson.app/recipes/weekly", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: user.token,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          setWeeklyRecipes({
-            baby: data.recipes.map((recipe) => recipe.baby),
-            adult: data.recipes.map((recipe) => recipe.adult),
-          });
-          console.log(weeklyRecipes);
-        }
-      });
+    if (
+      !(
+        savedWeeklyRecipes.baby.length === 0 &&
+        savedWeeklyRecipes.adult.length === 0
+      )
+    ) {
+      setWeeklyRecipes(savedWeeklyRecipes);
+    } else {
+      fetch("https://back.ourson.app/recipes/weekly", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: user.token,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            setWeeklyRecipes({
+              baby: data.recipes.map((recipe) => recipe.baby),
+              adult: data.recipes.map((recipe) => recipe.adult),
+            });
+            dispatch(
+              addWeeklyRecipes({
+                baby: data.recipes.map((recipe) => recipe.baby),
+                adult: data.recipes.map((recipe) => recipe.adult),
+              })
+            );
+          }
+        });
+    }
   }, []);
 
   let dayNumberNoon = 0;
   let dayNumberNight = 1;
-  console.log(weeklyRecipes);
   switch (currentScreen) {
     case "MondayScreen":
       dayNumberNoon = 0;
