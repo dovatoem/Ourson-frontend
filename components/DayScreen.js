@@ -20,7 +20,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigationState } from "@react-navigation/native";
-import { addWeeklyRecipes } from "../reducers/household";
+import {
+  addWeeklyRecipes,
+  resetCreatedAt,
+  addLikedRecipe,
+  removeLikedRecipe,
+} from "../reducers/household";
 
 export default function DayScreen({ navigation }) {
   const currentScreen = useNavigationState(
@@ -33,6 +38,7 @@ export default function DayScreen({ navigation }) {
   const savedWeeklyRecipes = useSelector(
     (state) => state.household.value.savedWeeklyRecipes
   );
+  const createdAt = useSelector((state) => state.household.value.createdAt);
   const [activeMenu, setActiveMenu] = useState(
     new Date().getHours() >= 15 ? "soir" : "midi"
   );
@@ -43,11 +49,13 @@ export default function DayScreen({ navigation }) {
 
   useEffect(() => {
     console.log("usertoken", user.token);
+    // let timepast = Date.now() - createdAt;
     if (
       !(
         savedWeeklyRecipes.baby.length === 0 &&
         savedWeeklyRecipes.adult.length === 0
       )
+      // && (timepast < 604800000)
     ) {
       setWeeklyRecipes(savedWeeklyRecipes);
     } else {
@@ -71,6 +79,8 @@ export default function DayScreen({ navigation }) {
                 adult: data.recipes.map((recipe) => recipe.adult),
               })
             );
+            dispatch(resetCreatedAt(Date.now()));
+            console.log("createdAt", createdAt);
           }
         });
     }
