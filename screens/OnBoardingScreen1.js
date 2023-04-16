@@ -26,6 +26,10 @@ export default function OnBoardingScreen1({ navigation }) {
     ageMonths1: "",
     kidName2: "",
     ageMonths2: "",
+    kidName3: "",
+    ageMonths3: "",
+    kidName4: "",
+    ageMonths4: "",
     });
       
    const handleNumKidsChange = (numKids) => {
