@@ -17,79 +17,84 @@ export default function OnBoardingScreen1({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const household = useSelector((state) => state.household.value);
 
-  // local states saving the user inputs
-  const [hhSize, setHhSize] = useState("");
-  const [kidsCount, setKidsCount] = useState("");
-  const [kidFields, setKidFields] = useState([]);
-  const [kidNames, setKidNames] = useState([]);
-  const [kidAges, setKidAges] = useState([]);
+   // local states saving the user inputs
+   const [hhSize, setHhSize] = useState('');
+   const [kidsCount, setKidsCount] = useState('');
+   const [kidFields, setKidFields] = useState([]);
+   const [kidsArray, setKidsArray] = useState({
+    kidName1: "",
+    ageMonths1: "",
+    kidName2: "",
+    ageMonths2: "",
+    kidName3: "",
+    ageMonths3: "",
+    kidName4: "",
+    ageMonths4: "",
+    });
+      
+   const handleNumKidsChange = (numKids) => {
+    setKidsCount(numKids);
+    let newValues = {};
+    for (let i = 1; i <= numKids; i++) {
+      let kidName = `kidName${i}`;
+      let kidAge = `ageMonths${i}`;
+      newValues[kidName] = kidsArray[kidName] || "";
+      newValues[kidAge] = kidsArray[kidAge] || "";
+    }
+    setKidsArray(newValues);
+  }; 
 
-  const handleNumKidsChange = (value) => {
-    setKidsCount(value);
-    setKidNames(Array(value).fill(""));
-    setKidAges(Array(value).fill(""));
+  const handleInputChange = (name, value) => {
+    setKidsArray(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
-
-  useEffect(() => {
+   
+   useEffect(() => {
     generateKidInputs();
-  }, [kidsCount]);
+   }, [kidsCount]);
 
   const generateKidInputs = () => {
-    let inputs = [];
-    let prenom;
-    let age;
-    for (let i = 1; i <= kidsCount; i++) {
-      if (i === 1) {
-        prenom = "Prénom du 1er enfant";
-        age = "Age du 1er enfant";
-      } else {
-        prenom = `Prénom du ${i}ème enfant`;
-        age = `Age du ${i}ème enfant`;
-      }
-      inputs.push(
-        <View key={i}>
-          <TextInput
-            onChangeText={(value) => handleKidNameChange(value, i)}
-            mode="outlined"
-            label={prenom}
-            style={styles.input}
-          />
-          <TextInput
-            onChangeText={(value) => handleKidAgeChange(value, i)}
-            mode="outlined"
-            label={age}
-            style={styles.input}
-            keyboardType="numeric"
-          />
-        </View>
-      );
-    }
-    setKidFields(inputs);
-  };
+   let inputs = [];
+   let prenom;
+   let age;
+ for (let i=1; i<=kidsCount; i++) {
+  let kidName = `kidName${i}`;
+  let kidAge = `ageMonths${i}`;
+  if (i===1) {
+    prenom = 'Prénom du 1er enfant';
+    age = 'Age du 1er enfant'
+  } else {
+    prenom = `Prénom du ${i}ème enfant`;
+    age = `Age du ${i}ème enfant`
+  } 
+  inputs.push(
+    <View key={i}>
+   <TextInput    
+      key={`name${i}`}
+          onChangeText={(value)=>handleInputChange(kidName, value)}
+          mode="outlined" 
+          label={prenom}
+          style={styles.input} />
+   <TextInput 
+    key={`age${i}`} 
+          onChangeText={(value)=>handleInputChange(kidAge, value)}
+          name={kidAge}  
+          mode="outlined" 
+          label={age}
+          style={styles.input}
+          keyboardType="numeric" />
+  </View>
+  )}
+  setKidFields(inputs);
+}
 
-  const handleKidNameChange = (value, index) => {
-    const names = [...kidNames];
-    console.log("names", names);
-    console.log("index", index);
-    console.log("index", index);
-    names[index] = value;
-    setKidNames(names);
-    console.log("names", names);
-  };
-
-  const handleKidAgeChange = (value, index) => {
-    const ages = [...kidAges];
-    ages[index] = value;
-    setKidAges(ages);
-  };
-
-  const handleSubmit = () => {
-    console.log("kidNames", kidNames);
-    console.log("kidAges", kidAges);
-    dispatch(addHousehold({ hhSize, kidsCount }));
-    navigation.navigate("OnBoardingScreen2");
-    console.log("Onboarding1", user);
-  };
+const handleSubmit = () => {
+  dispatch(addHousehold({hhSize, kidsCount, kidsArray} ));
+  navigation.navigate("OnBoardingScreen2");
+  console.log('Onboardung1 kidsArray', kidsArray); 
+ }
 
   return (
     <View style={styles.fullContainer}>

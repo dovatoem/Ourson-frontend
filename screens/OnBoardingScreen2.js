@@ -19,26 +19,25 @@ export default function OnBoardingScreen1({ navigation }) {
   const [diet, setDiet] = useState("");
 
   const handleSubmit = () => {
-    // console.log('household.kidsArray', household.kidsArray);
-    fetch("https://back.ourson.app/users/profile", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: user.token,
-        dietName: diet,
-        hhSize: household.hhSize,
+    console.log('household', household);  
+    fetch('https://back.ourson.app/users/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        token: user.token, 
+        dietName: diet, 
+        hhSize: household.hhSize, 
         kidsCount: household.kidsCount,
-        // kidsArray: household.kidsArray
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+        kidsArray: household.kidsArray
+       }),
+    }).then(response => response.json())
+      .then(data => {
         if (data.result) {
-          console.log("hh reducer", household);
-          navigation.navigate("OnBoardingScreen3");
-        }
-      });
-  };
+        console.log('hh reducer', household);  
+        console.log('data post fetch profile', data); 
+        navigation.navigate("OnBoardingScreen3")}       
+      });      
+  }
 
   return (
     <View style={styles.fullContainer}>
@@ -111,7 +110,7 @@ export default function OnBoardingScreen1({ navigation }) {
             style={styles.button}
             contentStyle={{ width: 180, height: 60 }}
             mode="outlined"
-            onPress={() => navigation.navigate("OnBoardingScreen3")}
+            onPress={() => handleSubmit()}
           >
             Continuer
           </Button>

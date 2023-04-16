@@ -64,7 +64,6 @@ export default function SignUpScreen({ navigation }) {
           dispatch(
             login({ token: data.token, email, firstName: data.firstName })
           );
-          console.log("signinSreen", user);
           navigation.navigate(todayDay);
         }
       });

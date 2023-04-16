@@ -33,8 +33,7 @@ export default function SignUpScreen({ navigation }) {
         if (data.result) {
           dispatch(login({ token: data.token, email, firstName }));
           navigation.navigate("OnBoardingScreen1");
-        }
-        console.log("signupScreen", user);
+        }       
       });
   };
 
