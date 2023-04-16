@@ -19,24 +19,88 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigationState } from "@react-navigation/native";
 
-export default function DayScreen({ navigation, props }) {
+export default function DayScreen({ navigation }) {
+  const currentScreen = useNavigationState(
+    (state) => state.routes[state.index].name
+  );
+
   const theme = useTheme();
+  const user = useSelector((state) => state.user.value);
 
-  const [activeMenu, setActiveMenu] = useState("midi");
+  const [activeMenu, setActiveMenu] = useState(
+    new Date().getHours() >= 15 ? "soir" : "midi"
+  );
   const [isLiked, setIsLiked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [checked, setChecked] = useState("first");
+  const [weeklyRecipes, setWeeklyRecipes] = useState({ baby: [], adult: [] });
 
-  const user = useSelector((state) => state.user.value);
+  useEffect(() => {
+    console.log("usertoken", user.token);
+    fetch("https://back.ourson.app/recipes/weekly", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: user.token,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setWeeklyRecipes({
+            baby: data.recipes.map((recipe) => recipe.baby),
+            adult: data.recipes.map((recipe) => recipe.adult),
+          });
+          console.log(weeklyRecipes);
+        }
+      });
+  }, []);
 
-  // FETCH APPEL BASE DE DONNEE POUR GET LES 4 RECETTES BABY/ADULT MIDI/SOIR
+  let dayNumberNoon = 0;
+  let dayNumberNight = 1;
+  console.log(weeklyRecipes);
+  switch (currentScreen) {
+    case "MondayScreen":
+      dayNumberNoon = 0;
+      dayNumberNight = 1;
+      break;
+    case "TuesdayScreen":
+      dayNumberNoon = 2;
+      dayNumberNight = 3;
+      break;
+    case "WednesdayScreen":
+      dayNumberNoon = 4;
+      dayNumberNight = 5;
+      break;
+    case "ThursdayScreen":
+      dayNumberNoon = 6;
+      dayNumberNight = 7;
+      break;
+    case "FridayScreen":
+      dayNumberNoon = 8;
+      dayNumberNight = 9;
+      break;
+    case "SaturdayScreen":
+      dayNumberNoon = 10;
+      dayNumberNight = 11;
+      break;
+    case "SundayScreen":
+      dayNumberNoon = 12;
+      dayNumberNight = 13;
+      break;
+    default:
+      // do nothing
+      break;
+  }
+
   let babyRecipe = "";
   let adultRecipe = "";
-  let babyRecipeNoon = user.weeklyRecipes.baby[props.dayNumberNoon];
-  let adultRecipeNoon = user.weeklyRecipes.adult[props.dayNumberNoon];
-  let babyRecipeNight = user.weeklyRecipes.baby[props.dayNumberNight];
-  let adultRecipeNight = user.weeklyRecipes.adult[props.dayNumberNight];
+  let babyRecipeNoon = weeklyRecipes.baby[dayNumberNoon];
+  let adultRecipeNoon = weeklyRecipes.adult[dayNumberNoon];
+  let babyRecipeNight = weeklyRecipes.baby[dayNumberNight];
+  let adultRecipeNight = weeklyRecipes.adult[dayNumberNight];
 
   if (activeMenu === "midi") {
     babyRecipe = babyRecipeNoon;
@@ -46,20 +110,27 @@ export default function DayScreen({ navigation, props }) {
     adultRecipe = adultRecipeNight;
   }
 
-  const [babyCounter, setBabyCounter] = useState(babyRecipe.portions);
-  const [adultCounter, setAdultCounter] = useState(adultRecipe.portions);
+  // reducer household pour nombre de portions à faire
+  const [babyCounter, setBabyCounter] = useState(1);
+  const [adultCounter, setAdultCounter] = useState(2);
 
-  const babyIngredientsChips = babyRecipe.ingredients.map((data, i) => {
+  //refaire parce que les conditions sont mauvaises
+  const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
     let ingredientMapped = "";
-    if (data.quantity === null) {
+    if (data.quantity === null || data.quantity === 0) {
       ingredientMapped = data.name;
-    } else if (data.unit === null && data.quantity !== null) {
+    } else if (
+      !(data.quantity === null || data.quantity === 0) &&
+      (data.unit === null || data.unit === 0)
+    ) {
       ingredientMapped = `${
-        (data.quantity / babyRecipe.portions) * babyCounter
+        (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
+        babyCounter
       } ${data.name}`;
     } else {
       ingredientMapped = `${
-        (data.quantity / babyRecipe.portions) * babyCounter
+        (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
+        babyCounter
       } ${data.unit} de ${data.name}`;
     }
     return (
@@ -69,16 +140,19 @@ export default function DayScreen({ navigation, props }) {
     );
   });
 
-  const adultIngredientsChips = adultRecipe.ingredients.map((data, i) => {
-    if (data.quantity === null) {
+  //refaire parce que les conditions sont mauvaises
+  const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
+    if (data.quantity === null || data.quantity === 0) {
       ingredientMapped = data.name;
     } else if (data.unit === null && data.quantity !== null) {
       ingredientMapped = `${
-        (data.quantity / adultRecipe.portions) * adultCounter
+        (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *
+        adultCounter
       } ${data.name}`;
     } else {
       ingredientMapped = `${
-        (data.quantity / adultRecipe.portions) * adultCounter
+        (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *
+        adultCounter
       } ${data.unit} de ${data.name}`;
     }
     return (
@@ -264,7 +338,10 @@ export default function DayScreen({ navigation, props }) {
           </View>
         </View>
 
-        <ScrollView contentContainerStyle={styles.scrollView}>
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.recipesContain}>
             <View style={styles.recipeContain}>
               <View style={styles.recipeCard}>
@@ -278,7 +355,7 @@ export default function DayScreen({ navigation, props }) {
                     padding: 8,
                   }}
                   source={{
-                    uri: babyRecipe.imageURL,
+                    uri: babyRecipe?.imageURL,
                   }}
                 >
                   <LinearGradient
@@ -291,7 +368,7 @@ export default function DayScreen({ navigation, props }) {
                       opacity: 0.7,
                     }}
                   />
-                  <Text style={styles.recipeTitle}>{babyRecipe.title}</Text>
+                  <Text style={styles.recipeTitle}>{babyRecipe?.title}</Text>
                 </ImageBackground>
               </View>
               <View style={styles.recipePortion}>
@@ -329,7 +406,7 @@ export default function DayScreen({ navigation, props }) {
                     padding: 8,
                   }}
                   source={{
-                    uri: adultRecipe.imageURL,
+                    uri: adultRecipe?.imageURL,
                   }}
                 >
                   <LinearGradient
@@ -342,7 +419,7 @@ export default function DayScreen({ navigation, props }) {
                       opacity: 0.7,
                     }}
                   />
-                  <Text style={styles.recipeTitle}>{adultRecipe.title}</Text>
+                  <Text style={styles.recipeTitle}>{adultRecipe?.title}</Text>
                 </ImageBackground>
               </View>
               <View style={styles.recipePortion}>
@@ -370,22 +447,22 @@ export default function DayScreen({ navigation, props }) {
             </View>
           </View>
           <View style={styles.mainRecipe}>
-            <Text style={styles.titleMainRecipe}>{babyRecipe.title}</Text>
+            <Text style={styles.titleMainRecipe}>{babyRecipe?.title}</Text>
             <Text style={styles.ingredientsMainRecipe}>Ingrédients :</Text>
             <View style={styles.ingredientsChipsContainer}>
               {babyIngredientsChips}
             </View>
             <Text style={styles.instructionsMainRecipe}>Instructions :</Text>
-            <Text style={styles.instructions}>{babyRecipe.instructions}</Text>
+            <Text style={styles.instructions}>{babyRecipe?.instructions}</Text>
           </View>
           <View style={styles.mainRecipe}>
-            <Text style={styles.titleMainRecipe}>{adultRecipe.title}</Text>
+            <Text style={styles.titleMainRecipe}>{adultRecipe?.title}</Text>
             <Text style={styles.ingredientsMainRecipe}>Ingrédients :</Text>
             <View style={styles.ingredientsChipsContainer}>
               {adultIngredientsChips}
             </View>
             <Text style={styles.instructionsMainRecipe}>Instructions :</Text>
-            <Text style={styles.instructions}>{adultRecipe.instructions}</Text>
+            <Text style={styles.instructions}>{adultRecipe?.instructions}</Text>
           </View>
         </ScrollView>
       </View>
