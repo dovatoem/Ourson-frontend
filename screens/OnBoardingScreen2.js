@@ -13,7 +13,7 @@ export default function  OnBoardingScreen1({ navigation }) {
   const [diet, setDiet] = useState("")
     
   const handleSubmit = () => {
-    // console.log('household.kidsArray', household.kidsArray);  
+    console.log('household', household);  
     fetch('https://back.ourson.app/users/profile', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -22,14 +22,15 @@ export default function  OnBoardingScreen1({ navigation }) {
         dietName: diet, 
         hhSize: household.hhSize, 
         kidsCount: household.kidsCount,
-        // kidsArray: household.kidsArray
+        kidsArray: household.kidsArray
        }),
     }).then(response => response.json())
       .then(data => {
         if (data.result) {
-        console.log('hh reducer', household);   
+        console.log('hh reducer', household);  
+        console.log('data', data); 
         navigation.navigate("OnBoardingScreen3")}       
-      });     
+      });      
   }
 
   return (
@@ -83,7 +84,7 @@ export default function  OnBoardingScreen1({ navigation }) {
               </RadioButton.Group>
         
       </View>
-      <Button style={styles.button} mode="outlined" onPress={() => navigation.navigate("OnBoardingScreen3")}>Continuer</Button>
+      <Button style={styles.button} mode="outlined" onPress={() => handleSubmit()}>Continuer</Button>
         <ProgressBar progress={0.5} style={styles.progressBar} />
         </KeyboardAvoidingView>
     </ImageBackground>

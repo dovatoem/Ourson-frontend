@@ -30,14 +30,11 @@ export default function OnBoardingScreen1({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            console.log("hh reducer", household);
-            console.log("data", data);
-            console.log("user", data);
-            navigation.navigate("Dashboard");
+            navigation.navigate("SignUp");
           }
         });
     } else {
-      navigation.navigate("OnBoardingScreen1");
+      navigation.navigate("SignUp");
     }
   };
 
