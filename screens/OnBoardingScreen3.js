@@ -52,6 +52,7 @@ export default function OnBoardingScreen1({ navigation }) {
   }, []);
 
   const handleSubmit = () => {
+    // via 
     if (firstName && email && password) {
       fetch("https://back.ourson.app/users/signupGuest", {
         method: "POST",
@@ -66,7 +67,7 @@ export default function OnBoardingScreen1({ navigation }) {
           }
         });
     } else {
-      navigation.navigate("SignUp");
+      navigation.navigate(todayDay);
     }
   };
 

@@ -15,46 +15,39 @@ import { addHousehold } from "../reducers/household";
 export default function OnBoardingScreen1({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  const household = useSelector((state) => state.household.value);
+  
+  const [hhSize, setHhSize] = useState('');
+  const [kidsCount, setKidsCount] = useState('');
+  const [kidFields, setKidFields] = useState([]);
+  const [kidsArray, setKidsArray] = useState([]);
 
-   // local states saving the user inputs
-   const [hhSize, setHhSize] = useState('');
-   const [kidsCount, setKidsCount] = useState('');
-   const [kidFields, setKidFields] = useState([]);
-   const [kidsArray, setKidsArray] = useState({
-    kidName1: "",
-    ageMonths1: "",
-    kidName2: "",
-    ageMonths2: "",
-    kidName3: "",
-    ageMonths3: "",
-    kidName4: "",
-    ageMonths4: "",
-    });
-      
-   const handleNumKidsChange = (numKids) => {
+  // create as many empty kidName and kidAge as kidsCount
+  function handleNumKidsChange(numKids) {
     setKidsCount(numKids);
-    let newValues = {};
+    const kidsObj = {};
     for (let i = 1; i <= numKids; i++) {
-      let kidName = `kidName${i}`;
-      let kidAge = `ageMonths${i}`;
-      newValues[kidName] = kidsArray[kidName] || "";
-      newValues[kidAge] = kidsArray[kidAge] || "";
+      const kidNum = i.toString();
+      kidsObj[`kidName${kidNum}`] = "";
+      kidsObj[`ageMonths${kidNum}`] = "";
     }
-    setKidsArray(newValues);
-  }; 
-
+    setKidsArray(kidsObj);
+    console.log('kidsObj', kidsObj);
+    }
+   
+    // save in kidsArray state the values user enters
   const handleInputChange = (name, value) => {
     setKidsArray(prevValues => ({
       ...prevValues,
       [name]: value,
-    }));
+    }));   
   };
    
+  // call generateKidInputs function when number of kids is entered
    useEffect(() => {
     generateKidInputs();
    }, [kidsCount]);
 
+   // creates as many inputs fields name and age as kids
   const generateKidInputs = () => {
    let inputs = [];
    let prenom;
@@ -90,10 +83,11 @@ export default function OnBoardingScreen1({ navigation }) {
   setKidFields(inputs);
 }
 
+// save in reducer household data and navigate to next screen
 const handleSubmit = () => {
   dispatch(addHousehold({hhSize, kidsCount, kidsArray} ));
   navigation.navigate("OnBoardingScreen2");
-  console.log('Onboardung1 kidsArray', kidsArray); 
+  console.log('Onboarding1 kidsArray', kidsArray); 
  }
 
   return (
