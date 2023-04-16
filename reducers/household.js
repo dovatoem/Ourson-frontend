@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
-    hhSize: null,
-    kidsCount: null,
+    hhSize: 3,
+    kidsCount: 1,
     kidsArray: [],
     savedWeeklyRecipes: { baby: [], adult: [] },
     likedRecipes: [],
