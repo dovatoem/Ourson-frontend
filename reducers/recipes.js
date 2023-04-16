@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
- value: { searchedRecipes: [] },
+ value: { searchedRecipe: null },
 };
 
 export const recipesSlice = createSlice({
@@ -9,7 +9,7 @@ export const recipesSlice = createSlice({
  initialState,
  reducers: {
    addSearchedRecipe: (state, action) => {
-    state.value.searchedRecipes.push(action.payload);
+    state.value.searchedRecipe = (action.payload);
    },   
   }});
 
