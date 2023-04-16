@@ -30,7 +30,7 @@ export default function OnBoardingScreen1({ navigation }) {
       kidsObj[`kidName${kidNum}`] = "";
       kidsObj[`ageMonths${kidNum}`] = "";
     }
-    setKidsArray(kidsObj);
+    setKidsArray([kidsObj]);
     console.log('kidsObj', kidsObj);
     }
    
@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
   progressBar: {
     width: 290,
     marginTop: 35,
+    marginBottom: "20%",
     alignSelf: "center",
   },
 });
