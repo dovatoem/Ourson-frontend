@@ -9,13 +9,18 @@ import {
 import { Button, TextInput, Text, RadioButton } from "react-native-paper";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../reducers/user";
+import { emptyHousehold } from "../reducers/household";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function ProfileScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    navigation.navigate("Hero")
+  const handleLogout = () => {        
+    navigation.navigate("Hero");
+    dispatch(logout());
+    dispatch(emptyHousehold());
   }
 
   return (

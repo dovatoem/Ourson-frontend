@@ -37,6 +37,7 @@ export default function DayScreen({ navigation }) {
 
   // Reducers ref
   const user = useSelector((state) => state.user.value);
+  const household = useSelector((state) => state.household.value);
   const savedWeeklyRecipes = useSelector(
     (state) => state.household.value.savedWeeklyRecipes
   );
@@ -60,6 +61,8 @@ export default function DayScreen({ navigation }) {
   // if > 7 days OR reducer Weeklyrecipes is empty, just fetch it from database.
   useEffect(() => {
     console.log("usertoken", user.token);
+    console.log("reducer hh saved", household.savedWeeklyRecipes.adult[0].imageURL);  
+    console.log("reducer hh liked", household.likedRecipes.adult[0]);  
     // let timepast = Date.now() - createdAt;
     if (
       !(

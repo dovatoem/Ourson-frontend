@@ -52,22 +52,35 @@ export default function SignInScreen({ navigation }) {
 
   // Check if user is registered
   const handleSubmit = () => {
-    fetch("https://back.ourson.app/users/signin", {
+    fetch("https://ourson-app-backend.vercel.app/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log("data", data);
+      .then((data) => {      
         if (data.result) {
           dispatch(
             login({ token: data.user.token, email: data.user.email, firstName: data.user.firstName})
           );
-          // dispatch(
-          //   getHousehold({ hhSize: data.household.hhSize, kidsCount: data.household.kidsCount, kidsArray: data.household.kids[0] })
-          // )
-          navigation.navigate(todayDay);
+          dispatch(
+            getHousehold({ 
+              hhSize: data.household.hhSize, 
+              kidsCount: data.household.kidsCount, 
+              kidsArray: data.household.kids[0], 
+              savedWeeklyRecipes: 
+              {                
+                baby: data.household.weeklyRecipes.map((recipe) => recipe.baby),
+                adult: data.household.weeklyRecipes.map((recipe) => recipe.adult),
+              },
+              likedRecipes: {                
+                baby: data.household.likedRecipes.map((recipe) => recipe.baby),
+                adult: data.household.likedRecipes.map((recipe) => recipe.adult),
+              },
+              createdAt: data.household.createdAt,
+             })
+          );
+          navigation.navigate(todayDay);          
         } else {
           setShowError(!showError);
         }
