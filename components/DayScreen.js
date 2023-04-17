@@ -60,13 +60,13 @@ export default function DayScreen({ navigation }) {
   // if > 7 days OR reducer Weeklyrecipes is empty, just fetch it from database.
   useEffect(() => {
     console.log("usertoken", user.token);
-    // let timepast = Date.now() - createdAt;
+    let timepast = Date.now() - createdAt;
     if (
       !(
         savedWeeklyRecipes.baby.length === 0 &&
         savedWeeklyRecipes.adult.length === 0
-      )
-      // && (timepast < 604800000)
+      ) &&
+      timepast < 604800000
     ) {
       setWeeklyRecipes(savedWeeklyRecipes);
     } else {
@@ -205,7 +205,7 @@ export default function DayScreen({ navigation }) {
   // code to handle conditional portions
   const handleClickPortionsBaby = (data) => {
     if (data === "sub") {
-      if (babyCounter > 1) setBabyCounter(babyCounter - 1);
+      if (babyCounter > 1) setBabyCounter(+babyCounter - 1);
     } else {
       setBabyCounter(+babyCounter + 1);
     }
@@ -221,6 +221,43 @@ export default function DayScreen({ navigation }) {
     }
   };
 
+  const handleClickLike = () => {
+    if (isLiked === false) {
+      // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
+      fetch("https://back.ourson.app/recipes/addLikedRecipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipedID: { baby: babyRecipe._id, adult: adultRecipe._id },
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            setIsLiked(true);
+            dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
+          }
+        });
+    } else {
+      // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
+      fetch("https://back.ourson.app/recipes/removeLikedRecipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipedID: { baby: babyRecipe._id, adult: adultRecipe._id },
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            setIsLiked(false);
+            dispatch(
+              removeLikedRecipe({ baby: babyRecipe, adult: adultRecipe })
+            );
+          }
+        });
+    }
+  };
   // code to handle likes
   let heartIcon = "";
   if (isLiked) {
@@ -228,9 +265,6 @@ export default function DayScreen({ navigation }) {
       <TouchableOpacity
         onPress={() => {
           handleClickLike();
-          dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
-          // Besoin d'ajouter l'appel a la base
-          console.log("likedRecipe", likedRecipe);
         }}
       >
         <Icon name="heart" size={32} color={theme.colors.primary} />
@@ -241,10 +275,6 @@ export default function DayScreen({ navigation }) {
       <TouchableOpacity
         onPress={() => {
           handleClickLike();
-          dispatch(removeLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
-          // Besoin d'ajouter l'appel a la base
-
-          console.log("likedRecipe", likedRecipe);
         }}
       >
         <Icon name="heart-outline" size={32} color={theme.colors.primary} />
@@ -254,18 +284,6 @@ export default function DayScreen({ navigation }) {
   //
   // FETCH useeffect APPEL BASE DE DONNEE POUR GET likedRecipes de USER et setter le bon usestate
   //
-
-  const handleClickLike = () => {
-    if (isLiked === false) {
-      setIsLiked(true);
-
-      // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
-    } else {
-      setIsLiked(false);
-
-      // FETCH APPEL BASE DE DONNEE POUR SUPPRIMER likedRecipes à USER
-    }
-  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
@@ -546,10 +564,10 @@ const styles = StyleSheet.create({
   },
   viewActive: {
     borderBottomColor: "rgb(255, 107, 87)",
-    borderBottomWidth: "2",
+    borderBottomWidth: 2,
   },
   viewInactive: {
-    borderBottomWidth: "0",
+    borderBottomWidth: 0,
   },
 
   titleSeparator: {
@@ -647,6 +665,7 @@ const styles = StyleSheet.create({
   chip: {
     marginBottom: 6,
     marginRight: 6,
+    height: 40,
   },
   instructionsMainRecipe: {
     fontSize: 18,

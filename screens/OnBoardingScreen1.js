@@ -57,10 +57,10 @@ export default function OnBoardingScreen1({ navigation }) {
       let kidAge = `ageMonths${i}`;
       if (i === 1) {
         prenom = "Prénom du 1er enfant";
-        age = "Age du 1er enfant";
+        age = "Age du 1er enfant en mois";
       } else {
         prenom = `Prénom du ${i}ème enfant`;
-        age = `Age du ${i}ème enfant`;
+        age = `Age du ${i}ème enfant en mois`;
       }
       inputs.push(
         <View key={i}>

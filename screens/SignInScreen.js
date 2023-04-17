@@ -4,22 +4,22 @@ import {
   ImageBackground,
   View,
 } from "react-native";
-import { Button, TextInput, Text } from "react-native-paper";
+import { Button, TextInput, Text, HelperText } from "react-native-paper";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../reducers/user";
+import { getHousehold } from "../reducers/household";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import ProfileScreen from "./ProfileScreen";
 
-export default function SignUpScreen({ navigation }) {
+export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-
-  // local states saving the user inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
   const [todayDay, setTodayDay] = useState("");
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     const dayOfWeek = new Date().getDay();
@@ -62,9 +62,14 @@ export default function SignUpScreen({ navigation }) {
         console.log("data", data);
         if (data.result) {
           dispatch(
-            login({ token: data.token, email, firstName: data.firstName })
+            login({ token: data.user.token, email: data.user.email, firstName: data.user.firstName})
           );
+          // dispatch(
+          //   getHousehold({ hhSize: data.household.hhSize, kidsCount: data.household.kidsCount, kidsArray: data.household.kids[0] })
+          // )
           navigation.navigate(todayDay);
+        } else {
+          setShowError(!showError);
         }
       });
   };
@@ -109,6 +114,9 @@ export default function SignUpScreen({ navigation }) {
                 />
               }
             />
+            <HelperText type="error" visible={showError} style={styles.errorMessage}>
+              Email et/ou mot de passe incorrect(s)
+            </HelperText>
           </View>
           <Button
             style={styles.button}
@@ -159,6 +167,12 @@ const styles = StyleSheet.create({
     margin: 5,
     width: "85%",
     backgroundColor: "white",
+  },
+  errorMessage: {
+    fontFamily: "Roboto",
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'red',
   },
   button: {
     borderRadius: 60,

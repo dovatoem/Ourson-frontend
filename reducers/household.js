@@ -20,6 +20,14 @@ export const householdSlice = createSlice({
       state.value.kidsCount = action.payload.kidsCount;
       state.value.kidsArray.push(action.payload.kidsArray);
     },
+    getHousehold: (state, action) => {
+      state.value.hhSize = action.payload.hhSize;
+      state.value.kidsCount = action.payload.kidsCount;
+      state.value.kidsArray.push(action.payload.kidsArray);
+      state.value.savedWeeklyRecipes = action.payload;
+      state.value.likedRecipes.push(action.payload.likedRecipes);
+      state.value.createdAt = action.payload.createdAt;
+    },
     addWeeklyRecipes: (state, action) => {
       state.value.savedWeeklyRecipes = action.payload;
     },
@@ -39,6 +47,7 @@ export const householdSlice = createSlice({
 
 export const {
   addHousehold,
+  getHousehold,
   addWeeklyRecipes,
   resetCreatedAt,
   addLikedRecipe,
