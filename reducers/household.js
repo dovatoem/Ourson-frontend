@@ -20,7 +20,7 @@ export const householdSlice = createSlice({
       state.value.kidsCount = action.payload.kidsCount;
       state.value.kidsArray.push(action.payload.kidsArray);
     },
-    getHousehold: (state, action) => {      
+    getHousehold: (state, action) => {
       state.value.hhSize = action.payload.hhSize;
       state.value.kidsCount = action.payload.kidsCount;
       state.value.kidsArray.push(action.payload.kidsArray);

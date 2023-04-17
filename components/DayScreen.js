@@ -42,7 +42,7 @@ export default function DayScreen({ navigation }) {
     (state) => state.household.value.savedWeeklyRecipes
   );
   const createdAt = useSelector((state) => state.household.value.createdAt);
-  const likedRecipe = useSelector(
+  const likedRecipes = useSelector(
     (state) => state.household.value.likedRecipes
   );
   const hhSize = useSelector((state) => state.household.value.hhSize);
@@ -68,11 +68,12 @@ export default function DayScreen({ navigation }) {
       !(
         savedWeeklyRecipes.baby.length === 0 &&
         savedWeeklyRecipes.adult.length === 0
-      )
-      // && (timepast < 604800000)
+      ) &&
+      timepast < 604800000
     ) {
       setWeeklyRecipes(savedWeeklyRecipes);
     } else {
+      setWeeklyRecipes(savedWeeklyRecipes);
       fetch("https://back.ourson.app/recipes/weekly", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -208,7 +209,7 @@ export default function DayScreen({ navigation }) {
   // code to handle conditional portions
   const handleClickPortionsBaby = (data) => {
     if (data === "sub") {
-      if (babyCounter > 1) setBabyCounter(babyCounter - 1);
+      if (babyCounter > 1) setBabyCounter(+babyCounter - 1);
     } else {
       setBabyCounter(+babyCounter + 1);
     }
@@ -224,6 +225,64 @@ export default function DayScreen({ navigation }) {
     }
   };
 
+  useEffect(() => {
+    setIsLiked(
+      likedRecipes.some(
+        (recipePair) =>
+          recipePair.baby === babyRecipe && recipePair.adult === adultRecipe
+      )
+    );
+  }, [babyRecipe, adultRecipe, likedRecipes]);
+
+  const handleClickLike = () => {
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+
+    if (newIsLiked) {
+      fetch("https://back.ourson.app/recipes/addLikedRecipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: user.token,
+          recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
+          } else {
+            setIsLiked(!newIsLiked);
+          }
+        })
+        .catch(() => {
+          setIsLiked(!newIsLiked);
+        });
+    } else {
+      fetch("https://back.ourson.app/recipes/removeLikedRecipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: user.token,
+          recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            dispatch(
+              removeLikedRecipe({ baby: babyRecipe, adult: adultRecipe })
+            );
+          } else {
+            setIsLiked(!newIsLiked);
+          }
+        })
+        .catch(() => {
+          setIsLiked(!newIsLiked);
+        });
+    }
+  };
+
   // code to handle likes
   let heartIcon = "";
   if (isLiked) {
@@ -231,9 +290,6 @@ export default function DayScreen({ navigation }) {
       <TouchableOpacity
         onPress={() => {
           handleClickLike();
-          dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
-          // Besoin d'ajouter l'appel a la base
-          console.log("likedRecipe", likedRecipe);
         }}
       >
         <Icon name="heart" size={32} color={theme.colors.primary} />
@@ -244,31 +300,12 @@ export default function DayScreen({ navigation }) {
       <TouchableOpacity
         onPress={() => {
           handleClickLike();
-          dispatch(removeLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
-          // Besoin d'ajouter l'appel a la base
-
-          console.log("likedRecipe", likedRecipe);
         }}
       >
         <Icon name="heart-outline" size={32} color={theme.colors.primary} />
       </TouchableOpacity>
     );
   }
-  //
-  // FETCH useeffect APPEL BASE DE DONNEE POUR GET likedRecipes de USER et setter le bon usestate
-  //
-
-  const handleClickLike = () => {
-    if (isLiked === false) {
-      setIsLiked(true);
-
-      // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
-    } else {
-      setIsLiked(false);
-
-      // FETCH APPEL BASE DE DONNEE POUR SUPPRIMER likedRecipes à USER
-    }
-  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
