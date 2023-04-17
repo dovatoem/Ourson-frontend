@@ -14,6 +14,10 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 export default function ProfileScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleLogout = () => {
+    navigation.navigate("Hero")
+  }
+
   return (
     <View style={styles.fullContainer}>
       <SafeAreaView style={styles.safeArea} />
@@ -42,14 +46,14 @@ export default function ProfileScreen({ navigation }) {
             <TextInput
               disabled="true"
               mode="outlined"
-              label="Email"
+              label="dobie@gmail.com"
               style={styles.input}
               keyboardType="email-address"
             />
             <TextInput
               disabled="true"
               mode="outlined"
-              label="Mot de passe"
+              label="mot de passe"
               style={styles.input}
               secureTextEntry={!showPassword}
               right={
@@ -64,7 +68,7 @@ export default function ProfileScreen({ navigation }) {
             <TextInput
               disabled="true"
               mode="outlined"
-              label="email compte partagé"
+              label="mami@gmail.com"
               style={styles.input}               
               right={
                 <TextInput.Icon
@@ -75,30 +79,42 @@ export default function ProfileScreen({ navigation }) {
             />
             <Text style={styles.titleColor}>Ajouter une personne au compte</Text>          
             <Text style={styles.title}>Vos enfants</Text>
-            <TextInput    
+            <TextInput
+              disabled="true"    
               mode="outlined" 
               label="1"
               style={styles.input} />
-            <TextInput    
+            <TextInput 
+              disabled="true"   
               mode="outlined" 
-              label="Emo"              
+              label="Emilian"              
               style={styles.input} />
             <TextInput 
+              disabled="true"
               mode="outlined" 
               label="36"
               style={styles.input}
           />
           <Text style={styles.titleColor}>Ajouter un enfant au compte</Text>
           <Text style={styles.title}>Votre foyer</Text>
-            <TextInput    
+            <TextInput  
+              disabled="true"  
               mode="outlined" 
               label="3"
               style={styles.input} />
           <Text style={styles.title}>Régime parental</Text>
-            <TextInput    
+            <TextInput 
+              disabled="true"   
               mode="outlined" 
               label="Végétarien"
-              style={styles.inputLast} />                 
+              style={styles.input} />
+          <Button
+            style={styles.button}
+            contentStyle={{ width: 180, height: 60 }}
+            mode="outlined"
+            onPress={() => handleLogout()}
+            title="Déconnexion"
+            >Déconnexion</Button>                 
           </ScrollView>
           <View style={styles.bottom}><Text></Text></View>
           </KeyboardAvoidingView>
@@ -161,12 +177,13 @@ const styles = StyleSheet.create({
     marginTop: "7%",
     color: "rgb(255, 107, 87)",    
   },
-  inputLast: {
-    width: "86%",
-    backgroundColor: "white",
+  button: {
+    borderRadius: 60,
+    marginTop: "7%",
     marginBottom: "7%",
-  },
+    justifyContent: "center",
+  }, 
   bottom: {
-    marginBottom: "15%",
+    marginBottom: "20%",
   },
 });
