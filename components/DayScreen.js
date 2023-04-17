@@ -546,10 +546,10 @@ const styles = StyleSheet.create({
   },
   viewActive: {
     borderBottomColor: "rgb(255, 107, 87)",
-    borderBottomWidth: "2",
+    borderBottomWidth: 2,
   },
   viewInactive: {
-    borderBottomWidth: "0",
+    borderBottomWidth: 0,
   },
 
   titleSeparator: {
@@ -647,6 +647,7 @@ const styles = StyleSheet.create({
   chip: {
     marginBottom: 6,
     marginRight: 6,
+    height: 40,
   },
   instructionsMainRecipe: {
     fontSize: 18,

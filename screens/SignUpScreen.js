@@ -4,7 +4,7 @@ import {
   ImageBackground,
   View,
 } from "react-native";
-import { Button, TextInput, Text } from "react-native-paper";
+import { Button, TextInput, Text, HelperText } from "react-native-paper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../reducers/user";
@@ -14,12 +14,11 @@ export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
 
-  // local states saving the user inputs
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   // Save in DB the user
   const handleSubmit = () => {
@@ -33,6 +32,8 @@ export default function SignUpScreen({ navigation }) {
         if (data.result) {
           dispatch(login({ token: data.token, email, firstName }));
           navigation.navigate("OnBoardingScreen1");
+        } else {
+          setShowError(!showError);
         }       
       });
   };
@@ -83,6 +84,10 @@ export default function SignUpScreen({ navigation }) {
                 />
               }
             />
+            <HelperText type="error" visible={showError} style={styles.errorMessage}>
+            L'utilisateur avec cet email existe déjà. Veuillez vous connecter ou utiliser un autre email pour créer un nouveau compte.
+            {/* Cet utilisateur existe déjà. Veuillez utiliser un autre email. */}
+            </HelperText>
           </View>
           <Button
             style={styles.button}
@@ -133,6 +138,12 @@ const styles = StyleSheet.create({
     margin: 5,
     width: "85%",
     backgroundColor: "white",
+  },
+  errorMessage: {
+    fontFamily: "Roboto",
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'red',
   },
   button: {
     borderRadius: 60,
