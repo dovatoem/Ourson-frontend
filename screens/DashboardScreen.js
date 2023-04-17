@@ -21,7 +21,7 @@ export default function DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const [recipeTitles, setRecipeTitles] = useState([]);
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [selectedRecipe, setSelectedRecipe] = useState(null); // local state to store the recipe the user clicked on in the flatlist
   const [searchedRecipes, setSearchedRecipes] = useState([]); //all the recipes corresponding to searched keyword
   const [FlatListVisible, setFlatListVisible] = useState(false);
   const [dashboardVisible, setDashboardVisible] = useState(true);
@@ -51,15 +51,11 @@ export default function DashboardScreen({ navigation }) {
         });
     }
   };
-//when title is clicked => navigate to SearchedRecipeScreen that will display the full recipe 
-  // const onRecipeSelected = (selectedTitle) => {
-  //   console.log(selectedTitle);
-  // };
-  useEffect(() => { //
+
+  useEffect(() => { 
     if (recipe.searchedRecipe) {
-      console.log(recipe.searchedRecipe)
-      // navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe });
-      //setSelectedRecipe(null)
+      console.log("recette dans le reducer:",recipe.searchedRecipe)
+      
     }
   }, [recipe.searchedRecipe]);
 
@@ -100,9 +96,11 @@ export default function DashboardScreen({ navigation }) {
                   console.log("recipe clicked:", item.title)
                   searchedRecipes.map((recipe) => {
                     if(recipe.title === item.title){
-                      dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchScreen
-                      //setSelectedRecipe(recipe); 
+                      dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchedRecipeScreen
+                      setSelectedRecipe(recipe); 
                     }
+                    navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe});
+                    
                   })
                 }
               } 
