@@ -68,9 +68,10 @@ import RegenerateFavScreen from "./screens/RegenerateFavScreen";
 import Header from "./components/Header";
 import user from "./reducers/user";
 import household from "./reducers/household";
+import recipes from "./reducers/recipes";
 
 const store = configureStore({
-  reducer: { user, household },
+  reducer: { user, household, recipes },
 });
 
 //SplashScreen

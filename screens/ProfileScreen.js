@@ -25,23 +25,23 @@ export default function ProfileScreen({ navigation }) {
         source={require("../assets/parametersBackground.png")}
         style={styles.background}
       >
-      <KeyboardAvoidingView
+        <KeyboardAvoidingView
           keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.keyboard}
         >
-        <View style={styles.header}>
-          <Icon
-            name="chevron-left"
-            size={36}
-            color="black"
-            onPress={() => navigation.goBack()}
-            style={styles.chevron}
-          />
-          <Text style={styles.bigTitle}>Paramètres</Text>
-          <View></View>
-        </View>      
-        <ScrollView contentContainerStyle={styles.scrollView}>           
+          <View style={styles.header}>
+            <Icon
+              name="chevron-left"
+              size={36}
+              color="black"
+              onPress={() => navigation.goBack()}
+              style={styles.chevron}
+            />
+            <Text style={styles.bigTitle}>Paramètres</Text>
+            <View></View>
+          </View>
+          <ScrollView contentContainerStyle={styles.scrollView}>
             <Text style={styles.title}>Vos identifiants</Text>
             <TextInput
               disabled="true"
@@ -62,7 +62,7 @@ export default function ProfileScreen({ navigation }) {
                   onPress={() => setShowPassword(!showPassword)}
                   color="#808080"
                 />
-                }
+              }
             />
             <Text style={styles.title}>Compte partagé avec</Text>
             <TextInput
@@ -71,13 +71,12 @@ export default function ProfileScreen({ navigation }) {
               label="mami@gmail.com"
               style={styles.input}               
               right={
-                <TextInput.Icon
-                  icon="close-circle-outline"
-                  color="#808080"
-                />
-                }
+                <TextInput.Icon icon="close-circle-outline" color="#808080" />
+              }
             />
-            <Text style={styles.titleColor}>Ajouter une personne au compte</Text>          
+            <Text style={styles.titleColor}>
+              Ajouter une personne au compte
+            </Text>
             <Text style={styles.title}>Vos enfants</Text>
             <TextInput
               disabled="true"    
@@ -116,8 +115,10 @@ export default function ProfileScreen({ navigation }) {
             title="Déconnexion"
             >Déconnexion</Button>                 
           </ScrollView>
-          <View style={styles.bottom}><Text></Text></View>
-          </KeyboardAvoidingView>
+          <View style={styles.bottom}>
+            <Text></Text>
+          </View>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </View>
   );
@@ -128,16 +129,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffff",
   },
-  safeArea: {
-    flex: 1,
-    marginBottom: 40,
-    marginTop: 5,
-  },
   background: {
     width: "100%",
     height: "100%",
     alignItems: "center",
   },
+  // safeArea: {
+  //   flex: 1,
+  //   marginBottom: 35,
+  // },
   header: {
     flexDirection: "row",
     marginTop: "10%",
@@ -148,23 +148,24 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 700,
     paddingLeft: 20,
+    marginBottom: 30,
   },
   keyboard: {
     flex: 1,
-    width: "80%",   
+    width: "80%",
   },
   scrollView: {
     borderRadius: 10,
     backgroundColor: "white",
-    alignItems: "center",     
-  },  
+    alignItems: "center",
+  },
   title: {
     fontFamily: "Roboto",
     fontSize: 20,
-    fontWeight: 700,   
-    marginTop: "7%", 
-    marginLeft: "7%",  
-    alignSelf: "flex-start", 
+    fontWeight: 700,
+    marginTop: "7%",
+    marginLeft: "7%",
+    alignSelf: "flex-start",
   },
   input: {
     width: "86%",
@@ -173,9 +174,9 @@ const styles = StyleSheet.create({
   titleColor: {
     fontFamily: "Roboto",
     fontSize: 16,
-    fontWeight: 700,    
+    fontWeight: 700,
     marginTop: "7%",
-    color: "rgb(255, 107, 87)",    
+    color: "rgb(255, 107, 87)",
   },
   button: {
     borderRadius: 60,

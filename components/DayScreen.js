@@ -20,6 +20,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigationState } from "@react-navigation/native";
+import {
+  addWeeklyRecipes,
+  resetCreatedAt,
+  addLikedRecipe,
+  removeLikedRecipe,
+} from "../reducers/household";
 
 export default function DayScreen({ navigation }) {
   const currentScreen = useNavigationState(
@@ -27,8 +33,21 @@ export default function DayScreen({ navigation }) {
   );
 
   const theme = useTheme();
-  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
 
+  // Reducers ref
+  const user = useSelector((state) => state.user.value);
+  const savedWeeklyRecipes = useSelector(
+    (state) => state.household.value.savedWeeklyRecipes
+  );
+  const createdAt = useSelector((state) => state.household.value.createdAt);
+  const likedRecipe = useSelector(
+    (state) => state.household.value.likedRecipes
+  );
+  const hhSize = useSelector((state) => state.household.value.hhSize);
+  const kidsCount = useSelector((state) => state.household.value.kidsCount);
+
+  //Local States
   const [activeMenu, setActiveMenu] = useState(
     new Date().getHours() >= 15 ? "soir" : "midi"
   );
@@ -37,30 +56,50 @@ export default function DayScreen({ navigation }) {
   const [checked, setChecked] = useState("first");
   const [weeklyRecipes, setWeeklyRecipes] = useState({ baby: [], adult: [] });
 
+  // On first launch, check reducer. If contains Weeklyrecipes AND <7 days, recipes will come from reducer
+  // if > 7 days OR reducer Weeklyrecipes is empty, just fetch it from database.
   useEffect(() => {
     console.log("usertoken", user.token);
-    fetch("https://back.ourson.app/recipes/weekly", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: user.token,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          setWeeklyRecipes({
-            baby: data.recipes.map((recipe) => recipe.baby),
-            adult: data.recipes.map((recipe) => recipe.adult),
-          });
-          console.log(weeklyRecipes);
-        }
-      });
+    // let timepast = Date.now() - createdAt;
+    if (
+      !(
+        savedWeeklyRecipes.baby.length === 0 &&
+        savedWeeklyRecipes.adult.length === 0
+      )
+      // && (timepast < 604800000)
+    ) {
+      setWeeklyRecipes(savedWeeklyRecipes);
+    } else {
+      fetch("https://back.ourson.app/recipes/weekly", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: user.token,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            setWeeklyRecipes({
+              baby: data.recipes.map((recipe) => recipe.baby),
+              adult: data.recipes.map((recipe) => recipe.adult),
+            });
+            dispatch(
+              addWeeklyRecipes({
+                baby: data.recipes.map((recipe) => recipe.baby),
+                adult: data.recipes.map((recipe) => recipe.adult),
+              })
+            );
+            dispatch(resetCreatedAt(Date.now()));
+            console.log("createdAt", createdAt);
+          }
+        });
+    }
   }, []);
 
+  // Code to know where we are and give an index to each day of the week to display proper recipe
   let dayNumberNoon = 0;
   let dayNumberNight = 1;
-  console.log(weeklyRecipes);
   switch (currentScreen) {
     case "MondayScreen":
       dayNumberNoon = 0;
@@ -95,6 +134,7 @@ export default function DayScreen({ navigation }) {
       break;
   }
 
+  // Set each variable with its index depending of day or night meal
   let babyRecipe = "";
   let adultRecipe = "";
   let babyRecipeNoon = weeklyRecipes.baby[dayNumberNoon];
@@ -111,8 +151,8 @@ export default function DayScreen({ navigation }) {
   }
 
   // reducer household pour nombre de portions à faire
-  const [babyCounter, setBabyCounter] = useState(1);
-  const [adultCounter, setAdultCounter] = useState(2);
+  const [babyCounter, setBabyCounter] = useState(kidsCount);
+  const [adultCounter, setAdultCounter] = useState(hhSize - kidsCount);
 
   //refaire parce que les conditions sont mauvaises
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
@@ -162,6 +202,7 @@ export default function DayScreen({ navigation }) {
     );
   });
 
+  // code to handle conditional portions
   const handleClickPortionsBaby = (data) => {
     if (data === "sub") {
       if (babyCounter > 1) setBabyCounter(babyCounter - 1);
@@ -180,12 +221,16 @@ export default function DayScreen({ navigation }) {
     }
   };
 
+  // code to handle likes
   let heartIcon = "";
   if (isLiked) {
     heartIcon = (
       <TouchableOpacity
         onPress={() => {
           handleClickLike();
+          dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
+          // Besoin d'ajouter l'appel a la base
+          console.log("likedRecipe", likedRecipe);
         }}
       >
         <Icon name="heart" size={32} color={theme.colors.primary} />
@@ -196,6 +241,10 @@ export default function DayScreen({ navigation }) {
       <TouchableOpacity
         onPress={() => {
           handleClickLike();
+          dispatch(removeLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
+          // Besoin d'ajouter l'appel a la base
+
+          console.log("likedRecipe", likedRecipe);
         }}
       >
         <Icon name="heart-outline" size={32} color={theme.colors.primary} />
