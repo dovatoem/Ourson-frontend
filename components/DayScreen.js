@@ -41,7 +41,7 @@ export default function DayScreen({ navigation }) {
     (state) => state.household.value.savedWeeklyRecipes
   );
   const createdAt = useSelector((state) => state.household.value.createdAt);
-  const likedRecipe = useSelector(
+  const likedRecipes = useSelector(
     (state) => state.household.value.likedRecipes
   );
   const hhSize = useSelector((state) => state.household.value.hhSize);
@@ -70,6 +70,7 @@ export default function DayScreen({ navigation }) {
     ) {
       setWeeklyRecipes(savedWeeklyRecipes);
     } else {
+      setWeeklyRecipes(savedWeeklyRecipes);
       fetch("https://back.ourson.app/recipes/weekly", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -221,43 +222,64 @@ export default function DayScreen({ navigation }) {
     }
   };
 
+  useEffect(() => {
+    setIsLiked(
+      likedRecipes.some(
+        (recipePair) =>
+          recipePair.baby === babyRecipe && recipePair.adult === adultRecipe
+      )
+    );
+  }, [babyRecipe, adultRecipe, likedRecipes]);
+
   const handleClickLike = () => {
-    if (isLiked === false) {
-      // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+
+    if (newIsLiked) {
       fetch("https://back.ourson.app/recipes/addLikedRecipe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          recipedID: { baby: babyRecipe._id, adult: adultRecipe._id },
+          token: user.token,
+          recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
         }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            setIsLiked(true);
             dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
+          } else {
+            setIsLiked(!newIsLiked);
           }
+        })
+        .catch(() => {
+          setIsLiked(!newIsLiked);
         });
     } else {
-      // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
       fetch("https://back.ourson.app/recipes/removeLikedRecipe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          recipedID: { baby: babyRecipe._id, adult: adultRecipe._id },
+          token: user.token,
+          recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
         }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            setIsLiked(false);
             dispatch(
               removeLikedRecipe({ baby: babyRecipe, adult: adultRecipe })
             );
+          } else {
+            setIsLiked(!newIsLiked);
           }
+        })
+        .catch(() => {
+          setIsLiked(!newIsLiked);
         });
     }
   };
+
   // code to handle likes
   let heartIcon = "";
   if (isLiked) {
@@ -281,9 +303,6 @@ export default function DayScreen({ navigation }) {
       </TouchableOpacity>
     );
   }
-  //
-  // FETCH useeffect APPEL BASE DE DONNEE POUR GET likedRecipes de USER et setter le bon usestate
-  //
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
