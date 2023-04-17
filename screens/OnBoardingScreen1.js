@@ -15,9 +15,9 @@ import { addHousehold } from "../reducers/household";
 export default function OnBoardingScreen1({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  
-  const [hhSize, setHhSize] = useState('');
-  const [kidsCount, setKidsCount] = useState('');
+
+  const [hhSize, setHhSize] = useState("");
+  const [kidsCount, setKidsCount] = useState("");
   const [kidFields, setKidFields] = useState([]);
   const [kidsArray, setKidsArray] = useState([]);
 
@@ -30,65 +30,68 @@ export default function OnBoardingScreen1({ navigation }) {
       kidsObj[`kidName${kidNum}`] = "";
       kidsObj[`ageMonths${kidNum}`] = "";
     }
-    setKidsArray(kidsObj);
-    console.log('kidsObj', kidsObj);
-    }
-   
-    // save in kidsArray state the values user enters
+    setKidsArray([kidsObj]);
+    console.log("kidsObj", kidsObj);
+  }
+
+  // save in kidsArray state the values user enters
   const handleInputChange = (name, value) => {
-    setKidsArray(prevValues => ({
+    setKidsArray((prevValues) => ({
       ...prevValues,
       [name]: value,
-    }));   
+    }));
   };
-   
+
   // call generateKidInputs function when number of kids is entered
-   useEffect(() => {
+  useEffect(() => {
     generateKidInputs();
-   }, [kidsCount]);
+  }, [kidsCount]);
 
-   // creates as many inputs fields name and age as kids
+  // creates as many inputs fields name and age as kids
   const generateKidInputs = () => {
-   let inputs = [];
-   let prenom;
-   let age;
- for (let i=1; i<=kidsCount; i++) {
-  let kidName = `kidName${i}`;
-  let kidAge = `ageMonths${i}`;
-  if (i===1) {
-    prenom = 'Prénom du 1er enfant';
-    age = 'Age du 1er enfant'
-  } else {
-    prenom = `Prénom du ${i}ème enfant`;
-    age = `Age du ${i}ème enfant`
-  } 
-  inputs.push(
-    <View key={i}>
-   <TextInput    
-      key={`name${i}`}
-          onChangeText={(value)=>handleInputChange(kidName, value)}
-          mode="outlined" 
-          label={prenom}
-          style={styles.input} />
-   <TextInput 
-    key={`age${i}`} 
-          onChangeText={(value)=>handleInputChange(kidAge, value)}
-          name={kidAge}  
-          mode="outlined" 
-          label={age}
-          style={styles.input}
-          keyboardType="numeric" />
-  </View>
-  )}
-  setKidFields(inputs);
-}
+    let inputs = [];
+    let prenom;
+    let age;
+    for (let i = 1; i <= kidsCount; i++) {
+      let kidName = `kidName${i}`;
+      let kidAge = `ageMonths${i}`;
+      if (i === 1) {
+        prenom = "Prénom du 1er enfant";
+        age = "Age du 1er enfant";
+      } else {
+        prenom = `Prénom du ${i}ème enfant`;
+        age = `Age du ${i}ème enfant`;
+      }
+      inputs.push(
+        <View key={i}>
+          <TextInput
+            key={`name${i}`}
+            onChangeText={(value) => handleInputChange(kidName, value)}
+            mode="outlined"
+            label={prenom}
+            style={styles.input}
+          />
+          <TextInput
+            key={`age${i}`}
+            onChangeText={(value) => handleInputChange(kidAge, value)}
+            name={kidAge}
+            mode="outlined"
+            label={age}
+            style={styles.input}
+            keyboardType="numeric"
+          />
+        </View>
+      );
+    }
+    setKidFields(inputs);
+  };
 
-// save in reducer household data and navigate to next screen
-const handleSubmit = () => {
-  dispatch(addHousehold({hhSize, kidsCount, kidsArray} ));
-  navigation.navigate("OnBoardingScreen2");
-  console.log('Onboarding1 kidsArray', kidsArray); 
- }
+  // save in reducer household data and navigate to next screen
+  const handleSubmit = () => {
+    dispatch(addHousehold({ hhSize, kidsCount, kidsArray }));
+    navigation.navigate("OnBoardingScreen2");
+    console.log("Onboarding1 kidsArray", kidsArray);
+  };
 
   return (
     <View style={styles.fullContainer}>
@@ -155,10 +158,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffff",
   },
-  safeArea: {
-    flex: 1,
-    marginBottom: 35,
-  },
+  // safeArea: {
+  //   flex: 1,
+  //   marginBottom: 35,
+  // },
   background: {
     width: "100%",
     height: "100%",
@@ -217,6 +220,7 @@ const styles = StyleSheet.create({
   progressBar: {
     width: 290,
     marginTop: 35,
+    marginBottom: "20%",
     alignSelf: "center",
   },
 });

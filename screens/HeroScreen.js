@@ -8,16 +8,22 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Button } from "react-native-paper"; //composant particulier de react native paper
+import ConfettiCannon from "react-native-confetti-cannon";
 
 export default function HeroScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
+      <ConfettiCannon count={500} origin={{ x: -100, y: 0 }} fallSpeed={5000} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.view}>
-          <Image style={styles.image} source={require("../assets/icon.png")} />
+          <Image
+            style={styles.image}
+            source={require("../assets/oursonBear.png")}
+          />
           <Text style={styles.text}>Ourson</Text>
+
           <View style={styles.buttonContainer}>
             <View style={styles.circle}></View>
             <Button
@@ -61,10 +67,10 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 290,
-    height: 320,
+    width: 280,
+    height: 310,
     marginTop: -180,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   text: {
     fontFamily: "Bryndan_Write",

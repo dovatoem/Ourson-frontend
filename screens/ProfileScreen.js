@@ -21,51 +21,75 @@ export default function ProfileScreen({ navigation }) {
         source={require("../assets/parametersBackground.png")}
         style={styles.background}
       >
-        <View style={styles.header}>
-          <Icon
-            name="chevron-left"
-            size={36}
-            color="black"
-            onPress={() => navigation.goBack()}
-            style={styles.chevron}
-          />
-          <Text style={styles.bigTitle}>Paramètres</Text>
-          <View></View>
-        </View>
         <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
+          style={styles.keyboard}
         >
+          <View style={styles.header}>
+            <Icon
+              name="chevron-left"
+              size={36}
+              color="black"
+              onPress={() => navigation.goBack()}
+              style={styles.chevron}
+            />
+            <Text style={styles.bigTitle}>Paramètres</Text>
+            <View></View>
+          </View>
           <ScrollView contentContainerStyle={styles.scrollView}>
-            <View style={styles.adminContain}>
-              <Text style={styles.title}>Vos identifiants</Text>
-              <TextInput
-                disabled="true"
-                mode="outlined"
-                label="Email"
-                style={styles.input}
-                keyboardType="email-address"
-              />
-              <TextInput
-                disabled="true"
-                mode="outlined"
-                label="Mot de passe"
-                style={styles.input}
-                secureTextEntry={!showPassword}
-                right={
-                  <TextInput.Icon
-                    icon={showPassword ? "eye" : "eye-off"}
-                    onPress={() => setShowPassword(!showPassword)}
-                    color="#808080"
-                  />
-                }
-              />
-            </View>
-
+            <Text style={styles.title}>Vos identifiants</Text>
+            <TextInput
+              disabled="true"
+              mode="outlined"
+              label="Email"
+              style={styles.input}
+              keyboardType="email-address"
+            />
+            <TextInput
+              disabled="true"
+              mode="outlined"
+              label="Mot de passe"
+              style={styles.input}
+              secureTextEntry={!showPassword}
+              right={
+                <TextInput.Icon
+                  icon={showPassword ? "eye" : "eye-off"}
+                  onPress={() => setShowPassword(!showPassword)}
+                  color="#808080"
+                />
+              }
+            />
             <Text style={styles.title}>Compte partagé avec</Text>
-
+            <TextInput
+              disabled="true"
+              mode="outlined"
+              label="email compte partagé"
+              style={styles.input}
+              right={
+                <TextInput.Icon icon="close-circle-outline" color="#808080" />
+              }
+            />
+            <Text style={styles.titleColor}>
+              Ajouter une personne au compte
+            </Text>
             <Text style={styles.title}>Vos enfants</Text>
+            <TextInput mode="outlined" label="1" style={styles.input} />
+            <TextInput mode="outlined" label="Emo" style={styles.input} />
+            <TextInput mode="outlined" label="36" style={styles.input} />
+            <Text style={styles.titleColor}>Ajouter un enfant au compte</Text>
+            <Text style={styles.title}>Votre foyer</Text>
+            <TextInput mode="outlined" label="3" style={styles.input} />
+            <Text style={styles.title}>Régime parental</Text>
+            <TextInput
+              mode="outlined"
+              label="Végétarien"
+              style={styles.inputLast}
+            />
           </ScrollView>
+          <View style={styles.bottom}>
+            <Text></Text>
+          </View>
         </KeyboardAvoidingView>
       </ImageBackground>
     </View>
@@ -77,16 +101,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffff",
   },
-  safeArea: {
-    flex: 1,
-    marginBottom: 40,
-    marginTop: 5,
-  },
   background: {
     width: "100%",
     height: "100%",
     alignItems: "center",
   },
+  // safeArea: {
+  //   flex: 1,
+  //   marginBottom: 35,
+  // },
   header: {
     flexDirection: "row",
     marginTop: "10%",
@@ -97,28 +120,42 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 700,
     paddingLeft: 20,
+    marginBottom: 30,
   },
-  container: {
+  keyboard: {
+    flex: 1,
     width: "80%",
-    backgroundColor: "red",
   },
   scrollView: {
     borderRadius: 10,
-    backgroundColor: "green",
-  },
-  adminContain: {
-    alignItems: "flex-start",
-    borderColor: "red",
+    backgroundColor: "white",
+    alignItems: "center",
   },
   title: {
     fontFamily: "Roboto",
     fontSize: 20,
     fontWeight: 700,
-    textAlign: "center",
     marginTop: "7%",
+    marginLeft: "7%",
+    alignSelf: "flex-start",
   },
   input: {
-    width: "100%",
+    width: "86%",
     backgroundColor: "white",
+  },
+  titleColor: {
+    fontFamily: "Roboto",
+    fontSize: 16,
+    fontWeight: 700,
+    marginTop: "7%",
+    color: "rgb(255, 107, 87)",
+  },
+  inputLast: {
+    width: "86%",
+    backgroundColor: "white",
+    marginBottom: "7%",
+  },
+  bottom: {
+    marginBottom: "15%",
   },
 });

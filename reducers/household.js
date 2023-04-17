@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
-    hhSize: null,
-    kidsCount: null,
+    hhSize: 3,
+    kidsCount: 1,
     kidsArray: [],
-    weeklyRecipes: [],
+    savedWeeklyRecipes: { baby: [], adult: [] },
     likedRecipes: [],
+    createdAt: Date.now() - 605000000,
   },
 };
 
@@ -20,7 +21,10 @@ export const householdSlice = createSlice({
       state.value.kidsArray.push(action.payload.kidsArray);
     },
     addWeeklyRecipes: (state, action) => {
-      state.value.weeklyRecipes.push(action.payload);
+      state.value.savedWeeklyRecipes = action.payload;
+    },
+    resetCreatedAt: (state, action) => {
+      state.value.createdAt = action.payload;
     },
     addLikedRecipe: (state, action) => {
       state.value.likedRecipes.push(action.payload);
@@ -36,6 +40,7 @@ export const householdSlice = createSlice({
 export const {
   addHousehold,
   addWeeklyRecipes,
+  resetCreatedAt,
   addLikedRecipe,
   removeLikedRecipe,
 } = householdSlice.actions;
