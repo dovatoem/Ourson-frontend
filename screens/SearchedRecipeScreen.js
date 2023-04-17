@@ -3,18 +3,9 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
-  TouchableOpacity,
   ImageBackground,
   Image,
 } from "react-native";
-import { Chip,
-  useTheme,
-  Button,
-  Dialog,
-  Portal,
-  Text,
-  Divider,
-  RadioButton, } from "react-native-paper";
 import { Chip,
   useTheme,
   Button,
@@ -36,12 +27,6 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addSearchedRecipe } from "../reducers/recipes";
 
-import Header from "../components/Header";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { LinearGradient } from "expo-linear-gradient";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addSearchedRecipe } from "../reducers/recipes";
 
 
 export default function SearchedRecipeScreen({ navigation }) {
