@@ -52,7 +52,7 @@ export default function OnBoardingScreen1({ navigation }) {
   }, []);
 
   const handleSubmit = () => {
-    // via 
+    // via
     if (firstName && email && password) {
       fetch("https://back.ourson.app/users/signupGuest", {
         method: "POST",
@@ -61,8 +61,8 @@ export default function OnBoardingScreen1({ navigation }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.result) {          
-            console.log("data guest user", data);            
+          if (data.result) {
+            console.log("data guest user", data);
             navigation.navigate(todayDay);
           }
         });
@@ -146,10 +146,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffff",
   },
-  safeArea: {
-    flex: 1,
-    marginBottom: 35,
-  },
+  // safeArea: {
+  //   flex: 1,
+  //   marginBottom: 35,
+  // },
   background: {
     width: "100%",
     height: "100%",
