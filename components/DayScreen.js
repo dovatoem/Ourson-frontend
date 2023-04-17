@@ -207,17 +207,17 @@ export default function DayScreen({ navigation }) {
     if (data === "sub") {
       if (babyCounter > 1) setBabyCounter(babyCounter - 1);
     } else {
-      setBabyCounter(babyCounter + 1);
+      setBabyCounter(+babyCounter + 1);
     }
   };
 
   const handleClickPortionsAdult = (data) => {
     if (data === "sub") {
       if (adultCounter > 1) {
-        setAdultCounter(adultCounter - 1);
+        setAdultCounter(+adultCounter - 1);
       }
     } else {
-      setAdultCounter(adultCounter + 1);
+      setAdultCounter(+adultCounter + 1);
     }
   };
 

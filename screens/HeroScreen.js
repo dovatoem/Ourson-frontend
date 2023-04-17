@@ -13,7 +13,7 @@ import ConfettiCannon from "react-native-confetti-cannon";
 export default function HeroScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
-      <ConfettiCannon count={500} origin={{ x: -100, y: 0 }} fallSpeed={5000} />
+      <ConfettiCannon count={500} origin={{ x: -100, y: 0 }} fallSpeed={2500} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
