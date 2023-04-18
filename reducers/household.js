@@ -39,11 +39,12 @@ export const householdSlice = createSlice({
       state.value.likedRecipes.adult.push(action.payload.adult);
     },
     removeLikedRecipe: (state, action) => {
-      state.value.likedRecipes.baby = state.value.likedRecipes.filter(
-        (e) => e._id === action.payload.baby
+      state.value.likedRecipes.baby = state.value.likedRecipes.baby.filter(
+        (e) => e._id !== action.payload.baby
       );
-      state.value.likedRecipes.adult = state.value.likedRecipes.filter(
-        (e) => e._id === action.payload.adult
+
+      state.value.likedRecipes.adult = state.value.likedRecipes.adult.filter(
+        (e) => e._id !== action.payload.adult
       );
     },
     emptyHousehold: (state, action) => {
