@@ -111,20 +111,41 @@ export default function Header({ navigation }) {
     { screenName: "SearchScreen", label: "Rechercher" },
   ];
 
-  let menuTopBar = screens.map((item) => {
-    const isActive = currentScreen === item.screenName;
-    return (
+  let menuTopBar = null;
+  if (currentScreen === "FavoriteRecipeScreen") {
+    menuTopBar = (
       <TouchableOpacity
-        key={item.screenName}
-        style={[styles.tabItem, isActive && styles.tabItemActive]}
-        onPress={() => navigation.navigate(item.screenName)}
+        key={"FavoriteRecipeScreen"}
+        style={[styles.tabItem, styles.tabItemActive]}
       >
-        <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
-          {item.label}
-        </Text>
+        <Text style={styles.tabLabelActive}>Favoris</Text>
       </TouchableOpacity>
     );
-  });
+  } else if (currentScreen === "SearchedRecipeScreen") {
+    menuTopBar = (
+      <TouchableOpacity
+        key={"SearchedRecipeScreen"}
+        style={[styles.tabItem, styles.tabItemActive]}
+      >
+        <Text style={styles.tabLabelActive}>Rechercher</Text>
+      </TouchableOpacity>
+    );
+  } else {
+    menuTopBar = screens.map((item) => {
+      const isActive = currentScreen === item.screenName;
+      return (
+        <TouchableOpacity
+          key={item.screenName}
+          style={[styles.tabItem, isActive && styles.tabItemActive]}
+          onPress={() => navigation.navigate(item.screenName)}
+        >
+          <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
+            {item.label}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+  }
 
   return (
     <View>
@@ -137,25 +158,37 @@ export default function Header({ navigation }) {
           {headerButton}
         </ImageBackground>
       </View>
-
-      <ScrollView
-        contentOffset={{ x: index * 110, y: 0 }}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
+      <View
+        style={{
+          backgroundColor: "#FDF0ED",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          height: 60,
+        }}
       >
-        <View
+        <ScrollView
+          contentOffset={{ x: index * 110, y: 0 }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
           style={{
-            backgroundColor: "#FDF0ED",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            height: 60,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
           }}
         >
-          {menuTopBar}
-        </View>
-      </ScrollView>
+          <View
+            style={{
+              backgroundColor: "#FDF0ED",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              height: 60,
+            }}
+          >
+            {menuTopBar}
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 }
