@@ -25,9 +25,9 @@ import {
   addLikedRecipe,
   removeLikedRecipe,
 } from "../reducers/household";
+import { useNavigation } from "@react-navigation/native";
 
 export default function FavoriteRecipe({
-  navigation,
   imageURL,
   title,
   i,
@@ -40,6 +40,7 @@ export default function FavoriteRecipe({
   const theme = useTheme();
   const [isLiked, setIsLiked] = useState(isLikedInDB);
 
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
 
@@ -162,7 +163,16 @@ export default function FavoriteRecipe({
             >
               {heartIcon}
             </View>
-            <Text style={styles.recipeTitle}>{title}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("FavoriteRecipeScreen", {
+                  babyRecipe: babyRecipe,
+                  adultRecipe: adultRecipe,
+                })
+              }
+            >
+              <Text style={styles.recipeTitle}>{title}</Text>
+            </TouchableOpacity>
           </View>
         </ImageBackground>
       </View>
