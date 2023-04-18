@@ -34,6 +34,7 @@ export default function DayScreen({ navigation }) {
 
   const theme = useTheme();
   const dispatch = useDispatch();
+ 
 
   // Reducers ref
   const user = useSelector((state) => state.user.value);
@@ -320,6 +321,7 @@ export default function DayScreen({ navigation }) {
                     fontSize: 16,
                     lineHeight: 22,
                   }}
+                 
                 />
                 <Divider />
                 <RadioButton.Item
@@ -342,6 +344,10 @@ export default function DayScreen({ navigation }) {
               </Button>
               <Button
                 onPress={() => {
+                  if(checked === 'second'){
+                    navigation.navigate('SearchScreen'); 
+                    setIsModalVisible(false);
+                  }
                   console.log("Passer a la prochaine tab", checked);
                 }}
               >
