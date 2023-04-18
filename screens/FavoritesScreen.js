@@ -8,7 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useTheme, Button, Chip, Text } from "react-native-paper";
+import { useTheme, Button, Chip, Text, Snackbar } from "react-native-paper";
 import {
   Tabs,
   TabScreen,
@@ -30,6 +30,19 @@ import Header from "../components/Header";
 import FavoriteRecipe from "../components/FavoriteRecipe";
 
 export default function FavoritesScreen({ navigation }) {
+  const [visible, setVisible] = useState(false);
+  const onDismissSnackBar = () => setVisible(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const [tempCanceledRecipe, setTempCanceledRecipe] = useState("");
+  const tempCancellation = (recipe) => setTempCanceledRecipe(recipe);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
+  // console.log("page", user);
+  // console.log("after page", {
+  //   baby: tempCanceledRecipe.baby._id,
+  //   adult: tempCanceledRecipe.adult._id,
+  // });
+
   const likedRecipes = useSelector(
     (state) => state.household.value.likedRecipes
   );
@@ -46,10 +59,10 @@ export default function FavoritesScreen({ navigation }) {
       isLikedInDB={true}
       babyRecipe={data}
       adultRecipe={adultRecipes[i]}
+      onToggleSnackBar={() => onToggleSnackBar()}
+      tempCancellation={(recipe) => tempCancellation(recipe)}
     />
   ));
-
-  console.log("favorisList", babyRecipes);
 
   return (
     <>
@@ -66,6 +79,36 @@ export default function FavoritesScreen({ navigation }) {
             <View style={styles.recipesContain}>{babyRecipes}</View>
           </ScrollView>
         </View>
+        <Snackbar
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+          action={{
+            label: "ANNULER",
+            onPress: () => {
+              fetch("https://back.ourson.app/recipes/addLikedRecipe", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+
+                body: JSON.stringify({
+                  token: user.token,
+                  recipeID: {
+                    baby: tempCanceledRecipe.baby._id,
+                    adult: tempCanceledRecipe.adult._id,
+                  },
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log(data);
+                  if (data.result) {
+                    dispatch(addLikedRecipe(tempCanceledRecipe));
+                  }
+                });
+            },
+          }}
+        >
+          Recette favorite supprimée
+        </Snackbar>
       </View>
     </>
   );

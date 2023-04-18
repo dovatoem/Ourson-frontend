@@ -34,13 +34,19 @@ export default function FavoriteRecipe({
   isLikedInDB,
   adultRecipe,
   babyRecipe,
-  removeRecipeFromList,
+  onToggleSnackBar,
+  tempCancellation,
 }) {
   const theme = useTheme();
   const [isLiked, setIsLiked] = useState(isLikedInDB);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-
+  console.log("user composant", user);
+  console.log("after composant", {
+    baby: babyRecipe._id,
+    adult: adultRecipe._id,
+  });
   const handleClickLike = () => {
     const newIsLiked = !isLiked;
     setIsLiked(newIsLiked);
@@ -49,6 +55,7 @@ export default function FavoriteRecipe({
       fetch("https://back.ourson.app/recipes/addLikedRecipe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+
         body: JSON.stringify({
           token: user.token,
           recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
@@ -100,6 +107,11 @@ export default function FavoriteRecipe({
         style={styles.heartIconBackground}
         onPress={() => {
           handleClickLike();
+          onToggleSnackBar();
+          tempCancellation({
+            baby: babyRecipe,
+            adult: adultRecipe,
+          });
         }}
       >
         <Icon name="heart" size={28} color={theme.colors.primary} />
