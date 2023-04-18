@@ -1,13 +1,13 @@
 import {
   StyleSheet,
-  Text,
   SafeAreaView,
   View,
   TextInput,
   ImageBackground,
   Image,
+  ScrollView,
 } from "react-native";
-import { Button, Chip } from "react-native-paper";
+import { Button, Chip, Text } from "react-native-paper";
 import {
   Tabs,
   TabScreen,
@@ -24,9 +24,9 @@ export default function FavoritesScreen({ navigation }) {
     (state) => state.household.value.likedRecipes
   );
 
-  const [savedLikedRecipes, setBabyRecipes] = useState(likedRecipes);
+  const [savedLikedRecipes, setsavedLikedRecipes] = useState(likedRecipes);
 
-  const babyRecipes = likedRecipes?.map((data, i) => {
+  const babyRecipes = likedRecipes.baby.map((data, i) => {
     return (
       <View key={i} style={styles.recipeContain}>
         <View style={styles.recipeCard}>
@@ -41,7 +41,7 @@ export default function FavoritesScreen({ navigation }) {
               paddingRight: 30,
             }}
             source={{
-              uri: data.baby.imageURL,
+              uri: data.imageURL,
             }}
           >
             <LinearGradient
@@ -54,7 +54,7 @@ export default function FavoritesScreen({ navigation }) {
                 opacity: 0.7,
               }}
             />
-            <Text style={styles.recipeTitle}>{data.baby.title}</Text>
+            <Text style={styles.recipeTitle}>{data.title}</Text>
           </ImageBackground>
         </View>
       </View>
@@ -66,7 +66,15 @@ export default function FavoritesScreen({ navigation }) {
       <Header navigation={navigation} />
       <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
         <View style={styles.container}>
-          <View style={styles.recipesContain}>{babyRecipes}</View>
+          <Text style={styles.descriptionPage}>
+            Retrouvez ici toutes vos recettes enfants favorites !
+          </Text>
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.recipesContain}>{babyRecipes}</View>
+          </ScrollView>
         </View>
       </View>
     </>
@@ -102,5 +110,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 22,
     color: "white",
+  },
+  descriptionPage: {
+    fontFamily: "Roboto",
+    fontSize: 15,
+    marginBottom: 20,
   },
 });
