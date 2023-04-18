@@ -14,7 +14,6 @@ import ProfileScreen from "./ProfileScreen";
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -59,10 +58,11 @@ export default function SignInScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {      
-        if (data.result) {
+        if (data.result) {          
           dispatch(
             login({ token: data.user.token, email: data.user.email, firstName: data.user.firstName})
           );
+          const diet = data.household.diet ? data.household.diet.dietName : 'Aucun';
           dispatch(
             getHousehold({ 
               hhSize: data.household.hhSize, 
@@ -78,6 +78,7 @@ export default function SignInScreen({ navigation }) {
                 adult: data.household.likedRecipes.map((recipe) => recipe.adult),
               },
               createdAt: data.household.createdAt,
+              diet,              
              })
           );
           navigation.navigate(todayDay);          

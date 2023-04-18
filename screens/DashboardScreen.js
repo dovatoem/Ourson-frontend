@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { useState, useEffect } from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Header from "../components/Header";
 import { addSearchedRecipe } from "../reducers/recipes";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,13 +70,19 @@ export default function DashboardScreen({ navigation }) {
         <View styles={{flex:1}}>
           <Searchbar
             style={styles.searchBar}
-            placeholder="Rechercher une recette"
+            placeholder="Rechercher une recette enfant"
             onChangeText={(text) => setSearchValue(text)}
             value={searchValue}
             onIconPress={() => {
               handleSubmit(),
               setFlatListVisible(true),
               setDashboardVisible(false)
+            }}
+            //same behavior on "rechercher" touch of the keyboard than the icon search of the search bar 
+            onSubmitEditing={() => {
+              handleSubmit();
+              setFlatListVisible(true);
+              setDashboardVisible(false);
             }}
             onClearIconPress= {() => {
               setFlatListVisible(false),
@@ -100,7 +105,7 @@ export default function DashboardScreen({ navigation }) {
                       setSelectedRecipe(recipe); 
                     }
                     navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe});
-                    
+                    setFlatListVisible(false)
                   })
                 }
               } 

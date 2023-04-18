@@ -27,14 +27,18 @@ import {
   
   export default function SearchedRecipeScreen({ navigation }) {
     const theme = useTheme();
+
+      // Reducers ref
+    const kidsCount = useSelector((state) => state.household.value.kidsCount);
   
     const babyRecipe = useSelector((state) => state.recipes.value.searchedRecipe);
     console.log("recette du reducer accédée via SearchedRecipeScreen", babyRecipe)
   
-    const [babyCounter, setBabyCounter] = useState(babyRecipe.portions);
+    const [babyCounter, setBabyCounter] = useState(kidsCount);
   
     const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
         let ingredientMapped = "";
+        console.log(data.quantity)
         if (data.quantity === null || data.quantity === 0) {
           ingredientMapped = data.name;
         } else if (

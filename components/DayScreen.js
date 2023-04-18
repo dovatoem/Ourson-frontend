@@ -27,6 +27,7 @@ import {
   removeLikedRecipe,
 } from "../reducers/household";
 
+
 export default function DayScreen({ navigation }) {
   const currentScreen = useNavigationState(
     (state) => state.routes[state.index].name
@@ -34,6 +35,7 @@ export default function DayScreen({ navigation }) {
 
   const theme = useTheme();
   const dispatch = useDispatch();
+ 
 
   // Reducers ref
   const user = useSelector((state) => state.user.value);
@@ -63,11 +65,7 @@ export default function DayScreen({ navigation }) {
   // if > 7 days OR reducer Weeklyrecipes is empty, just fetch it from database.
   useEffect(() => {
     console.log("usertoken", user.token);
-    console.log(
-      "reducer hh saved",
-      household.savedWeeklyRecipes.adult[0].imageURL
-    );
-    console.log("reducer hh liked", household.likedRecipes.baby[0]);
+    
     let timepast = Date.now() - createdAt;
     console.log("createdAt initial", createdAt);
     setWeeklyRecipes(savedWeeklyRecipes);
@@ -346,6 +344,7 @@ export default function DayScreen({ navigation }) {
                     fontSize: 16,
                     lineHeight: 22,
                   }}
+                 
                 />
                 <Divider />
                 <RadioButton.Item
@@ -368,6 +367,10 @@ export default function DayScreen({ navigation }) {
               </Button>
               <Button
                 onPress={() => {
+                  if(checked === 'second'){
+                    navigation.navigate('SearchScreen'); 
+                    setIsModalVisible(false);
+                  }
                   console.log("Passer a la prochaine tab", checked);
                 }}
               >
