@@ -1,16 +1,20 @@
-import { StyleSheet, SafeAreaView, View } from "react-native";
-import { Button, TextInput, Text, ProgressBar } from "react-native-paper";
+import { StyleSheet, View, ImageBackground, ScrollView } from "react-native";
+import { Chip, useTheme, Text } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { LinearGradient } from "expo-linear-gradient";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigationState } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+
+import Header from "../components/Header";
 
 export default function RegenerateFavScreen({ navigation }) {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>RegenerateFavScreen</Text>
-      <Button
-        title="Go to Dashboard"
-        contentStyle={{ width: 180, height: 60 }}
-        onPress={() => navigation.navigate("Dashboard")}
-      />
-    </SafeAreaView>
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      <Header navigation={navigation} />
+      <View style={styles.container}></View>
+    </View>
   );
 }
 

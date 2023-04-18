@@ -130,6 +130,24 @@ export default function Header({ navigation }) {
         <Text style={styles.tabLabelActive}>Rechercher</Text>
       </TouchableOpacity>
     );
+  } else if (currentScreen === "RegenerateFavScreen") {
+    menuTopBar = (
+      <TouchableOpacity
+        key={"RegenerateFavScreen"}
+        style={[styles.tabItem, styles.tabItemActive, styles.tabItemLong]}
+      >
+        <Text style={styles.tabLabelActive}>Régénerer une recette</Text>
+      </TouchableOpacity>
+    );
+  } else if (currentScreen === "RegenerateSearchScreen") {
+    menuTopBar = (
+      <TouchableOpacity
+        key={"RegenerateSearchScreen"}
+        style={[styles.tabItem, styles.tabItemActive, styles.tabItemLong]}
+      >
+        <Text style={styles.tabLabelActive}>Régénerer une recette</Text>
+      </TouchableOpacity>
+    );
   } else {
     menuTopBar = screens.map((item) => {
       const isActive = currentScreen === item.screenName;
@@ -237,6 +255,9 @@ const styles = StyleSheet.create({
   tabItemActive: {
     borderBottomColor: "#FF6B57",
     borderBottomWidth: 3,
+  },
+  tabItemLong: {
+    width: 200,
   },
   tabLabel: {
     fontFamily: "Roboto-Bold",
