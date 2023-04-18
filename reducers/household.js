@@ -7,7 +7,7 @@ const initialState = {
     kidsArray: [],
     savedWeeklyRecipes: { baby: [], adult: [] },
     likedRecipes: { baby: [], adult: [] },
-    createdAt: Date.now() - 605000000,
+    createdAt: "",
   },
 };
 
@@ -25,7 +25,7 @@ export const householdSlice = createSlice({
       state.value.kidsCount = action.payload.kidsCount;
       state.value.kidsArray.push(action.payload.kidsArray);
       state.value.savedWeeklyRecipes = action.payload.savedWeeklyRecipes;
-      state.value.likedRecipes = action.payload.likedRecipes;     
+      state.value.likedRecipes = action.payload.likedRecipes;
       state.value.createdAt = action.payload.createdAt;
     },
     addWeeklyRecipes: (state, action) => {
@@ -35,11 +35,15 @@ export const householdSlice = createSlice({
       state.value.createdAt = action.payload;
     },
     addLikedRecipe: (state, action) => {
-      state.value.likedRecipes.push(action.payload);
+      state.value.likedRecipes.baby.push(action.payload.baby);
+      state.value.likedRecipes.adult.push(action.payload.adult);
     },
     removeLikedRecipe: (state, action) => {
-      state.value.likedRecipes = state.value.likedRecipes.filter(
-        (e) => e._id === action.payload
+      state.value.likedRecipes.baby = state.value.likedRecipes.filter(
+        (e) => e._id === action.payload.baby
+      );
+      state.value.likedRecipes.adult = state.value.likedRecipes.filter(
+        (e) => e._id === action.payload.adult
       );
     },
     emptyHousehold: (state, action) => {

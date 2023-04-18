@@ -41,7 +41,9 @@ export default function DayScreen({ navigation }) {
   const savedWeeklyRecipes = useSelector(
     (state) => state.household.value.savedWeeklyRecipes
   );
-  const createdAt = useSelector((state) => state.household.value.createdAt);
+  const createdAt = new Date(
+    useSelector((state) => state.household.value.createdAt)
+  );
   const likedRecipes = useSelector(
     (state) => state.household.value.likedRecipes
   );
@@ -61,9 +63,14 @@ export default function DayScreen({ navigation }) {
   // if > 7 days OR reducer Weeklyrecipes is empty, just fetch it from database.
   useEffect(() => {
     console.log("usertoken", user.token);
-    console.log("reducer hh saved", household.savedWeeklyRecipes.adult[0].imageURL);  
-    console.log("reducer hh liked", household.likedRecipes.adult[0]);  
-    // let timepast = Date.now() - createdAt;
+    console.log(
+      "reducer hh saved",
+      household.savedWeeklyRecipes.adult[0].imageURL
+    );
+    console.log("reducer hh liked", household.likedRecipes.baby[0]);
+    let timepast = Date.now() - createdAt;
+    console.log("createdAt initial", createdAt);
+    setWeeklyRecipes(savedWeeklyRecipes);
     if (
       !(
         savedWeeklyRecipes.baby.length === 0 &&
@@ -71,9 +78,7 @@ export default function DayScreen({ navigation }) {
       ) &&
       timepast < 604800000
     ) {
-      setWeeklyRecipes(savedWeeklyRecipes);
     } else {
-      setWeeklyRecipes(savedWeeklyRecipes);
       fetch("https://back.ourson.app/recipes/weekly", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -96,6 +101,7 @@ export default function DayScreen({ navigation }) {
             );
             dispatch(resetCreatedAt(Date.now()));
             console.log("createdAt", createdAt);
+            console.log("Date.now", Date.now());
           }
         });
     }
@@ -227,10 +233,8 @@ export default function DayScreen({ navigation }) {
 
   useEffect(() => {
     setIsLiked(
-      likedRecipes.some(
-        (recipePair) =>
-          recipePair.baby === babyRecipe && recipePair.adult === adultRecipe
-      )
+      likedRecipes.baby.some((recipePair) => recipePair === babyRecipe) &&
+        likedRecipes.adult.some((recipePair) => recipePair === adultRecipe)
     );
   }, [babyRecipe, adultRecipe, likedRecipes]);
 
