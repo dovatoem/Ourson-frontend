@@ -196,7 +196,7 @@ export default function App() {
             />
             <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
             <Stack.Screen
-              name="FavoritesScreen"
+              name="FavoriteRecipeScreen"
               component={FavoriteRecipeScreen}
             />
             <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />

@@ -42,11 +42,7 @@ export default function FavoriteRecipe({
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  console.log("user composant", user);
-  console.log("after composant", {
-    baby: babyRecipe._id,
-    adult: adultRecipe._id,
-  });
+
   const handleClickLike = () => {
     const newIsLiked = !isLiked;
     setIsLiked(newIsLiked);
