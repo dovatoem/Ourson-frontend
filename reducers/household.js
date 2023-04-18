@@ -7,7 +7,8 @@ const initialState = {
     kidsArray: [],
     savedWeeklyRecipes: { baby: [], adult: [] },
     likedRecipes: { baby: [], adult: [] },
-    createdAt: Date.now() - 605000000,
+    createdAt: new Date(),
+    diet: null,
   },
 };
 
@@ -26,7 +27,7 @@ export const householdSlice = createSlice({
       state.value.kidsArray.push(action.payload.kidsArray);
       state.value.savedWeeklyRecipes = action.payload.savedWeeklyRecipes;
       state.value.likedRecipes = action.payload.likedRecipes;     
-      state.value.createdAt = action.payload.createdAt;
+      state.value.createdAt = action.payload.createdAt;      
     },
     addWeeklyRecipes: (state, action) => {
       state.value.savedWeeklyRecipes = action.payload;
