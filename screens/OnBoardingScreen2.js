@@ -6,10 +6,9 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Button, Text, ProgressBar, RadioButton } from "react-native-paper";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { saveDiet, updateUserDiet } from "../reducers/user";
 
 export default function OnBoardingScreen1({ navigation }) {
   const user = useSelector((state) => state.user.value);

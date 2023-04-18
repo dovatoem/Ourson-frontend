@@ -8,6 +8,7 @@ const initialState = {
     savedWeeklyRecipes: { baby: [], adult: [] },
     likedRecipes: { baby: [], adult: [] },
     createdAt: "",
+    diet: null,
   },
 };
 
@@ -26,7 +27,8 @@ export const householdSlice = createSlice({
       state.value.kidsArray.push(action.payload.kidsArray);
       state.value.savedWeeklyRecipes = action.payload.savedWeeklyRecipes;
       state.value.likedRecipes = action.payload.likedRecipes;
-      state.value.createdAt = action.payload.createdAt;      
+      state.value.createdAt = action.payload.createdAt;   
+      state.value.diet = action.payload.diet;
     },
     addWeeklyRecipes: (state, action) => {
       state.value.savedWeeklyRecipes = action.payload;
@@ -51,8 +53,9 @@ export const householdSlice = createSlice({
       state.value.kidsCount = null;
       state.value.kidsArray = [];
       state.value.savedWeeklyRecipes = { baby: [], adult: [] };
-      state.value.likedRecipes = [];
-      state.value.createdAt = null;
+      state.value.likedRecipes = { baby: [], adult: [] };
+      state.value.createdAt = ""; 
+      state.value.diet = null;    
     },
   },
 });

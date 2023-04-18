@@ -58,11 +58,11 @@ export default function SignInScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {      
-        if (data.result) {
-          console.log(data.household.diet);
+        if (data.result) {          
           dispatch(
             login({ token: data.user.token, email: data.user.email, firstName: data.user.firstName})
           );
+          const diet = data.household.diet ? data.household.diet.dietName : 'Aucun';
           dispatch(
             getHousehold({ 
               hhSize: data.household.hhSize, 
@@ -77,7 +77,8 @@ export default function SignInScreen({ navigation }) {
                 baby: data.household.likedRecipes.map((recipe) => recipe.baby),
                 adult: data.household.likedRecipes.map((recipe) => recipe.adult),
               },
-              createdAt: data.household.createdAt,              
+              createdAt: data.household.createdAt,
+              diet,              
              })
           );
           navigation.navigate(todayDay);          

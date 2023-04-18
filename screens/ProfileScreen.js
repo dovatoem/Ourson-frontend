@@ -112,7 +112,7 @@ export default function ProfileScreen({ navigation }) {
             <TextInput 
               disabled="true"   
               mode="outlined" 
-              label="Végétarien"
+              label={household.diet}
               style={styles.input} />
           <Button
             style={styles.button}
