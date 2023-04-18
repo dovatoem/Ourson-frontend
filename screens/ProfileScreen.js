@@ -6,16 +6,23 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import { Button, TextInput, Text, RadioButton } from "react-native-paper";
-import { useState, useEffect } from "react";
+import { Button, TextInput, Text } from "react-native-paper";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../reducers/user";
+import { emptyHousehold } from "../reducers/household";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function ProfileScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const household = useSelector((state) => state.household.value);
+  const user = useSelector((state) => state.user.value);
 
-  const handleLogout = () => {
-    navigation.navigate("Hero")
+  const handleLogout = () => {        
+    navigation.navigate("Hero");
+    dispatch(logout());
+    dispatch(emptyHousehold());
   }
 
   return (
@@ -46,14 +53,14 @@ export default function ProfileScreen({ navigation }) {
             <TextInput
               disabled="true"
               mode="outlined"
-              label="dobie@gmail.com"
+              label={user.email}
               style={styles.input}
               keyboardType="email-address"
             />
             <TextInput
               disabled="true"
               mode="outlined"
-              label="mot de passe"
+              label={user.password}
               style={styles.input}
               secureTextEntry={!showPassword}
               right={
@@ -81,7 +88,7 @@ export default function ProfileScreen({ navigation }) {
             <TextInput
               disabled="true"    
               mode="outlined" 
-              label="1"
+              label={household.kidsCount}
               style={styles.input} />
             <TextInput 
               disabled="true"   
@@ -99,7 +106,7 @@ export default function ProfileScreen({ navigation }) {
             <TextInput  
               disabled="true"  
               mode="outlined" 
-              label="3"
+              label={household.hhSize}
               style={styles.input} />
           <Text style={styles.title}>Régime parental</Text>
             <TextInput 

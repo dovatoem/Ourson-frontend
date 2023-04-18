@@ -38,11 +38,14 @@ export default function DayScreen({ navigation }) {
 
   // Reducers ref
   const user = useSelector((state) => state.user.value);
+  const household = useSelector((state) => state.household.value);
   const savedWeeklyRecipes = useSelector(
     (state) => state.household.value.savedWeeklyRecipes
   );
-  const createdAt = useSelector((state) => state.household.value.createdAt);
-  const likedRecipe = useSelector(
+  const createdAt = new Date(
+    useSelector((state) => state.household.value.createdAt)
+  );
+  const likedRecipes = useSelector(
     (state) => state.household.value.likedRecipes
   );
   const hhSize = useSelector((state) => state.household.value.hhSize);
@@ -61,7 +64,14 @@ export default function DayScreen({ navigation }) {
   // if > 7 days OR reducer Weeklyrecipes is empty, just fetch it from database.
   useEffect(() => {
     console.log("usertoken", user.token);
+    console.log(
+      "reducer hh saved",
+      household.savedWeeklyRecipes.adult[0].imageURL
+    );
+    console.log("reducer hh liked", household.likedRecipes.baby[0]);
     let timepast = Date.now() - createdAt;
+    console.log("createdAt initial", createdAt);
+    setWeeklyRecipes(savedWeeklyRecipes);
     if (
       !(
         savedWeeklyRecipes.baby.length === 0 &&
@@ -69,7 +79,6 @@ export default function DayScreen({ navigation }) {
       ) &&
       timepast < 604800000
     ) {
-      setWeeklyRecipes(savedWeeklyRecipes);
     } else {
       fetch("https://back.ourson.app/recipes/weekly", {
         method: "POST",
@@ -93,6 +102,7 @@ export default function DayScreen({ navigation }) {
             );
             dispatch(resetCreatedAt(Date.now()));
             console.log("createdAt", createdAt);
+            console.log("Date.now", Date.now());
           }
         });
     }
@@ -222,43 +232,62 @@ export default function DayScreen({ navigation }) {
     }
   };
 
+  useEffect(() => {
+    setIsLiked(
+      likedRecipes.baby.some((recipePair) => recipePair === babyRecipe) &&
+        likedRecipes.adult.some((recipePair) => recipePair === adultRecipe)
+    );
+  }, [babyRecipe, adultRecipe, likedRecipes]);
+
   const handleClickLike = () => {
-    if (isLiked === false) {
-      // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+
+    if (newIsLiked) {
       fetch("https://back.ourson.app/recipes/addLikedRecipe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          recipedID: { baby: babyRecipe._id, adult: adultRecipe._id },
+          token: user.token,
+          recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
         }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            setIsLiked(true);
             dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
+          } else {
+            setIsLiked(!newIsLiked);
           }
+        })
+        .catch(() => {
+          setIsLiked(!newIsLiked);
         });
     } else {
-      // FETCH APPEL BASE DE DONNEE POUR RAJOUTER likedRecipes à USER
       fetch("https://back.ourson.app/recipes/removeLikedRecipe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          recipedID: { baby: babyRecipe._id, adult: adultRecipe._id },
+          token: user.token,
+          recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
         }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            setIsLiked(false);
             dispatch(
               removeLikedRecipe({ baby: babyRecipe, adult: adultRecipe })
             );
+          } else {
+            setIsLiked(!newIsLiked);
           }
+        })
+        .catch(() => {
+          setIsLiked(!newIsLiked);
         });
     }
   };
+
   // code to handle likes
   let heartIcon = "";
   if (isLiked) {
@@ -282,9 +311,6 @@ export default function DayScreen({ navigation }) {
       </TouchableOpacity>
     );
   }
-  //
-  // FETCH useeffect APPEL BASE DE DONNEE POUR GET likedRecipes de USER et setter le bon usestate
-  //
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
