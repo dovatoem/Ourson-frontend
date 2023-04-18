@@ -19,11 +19,11 @@ export default function ProfileScreen({ navigation }) {
   const household = useSelector((state) => state.household.value);
   const user = useSelector((state) => state.user.value);
 
-  const handleLogout = () => {        
+  const handleLogout = () => {
     navigation.navigate("Hero");
     dispatch(logout());
     dispatch(emptyHousehold());
-  }
+  };
 
   return (
     <View style={styles.fullContainer}>
@@ -48,7 +48,10 @@ export default function ProfileScreen({ navigation }) {
             <Text style={styles.bigTitle}>Paramètres</Text>
             <View></View>
           </View>
-          <ScrollView contentContainerStyle={styles.scrollView}>
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+          >
             <Text style={styles.title}>Vos identifiants</Text>
             <TextInput
               disabled="true"
@@ -76,7 +79,7 @@ export default function ProfileScreen({ navigation }) {
               disabled="true"
               mode="outlined"
               label="mami@gmail.com"
-              style={styles.input}               
+              style={styles.input}
               right={
                 <TextInput.Icon icon="close-circle-outline" color="#808080" />
               }
@@ -86,41 +89,47 @@ export default function ProfileScreen({ navigation }) {
             </Text>
             <Text style={styles.title}>Vos enfants</Text>
             <TextInput
-              disabled="true"    
-              mode="outlined" 
-              label={household.kidsCount}
-              style={styles.input} />
-            <TextInput 
-              disabled="true"   
-              mode="outlined" 
-              label="Emilian"              
-              style={styles.input} />
-            <TextInput 
               disabled="true"
-              mode="outlined" 
+              mode="outlined"
+              label={household.kidsCount}
+              style={styles.input}
+            />
+            <TextInput
+              disabled="true"
+              mode="outlined"
+              label="Emilian"
+              style={styles.input}
+            />
+            <TextInput
+              disabled="true"
+              mode="outlined"
               label="36"
               style={styles.input}
-          />
-          <Text style={styles.titleColor}>Ajouter un enfant au compte</Text>
-          <Text style={styles.title}>Votre foyer</Text>
-            <TextInput  
-              disabled="true"  
-              mode="outlined" 
+            />
+            <Text style={styles.titleColor}>Ajouter un enfant au compte</Text>
+            <Text style={styles.title}>Votre foyer</Text>
+            <TextInput
+              disabled="true"
+              mode="outlined"
               label={household.hhSize}
-              style={styles.input} />
-          <Text style={styles.title}>Régime parental</Text>
-            <TextInput 
-              disabled="true"   
-              mode="outlined" 
+              style={styles.input}
+            />
+            <Text style={styles.title}>Régime parental</Text>
+            <TextInput
+              disabled="true"
+              mode="outlined"
               label={household.diet}
-              style={styles.input} />
-          <Button
-            style={styles.button}
-            contentStyle={{ width: 180, height: 60 }}
-            mode="outlined"
-            onPress={() => handleLogout()}
-            title="Déconnexion"
-            >Déconnexion</Button>                 
+              style={styles.input}
+            />
+            <Button
+              style={styles.button}
+              contentStyle={{ width: 180, height: 60 }}
+              mode="outlined"
+              onPress={() => handleLogout()}
+              title="Déconnexion"
+            >
+              Déconnexion
+            </Button>
           </ScrollView>
           <View style={styles.bottom}>
             <Text></Text>
@@ -190,7 +199,7 @@ const styles = StyleSheet.create({
     marginTop: "7%",
     marginBottom: "7%",
     justifyContent: "center",
-  }, 
+  },
   bottom: {
     marginBottom: "20%",
   },
