@@ -58,6 +58,7 @@ import SundayScreen from "./screens/Day7SundayScreen";
 import TastedFoodScreen from "./screens/TastedFoodScreen";
 import ShoppingListScreen from "./screens/ShoppingListScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
+import FavoriteRecipeScreen from "./screens/FavoriteRecipeScreen";
 import PanicModeScreen from "./screens/PanicModeScreen";
 import SearchScreen from "./screens/SearchScreen";
 import SearchedRecipeScreen from "./screens/SearchedRecipeScreen";
@@ -194,6 +195,10 @@ export default function App() {
               component={TastedFoodScreen}
             />
             <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
+            <Stack.Screen
+              name="FavoritesScreen"
+              component={FavoriteRecipeScreen}
+            />
             <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
             <Stack.Screen name="SearchScreen" component={SearchScreen} />
             <Stack.Screen
