@@ -41,9 +41,10 @@ export default function DayScreen({ navigation }) {
   const savedWeeklyRecipes = useSelector(
     (state) => state.household.value.savedWeeklyRecipes
   );
-  const createdAt = new Date(
-    useSelector((state) => state.household.value.createdAt)
+  const createdAtValue = useSelector(
+    (state) => state.household.value.createdAt
   );
+  const createdAt = createdAtValue ? new Date(createdAtValue) : new Date();
   const likedRecipes = useSelector(
     (state) => state.household.value.likedRecipes
   );
@@ -66,6 +67,7 @@ export default function DayScreen({ navigation }) {
 
     let timepast = Date.now() - createdAt;
     console.log("createdAt initial", createdAt);
+    console.log("timepast initial", timepast);
     setWeeklyRecipes(savedWeeklyRecipes);
     if (
       !(
@@ -95,6 +97,7 @@ export default function DayScreen({ navigation }) {
                 adult: data.recipes.map((recipe) => recipe.adult),
               })
             );
+            console.log(data);
             dispatch(resetCreatedAt(Date.now()));
             console.log("createdAt", createdAt);
             console.log("Date.now", Date.now());
