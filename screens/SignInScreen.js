@@ -67,7 +67,7 @@ export default function SignInScreen({ navigation }) {
             getHousehold({ 
               hhSize: data.household.hhSize, 
               kidsCount: data.household.kidsCount, 
-              kidsArray: data.household.kids[0], 
+              kidsArray: data.household.kids, 
               savedWeeklyRecipes: 
               {                
                 baby: data.household.weeklyRecipes.map((recipe) => recipe.baby),
@@ -78,7 +78,9 @@ export default function SignInScreen({ navigation }) {
                 adult: data.household.likedRecipes.map((recipe) => recipe.adult),
               },
               createdAt: data.household.createdAt,
-              diet,              
+              diet, 
+              tastedFoods: data.household.tastedFoods,  
+              shoppingList: data.household.shoppingList,           
              })
           );
           navigation.navigate(todayDay);          
