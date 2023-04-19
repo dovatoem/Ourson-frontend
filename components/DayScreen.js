@@ -41,9 +41,10 @@ export default function DayScreen({ navigation }) {
   const savedWeeklyRecipes = useSelector(
     (state) => state.household.value.savedWeeklyRecipes
   );
-  const createdAt = new Date(
-    useSelector((state) => state.household.value.createdAt)
+  const createdAtValue = useSelector(
+    (state) => state.household.value.createdAt
   );
+  const createdAt = createdAtValue ? new Date(createdAtValue) : new Date();
   const likedRecipes = useSelector(
     (state) => state.household.value.likedRecipes
   );
@@ -66,6 +67,7 @@ export default function DayScreen({ navigation }) {
 
     let timepast = Date.now() - createdAt;
     console.log("createdAt initial", createdAt);
+    console.log("timepast initial", timepast);
     setWeeklyRecipes(savedWeeklyRecipes);
     if (
       !(
@@ -74,7 +76,9 @@ export default function DayScreen({ navigation }) {
       ) &&
       timepast < 604800000
     ) {
+      console.log("Not");
     } else {
+      console.log("1");
       fetch("https://back.ourson.app/recipes/weekly", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,20 +88,25 @@ export default function DayScreen({ navigation }) {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log("2");
           if (data.result) {
+            console.log("3");
             setWeeklyRecipes({
               baby: data.recipes.map((recipe) => recipe.baby),
               adult: data.recipes.map((recipe) => recipe.adult),
             });
+            console.log("4");
             dispatch(
               addWeeklyRecipes({
                 baby: data.recipes.map((recipe) => recipe.baby),
                 adult: data.recipes.map((recipe) => recipe.adult),
               })
             );
+            console.log(data);
             dispatch(resetCreatedAt(Date.now()));
             console.log("createdAt", createdAt);
             console.log("Date.now", Date.now());
+            console.log("5");
           }
         });
     }
@@ -188,9 +197,16 @@ export default function DayScreen({ navigation }) {
 
   //refaire parce que les conditions sont mauvaises
   const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
-    if (data.quantity === null || data.quantity === 0) {
+    if (
+      data.quantity === null ||
+      data.quantity === 0 ||
+      data.quantity === "null"
+    ) {
       ingredientMapped = data.name;
-    } else if (data.unit === null && data.quantity !== null) {
+    } else if (
+      (data.unit === null || data.unit === "null") &&
+      (data.quantity !== null || data.quantity === "null")
+    ) {
       ingredientMapped = `${
         (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *
         adultCounter
