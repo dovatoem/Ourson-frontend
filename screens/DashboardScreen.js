@@ -181,7 +181,7 @@ export default function DashboardScreen({ navigation }) {
                 </View>
                 <View>
                   <Text style={styles.screenName}>Favoris</Text>
-                  <Text style={styles.screenDescription} numberOfLines={3}>
+                  <Text style={styles.screenDescription} numberOfLines={2}>
                     Consulter mes recettes favorites
                   </Text>
                 </View>
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "80%",
+    width: "84%",
     backgroundColor: "#ffffff",
     padding: 16,
     marginTop: 20,

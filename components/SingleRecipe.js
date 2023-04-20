@@ -23,20 +23,35 @@ export default function SingleRecipeScreen({ navigation }) {
 
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
     let ingredientMapped = "";
-    console.log(data.quantity);
-    if (data.quantity === null || data.quantity === 0) {
+    if (
+      typeof data.quantity === "undefined" ||
+      data.quantity === null ||
+      data.quantity === 0 ||
+      data.quantity === "null" ||
+      isNaN(data.quantity)
+    ) {
       ingredientMapped = data.name;
     } else if (
-      !(data.quantity === null || data.quantity === 0) &&
-      (data.unit === null || data.unit === 0)
+      !(
+        typeof data.quantity === "undefined" ||
+        data.quantity === null ||
+        data.quantity === 0 ||
+        data.quantity === "null" ||
+        isNaN(data.quantity)
+      ) &&
+      (typeof data.unit === "undefined" ||
+        data.unit === null ||
+        data.unit === 0 ||
+        data.unit === "null" ||
+        isNaN(data.unit))
     ) {
       ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
+        (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
         babyCounter
       } ${data.name}`;
     } else {
       ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
+        (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
         babyCounter
       } ${data.unit} de ${data.name}`;
     }

@@ -195,12 +195,12 @@ export default function DayScreen({ navigation }) {
         isNaN(data.unit))
     ) {
       ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
+        (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
         babyCounter
       } ${data.name}`;
     } else {
       ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
+        (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
         babyCounter
       } ${data.unit} de ${data.name}`;
     }
@@ -213,6 +213,7 @@ export default function DayScreen({ navigation }) {
 
   //Conditions adult pour gérer les trous de la base sur unit/quantity
   const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
+    let ingredientMapped = "";
     if (
       typeof data.quantity === "undefined" ||
       data.quantity === null ||
@@ -236,12 +237,12 @@ export default function DayScreen({ navigation }) {
         isNaN(data.unit))
     ) {
       ingredientMapped = `${
-        (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *
+        (Math.round((data.quantity / adultRecipe.portion) * 10) / 10) *
         adultCounter
       } ${data.name}`;
     } else {
       ingredientMapped = `${
-        (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *
+        (Math.round((data.quantity / adultRecipe.portion) * 10) / 10) *
         adultCounter
       } ${data.unit} de ${data.name}`;
     }
