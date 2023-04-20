@@ -53,7 +53,7 @@ export default function FavoritesScreen({ navigation }) {
 
   const babyRecipes = likedRecipes.baby.map((data, i) => (
     <FavoriteRecipe
-      key={i}
+      key={data._id}
       title={data.title}
       imageURL={data.imageURL}
       isLikedInDB={true}

@@ -246,8 +246,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleActive: {
-    fontFamily: "Roboto",
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
+
     fontSize: 24,
     lineHeight: 32,
     color: "rgb(255, 107, 87)",
@@ -261,16 +261,14 @@ const styles = StyleSheet.create({
   },
 
   titleSeparator: {
-    fontFamily: "Roboto",
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
     fontSize: 24,
     lineHeight: 32,
     marginLeft: 4,
     marginRight: 4,
   },
   titleInactive: {
-    fontFamily: "Roboto",
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
     fontSize: 24,
     lineHeight: 32,
     color: "black",
@@ -316,7 +314,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   changePortion: {
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
