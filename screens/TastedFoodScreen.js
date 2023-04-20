@@ -9,6 +9,7 @@ const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
   const [isSelected, setIsSelected] = useState(isSelectedInDB);
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+
   const onPress = () => {
     const newIsSelected = !isSelected;
     setIsSelected(newIsSelected);
@@ -76,6 +77,7 @@ const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
 
 export default function TastedFoodScreen({ navigation }) {
   const kidsArray = useSelector((state) => state.household.value.kidsArray);
+  console.log(kidsArray);
   const tastedFoodsList = useSelector(
     (state) => state.household.value.tastedFoods
   );
