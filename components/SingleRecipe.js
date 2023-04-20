@@ -1,25 +1,14 @@
-import {
-    StyleSheet,
-    ScrollView,
-    View,
-    ImageBackground,
-  } from "react-native";
-  import { 
-    Chip,
-    useTheme,
-    Text,
-     } from "react-native-paper";
-  
-  import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-  import { LinearGradient } from "expo-linear-gradient";
-  import { useState, useEffect } from "react";
-  import { useDispatch, useSelector } from "react-redux";
-  import { addSearchedRecipe } from "../reducers/recipes";
-  
-  
-  
-  export default function SingleRecipeScreen({ navigation }) {
-    const theme = useTheme();
+import { StyleSheet, ScrollView, View, ImageBackground } from "react-native";
+import { Chip, useTheme, Text } from "react-native-paper";
+
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { LinearGradient } from "expo-linear-gradient";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addSearchedRecipe } from "../reducers/recipes";
+
+export default function SingleRecipeScreen({ navigation }) {
+  const theme = useTheme();
 
   // Reducers ref
   const kidsCount = useSelector((state) => state.household.value.kidsCount);
@@ -70,19 +59,23 @@ import {
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollView}>
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.recipesContain}>
             <View style={styles.recipeContain}>
               <View style={styles.recipeCard}>
                 <ImageBackground
                   style={{
-                    height: 300,
-                    width: 300,
+                    height: 290,
+                    width: 290,
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "flex-end",
                     padding: "8%",
                   }}
+                  z
                   source={{
                     uri: babyRecipe.imageURL,
                   }}
@@ -90,8 +83,8 @@ import {
                   <LinearGradient
                     colors={["rgba(0,0,0,0)", "rgba(0,0,0,1)"]}
                     style={{
-                      height: 300,
-                      width: 300,
+                      height: 290,
+                      width: 290,
                       position: "absolute",
                       bottom: 0,
                       opacity: 0.5,
@@ -173,7 +166,7 @@ const styles = StyleSheet.create({
   },
   mainRecipe: {
     borderRadius: 8,
-    padding: 14,
+    padding: 18,
     borderWidth: 1,
     borderColor: "#FFDAD4",
     marginBottom: 14,
@@ -205,8 +198,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   recipeCard: {
-    width: 300,
-    height: 300,
+    width: 290,
+    height: 290,
     borderRadius: 8,
     resizeMode: "cover",
     overflow: "hidden",

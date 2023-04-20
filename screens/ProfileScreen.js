@@ -56,14 +56,16 @@ export default function ProfileScreen({ navigation }) {
             <TextInput
               disabled="true"
               mode="outlined"
-              label={user.email}
+              label="Email"
+              value={user.email}
               style={styles.input}
               keyboardType="email-address"
             />
             <TextInput
               disabled="true"
               mode="outlined"
-              label={user.password}
+              label="Mot de passe"
+              value={user.password}
               style={styles.input}
               secureTextEntry={!showPassword}
               right={
@@ -74,51 +76,57 @@ export default function ProfileScreen({ navigation }) {
                 />
               }
             />
-            <Text style={styles.title}>Compte partagé avec</Text>
+
             <TextInput
               disabled="true"
               mode="outlined"
-              label="mamie@gmail.com"
+              label="Compte partagé avec"
+              value="mamie@gmail.com"
               style={styles.input}
               right={
                 <TextInput.Icon icon="close-circle-outline" color="#808080" />
               }
             />
             <Text style={styles.titleColor}>
-              Ajouter une personne au compte
+              AJOUTER UNE PERSONNE AU COMPTE
             </Text>
             <Text style={styles.title}>Vos enfants</Text>
             <TextInput
               disabled="true"
               mode="outlined"
-              label={household.kidsCount}
+              label="Nombre d'enfants"
+              value={household.kidsCount}
               style={styles.input}
             />
             <TextInput
               disabled="true"
               mode="outlined"
-              label="Emilian"
+              label="Nom du 1er enfant"
+              value="Emilian"
               style={styles.input}
             />
             <TextInput
               disabled="true"
               mode="outlined"
-              label="36 mois"
+              label="Âge (en mois)"
+              value="36 mois"
               style={styles.input}
             />
-            <Text style={styles.titleColor}>Ajouter un enfant au compte</Text>
+            <Text style={styles.titleColor}>AJOUTER UN ENFANT AU COMPTE</Text>
             <Text style={styles.title}>Votre foyer</Text>
             <TextInput
               disabled="true"
               mode="outlined"
-              label={household.hhSize}
+              label="Nombre de personnes"
+              value={household.hhSize}
               style={styles.input}
             />
-            <Text style={styles.title}>Régime parental</Text>
+
             <TextInput
               disabled="true"
               mode="outlined"
-              label={household.diet}
+              label="Régime parental"
+              value={household.diet}
               style={styles.input}
             />
             <Button
@@ -160,7 +168,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   bigTitle: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Bold",
     fontSize: 30,
     fontWeight: 700,
     paddingLeft: 20,
@@ -176,22 +184,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Bold",
     fontSize: 20,
     fontWeight: 700,
-    marginTop: "7%",
+    marginTop: 30,
     marginLeft: "7%",
     alignSelf: "flex-start",
+    marginBottom: 10,
   },
   input: {
     width: "86%",
     backgroundColor: "white",
+    marginBottom: 10,
   },
   titleColor: {
-    fontFamily: "Roboto",
-    fontSize: 16,
+    fontFamily: "Roboto-Bold",
+    fontSize: 14,
     fontWeight: 700,
-    marginTop: "7%",
+    marginTop: 10,
     color: "rgb(255, 107, 87)",
   },
   button: {
