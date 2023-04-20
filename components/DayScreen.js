@@ -169,7 +169,7 @@ export default function DayScreen({ navigation }) {
   const [babyCounter, setBabyCounter] = useState(kidsCount);
   const [adultCounter, setAdultCounter] = useState(hhSize - kidsCount);
 
-  //refaire parce que les conditions sont mauvaises
+  //Conditions baby pour gérer les trous de la base sur unit/quantity
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
     let ingredientMapped = "";
     if (data.quantity === null || data.quantity === 0) {
@@ -195,7 +195,7 @@ export default function DayScreen({ navigation }) {
     );
   });
 
-  //refaire parce que les conditions sont mauvaises
+  //Conditions adult pour gérer les trous de la base sur unit/quantity
   const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
     if (
       data.quantity === null ||
