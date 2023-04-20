@@ -198,11 +198,24 @@ export default function DayScreen({ navigation }) {
         (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
         babyCounter
       } ${data.name}`;
+
+      let quantity = (data.quantity / babyRecipe.portion) * babyCounter;
+      if (Number.isInteger(quantity)) {
+        ingredientMapped = `${quantity.toFixed(0)} de ${data.name}`;
+      } else {
+        ingredientMapped = `${quantity.toFixed(1)} ${data.name}`;
+      }
     } else {
-      ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
-        babyCounter
-      } ${data.unit} de ${data.name}`;
+      let quantity = (data.quantity / babyRecipe.portion) * babyCounter;
+      if (Number.isInteger(quantity)) {
+        ingredientMapped = `${quantity.toFixed(0)} ${data.unit} de ${
+          data.name
+        }`;
+      } else {
+        ingredientMapped = `${quantity.toFixed(1)} ${data.unit} de ${
+          data.name
+        }`;
+      }
     }
     return (
       <Chip key={i} style={styles.chip}>
@@ -240,11 +253,24 @@ export default function DayScreen({ navigation }) {
         (Math.round((data.quantity / adultRecipe.portion) * 10) / 10) *
         adultCounter
       } ${data.name}`;
+
+      let quantity = (data.quantity / adultRecipe.portion) * adultCounter;
+      if (Number.isInteger(quantity)) {
+        ingredientMapped = `${quantity.toFixed(0)} de ${data.name}`;
+      } else {
+        ingredientMapped = `${quantity.toFixed(1)} ${data.name}`;
+      }
     } else {
-      ingredientMapped = `${
-        (Math.round((data.quantity / adultRecipe.portion) * 10) / 10) *
-        adultCounter
-      } ${data.unit} de ${data.name}`;
+      let quantity = (data.quantity / adultRecipe.portion) * adultCounter;
+      if (Number.isInteger(quantity)) {
+        ingredientMapped = `${quantity.toFixed(0)} ${data.unit} de ${
+          data.name
+        }`;
+      } else {
+        ingredientMapped = `${quantity.toFixed(1)} ${data.unit} de ${
+          data.name
+        }`;
+      }
     }
     return (
       <Chip key={i} style={styles.chip}>

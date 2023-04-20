@@ -76,7 +76,7 @@ const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
 };
 
 export default function TastedFoodScreen({ navigation }) {
-  const kidsArray = useSelector((state) => state.household.value.kidsArray);
+  const kidsArray = [useSelector((state) => state.household.value.kidsArray)];
   console.log(kidsArray);
   const tastedFoodsList = useSelector(
     (state) => state.household.value.tastedFoods
@@ -179,7 +179,8 @@ export default function TastedFoodScreen({ navigation }) {
       <View style={styles.container}>
         <View style={styles.elemContainer}>
           <Text style={styles.title}>
-            Ce que {getKidNames()} {getVerb()} goûté
+            {/* Ce que {getKidNames()} {getVerb()} goûté */}
+            Ce que Emilian a goûté
           </Text>
           <ScrollView
             contentContainerStyle={styles.scrollView}
