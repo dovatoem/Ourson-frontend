@@ -60,7 +60,7 @@ export default function SignInScreen({ navigation }) {
       .then((data) => {      
         if (data.result) {          
           dispatch(
-            login({ token: data.user.token, email: data.user.email, firstName: data.user.firstName})
+            login({ token: data.user.token, email: data.user.email, firstName: data.user.firstName, password})
           );
           const diet = data.household.diet ? data.household.diet.dietName : 'Aucun';
           dispatch(

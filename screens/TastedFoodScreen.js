@@ -166,7 +166,7 @@ export default function TastedFoodScreen({ navigation }) {
     });
 
   const getKidNames = () => {
-    return kidsArray.map((kid) => kid.kidName).join(", ");
+    return kidsArray.map((kid, i) => kid.kidName).join(", ");
   };
 
   const getVerb = () => {
