@@ -29,7 +29,7 @@ export const householdSlice = createSlice({
       state.value.kidsArray = action.payload.kidsArray;
       state.value.savedWeeklyRecipes = action.payload.savedWeeklyRecipes;
       state.value.likedRecipes = action.payload.likedRecipes;
-      state.value.createdAt = action.payload.createdAt;   
+      state.value.createdAt = action.payload.createdAt;
       state.value.diet = action.payload.diet;
       state.value.tastedFoods = action.payload.tastedFoods;
       state.value.shoppingList = action.payload.shoppingList;
@@ -53,18 +53,26 @@ export const householdSlice = createSlice({
         (e) => e._id !== action.payload.adult
       );
     },
+    addTastedFood: (state, action) => {
+      state.value.tastedFoods.push(action.payload);
+    },
+    removeTastedFood: (state, action) => {
+      state.value.tastedFoods = state.value.tastedFoods.filter(
+        (e) => e._id !== action.payload
+      );
+    },
     emptyHousehold: (state, action) => {
       state.value.hhSize = null;
       state.value.kidsCount = null;
       state.value.kidsArray = [];
       state.value.savedWeeklyRecipes = { baby: [], adult: [] };
       state.value.likedRecipes = { baby: [], adult: [] };
-      state.value.createdAt = ""; 
-      state.value.diet = null;    
+      state.value.createdAt = "";
+      state.value.diet = null;
     },
     addShoppingList: (state, action) => {
-      state.value.shoppingList.push(action.payload);      
-    }, 
+      state.value.shoppingList.push(action.payload);
+    },
   },
 });
 
@@ -76,6 +84,8 @@ export const {
   addLikedRecipe,
   removeLikedRecipe,
   emptyHousehold,
-  addShoppingList
+  addShoppingList,
+  addTastedFood,
+  removeTastedFood,
 } = householdSlice.actions;
 export default householdSlice.reducer;

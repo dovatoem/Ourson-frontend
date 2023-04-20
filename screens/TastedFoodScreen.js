@@ -1,11 +1,61 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useTheme, Button, Chip } from "react-native-paper";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { addTastedFood, removeTastedFood } from "../reducers/household";
 
-const TastedFoodChip = ({ name }) => {
-  const [isSelected, setIsSelected] = useState(false);
+const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
+  const [isSelected, setIsSelected] = useState(isSelectedInDB);
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  const onPress = () => {
+    const newIsSelected = !isSelected;
+    setIsSelected(newIsSelected);
+    if (newIsSelected) {
+      fetch("https://back.ourson.app/tastedFoods/addTastedFood/", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({
+          token: user.token,
+          tastedFoodID: food,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if (data.result) {
+            dispatch(addTastedFood(food));
+          } else {
+            setIsSelected(!newIsSelected);
+          }
+        })
+        .catch(() => {
+          setIsSelected(!newIsSelected);
+        });
+    } else {
+      fetch("https://back.ourson.app/tastedFoods/removeTastedFood/", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: user.token,
+          tastedFoodID: food,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            dispatch(removeTastedFood(food));
+          } else {
+            setIsSelected(!newIsSelected);
+          }
+        })
+        .catch(() => {
+          setIsSelected(!newIsSelected);
+        });
+    }
+  };
 
   return (
     <Chip
@@ -13,7 +63,7 @@ const TastedFoodChip = ({ name }) => {
       style={[styles.chip, isSelected && { backgroundColor: "#FFDAD4" }]}
       selected={isSelected}
       icon={isSelected ? "check" : null}
-      onPress={() => setIsSelected(!isSelected)}
+      onPress={onPress}
     >
       <Text style={[styles.chipText, isSelected && { fontWeight: "bold" }]}>
         {name}
@@ -24,27 +74,92 @@ const TastedFoodChip = ({ name }) => {
 
 export default function TastedFoodScreen({ navigation }) {
   const kidsArray = useSelector((state) => state.household.value.kidsArray);
-  const [nbVegetables, setNbVegetables] = useState(0);
-  const [nbFruits, setFruits] = useState(0);
+  const tastedFoodsList = useSelector(
+    (state) => state.household.value.tastedFoods
+  );
+  const [foodList, setFoodList] = useState([]);
 
-  const theme = useTheme();
-  const tastedFoodList = useSelector(
-    (state) => state.household.value.tastedFood
+  useEffect(() => {
+    fetch("https://back.ourson.app/tastedFoods/foodList")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setFoodList(data.recipes);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const nbFruits = foodList?.filter((data) =>
+    tastedFoodsList.some((tastedFood) => {
+      return tastedFood._id === data._id && data.type === "fruit";
+    })
+  );
+  console.log(nbFruits);
+
+  const nbVegetables = foodList?.filter((data) =>
+    tastedFoodsList.some((tastedFood) => {
+      return tastedFood._id === data._id && data.type === "légume";
+    })
   );
 
-  const tastedFruitsChips = tastedFoodList?.map((data, i) => {
-    if (data.type === "fruit") {
-      return <TastedFoodChip key={i} name={data.name} />;
-    }
-    return null;
-  });
+  const fruitsChips = foodList
+    ?.filter((food) => food.type === "fruit")
+    .map((data, i) => {
+      if (
+        tastedFoodsList.some((tastedFood) => {
+          return tastedFood === data._id;
+        })
+      ) {
+        return (
+          <TastedFoodChip
+            key={data._id}
+            food={data._id}
+            name={data.name}
+            isSelectedInDB={true}
+          />
+        );
+      } else {
+        return (
+          <TastedFoodChip
+            key={data._id}
+            food={data._id}
+            name={data.name}
+            isSelectedInDB={false}
+          />
+        );
+      }
+    });
 
-  const tastedVegetablesChips = tastedFoodList?.map((data, i) => {
-    if (data.type === "légume") {
-      return <TastedFoodChip key={i} name={data.name} />;
-    }
-    return null;
-  });
+  const vegetablesChips = foodList
+    ?.filter((food) => food.type === "légume")
+    .map((data, i) => {
+      if (
+        tastedFoodsList.some((tastedFood) => {
+          return tastedFood === data._id;
+        })
+      ) {
+        return (
+          <TastedFoodChip
+            key={data._id}
+            food={data._id}
+            name={data.name}
+            isSelected={true}
+          />
+        );
+      } else {
+        return (
+          <TastedFoodChip
+            key={data._id}
+            food={data._id}
+            name={data.name}
+            isSelectedInDB={false}
+          />
+        );
+      }
+    });
 
   const getKidNames = () => {
     return kidsArray.map((kid) => kid.kidName).join(", ");
@@ -62,22 +177,26 @@ export default function TastedFoodScreen({ navigation }) {
           <Text style={styles.title}>
             Ce que {getKidNames()} {getVerb()} goûté
           </Text>
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+          >
+            <Text style={styles.subtitle}>Légumes</Text>
+            {/* <Text style={styles.text}>
+              {nbVegetables}/{vegetablesChips.length} légumes goûtés.
+            </Text> */}
 
-          <Text style={styles.subtitle}>Légumes</Text>
-          <Text style={styles.text}>
-            {nbVegetables}/{tastedVegetablesChips.length} légumes goûtés.
-          </Text>
+            <View style={styles.ingredientsChipsContainer}>
+              {vegetablesChips}
+            </View>
 
-          <View style={styles.ingredientsChipsContainer}>
-            {tastedVegetablesChips}
-          </View>
-          <Text style={styles.subtitle}>Fruits</Text>
-          <Text style={styles.text}>
-            {nbFruits}/{tastedFruitsChips.length} fruits goûtés.
-          </Text>
-          <View style={styles.ingredientsChipsContainer}>
-            {tastedFruitsChips}
-          </View>
+            <Text style={styles.subtitle}>Fruits</Text>
+            {/* <Text style={styles.text}>
+              {nbFruits}/{fruitsChips.length} fruits goûtés.
+            </Text> */}
+
+            <View style={styles.ingredientsChipsContainer}>{fruitsChips}</View>
+          </ScrollView>
         </View>
       </View>
     </>
