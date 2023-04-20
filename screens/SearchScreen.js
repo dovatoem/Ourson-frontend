@@ -105,14 +105,6 @@ const handleSubmit = () => {
                 {/* empty view to push list to bottom of screen */}
               </View>
             </View>
-            {/* <Button
-            style={styles.button}
-            contentStyle={{ width: 230, height: 60 }}
-            mode="contained"
-            onPress={() => handleSubmit()}
-          >
-            Remplacer ma recette
-          </Button> */}
           </View>
         </View>
     </>

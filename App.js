@@ -66,6 +66,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import RegenerateSearchScreen from "./screens/RegenerateSearchScreen";
 import RegenerateFavScreen from "./screens/RegenerateFavScreen";
+import PanicModeRecipesScreen from "./screens/PanicModeRecipesScreen";
 import Header from "./components/Header";
 import user from "./reducers/user";
 import household from "./reducers/household";
@@ -200,6 +201,7 @@ export default function App() {
               component={FavoriteRecipeScreen}
             />
             <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
+            <Stack.Screen name="PanicModeRecipesScreen" component={PanicModeRecipesScreen}/>
             <Stack.Screen name="SearchScreen" component={SearchScreen} />
             <Stack.Screen
               name="RegenerateSearchScreen"

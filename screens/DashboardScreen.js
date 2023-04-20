@@ -102,7 +102,7 @@ export default function DashboardScreen({ navigation }) {
                   searchedRecipes.map((recipe) => {
                     if(recipe.title === item.title){
                       dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchedRecipeScreen
-                      setSelectedRecipe(recipe); 
+                      setSelectedRecipe(recipe); //to remove, useless
                     }
                     navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe});
                     setFlatListVisible(false)

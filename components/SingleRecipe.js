@@ -2,21 +2,14 @@ import {
     StyleSheet,
     ScrollView,
     View,
-    TouchableOpacity,
     ImageBackground,
-    Image,
   } from "react-native";
   import { 
     Chip,
     useTheme,
-    Button,
-    Dialog,
-    Portal,
     Text,
-    Divider,
-    RadioButton, } from "react-native-paper";
+     } from "react-native-paper";
   
-  import Header from "../components/Header";
   import Icon from "react-native-vector-icons/MaterialCommunityIcons";
   import { LinearGradient } from "expo-linear-gradient";
   import { useState, useEffect } from "react";
