@@ -57,33 +57,43 @@ export default function SignInScreen({ navigation }) {
       body: JSON.stringify({ email, password }),
     })
       .then((response) => response.json())
-      .then((data) => {      
-        if (data.result) {          
+      .then((data) => {
+        if (data.result) {
           dispatch(
-            login({ token: data.user.token, email: data.user.email, firstName: data.user.firstName, password})
+            login({
+              token: data.user.token,
+              email: data.user.email,
+              firstName: data.user.firstName,
+              password,
+            })
           );
-          const diet = data.household.diet ? data.household.diet.dietName : 'Aucun';
+          const diet = data.household.diet
+            ? data.household.diet.dietName
+            : "Aucun";
           dispatch(
-            getHousehold({ 
-              hhSize: data.household.hhSize, 
-              kidsCount: data.household.kidsCount, 
-              kidsArray: data.household.kids, 
-              savedWeeklyRecipes: 
-              {                
+            getHousehold({
+              hhSize: data.household.hhSize,
+              kidsCount: data.household.kidsCount,
+              kidsArray: data.household.kids,
+              savedWeeklyRecipes: {
                 baby: data.household.weeklyRecipes.map((recipe) => recipe.baby),
-                adult: data.household.weeklyRecipes.map((recipe) => recipe.adult),
+                adult: data.household.weeklyRecipes.map(
+                  (recipe) => recipe.adult
+                ),
               },
-              likedRecipes: {                
+              likedRecipes: {
                 baby: data.household.likedRecipes.map((recipe) => recipe.baby),
-                adult: data.household.likedRecipes.map((recipe) => recipe.adult),
+                adult: data.household.likedRecipes.map(
+                  (recipe) => recipe.adult
+                ),
               },
               createdAt: data.household.createdAt,
-              diet, 
-              tastedFoods: data.household.tastedFoods,  
-              shoppingList: data.household.shoppingList,           
-             })
+              diet,
+              tastedFoods: data.household.tastedFoods,
+              shoppingList: data.household.shoppingList,
+            })
           );
-          navigation.navigate(todayDay);          
+          navigation.navigate(todayDay);
         } else {
           setShowError(!showError);
         }
@@ -130,7 +140,11 @@ export default function SignInScreen({ navigation }) {
                 />
               }
             />
-            <HelperText type="error" visible={showError} style={styles.errorMessage}>
+            <HelperText
+              type="error"
+              visible={showError}
+              style={styles.errorMessage}
+            >
               Email et/ou mot de passe incorrect(s)
             </HelperText>
           </View>
@@ -165,7 +179,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Bold",
     fontSize: 40,
     fontWeight: 700,
     textAlign: "center",
@@ -188,7 +202,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     fontSize: 14,
     fontWeight: 600,
-    color: 'red',
+    color: "red",
   },
   button: {
     borderRadius: 60,
