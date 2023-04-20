@@ -30,7 +30,7 @@ export default function SignUpScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          dispatch(login({ token: data.token, email, firstName }));
+          dispatch(login({ token: data.token, email, firstName, password }));
           navigation.navigate("OnBoardingScreen1");
         } else {
           setShowError(!showError);

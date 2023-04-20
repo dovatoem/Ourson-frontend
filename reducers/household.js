@@ -23,6 +23,9 @@ export const householdSlice = createSlice({
       state.value.kidsCount = action.payload.kidsCount;
       state.value.kidsArray.push(action.payload.kidsArray);
     },
+    addDiet: (state, action) => {
+      state.value.diet = action.payload;      
+    },
     getHousehold: (state, action) => {
       state.value.hhSize = action.payload.hhSize;
       state.value.kidsCount = action.payload.kidsCount;
@@ -78,6 +81,7 @@ export const householdSlice = createSlice({
 
 export const {
   addHousehold,
+  addDiet,
   getHousehold,
   addWeeklyRecipes,
   resetCreatedAt,

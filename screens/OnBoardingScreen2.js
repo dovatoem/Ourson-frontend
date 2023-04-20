@@ -7,10 +7,12 @@ import {
 } from "react-native";
 import { Button, Text, ProgressBar, RadioButton } from "react-native-paper";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { addDiet } from "../reducers/household";
 
 export default function OnBoardingScreen1({ navigation }) {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const household = useSelector((state) => state.household.value);
 
@@ -33,8 +35,9 @@ export default function OnBoardingScreen1({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          console.log("hh reducer", household);
-          console.log("data post fetch profile", data);
+          const dietReducer = diet ? diet : 'Aucun';
+          dispatch(addDiet(dietReducer));
+          console.log("hh reducer2", household);          
           navigation.navigate("OnBoardingScreen3");
         }
       });
