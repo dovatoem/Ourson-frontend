@@ -172,11 +172,23 @@ export default function DayScreen({ navigation }) {
   //Conditions baby pour gérer les trous de la base sur unit/quantity
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
     let ingredientMapped = "";
-    if (data.quantity === null || data.quantity === 0) {
+    if (typeof data.quantity === "undefined" || 
+    data.quantity === null || 
+    data.quantity === 0 || 
+    data.quantity === "null" || 
+    isNaN(data.quantity)) {
       ingredientMapped = data.name;
     } else if (
-      !(data.quantity === null || data.quantity === 0) &&
-      (data.unit === null || data.unit === 0)
+      !(typeof data.quantity === "undefined" || 
+      data.quantity === null || 
+      data.quantity === 0 || 
+      data.quantity === "null" || 
+      isNaN(data.quantity)) &&
+      (typeof data.unit === "undefined" || 
+      data.unit === null || 
+      data.unit === 0 || 
+      data.unit === "null" || 
+      isNaN(data.unit))
     ) {
       ingredientMapped = `${
         (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
@@ -198,14 +210,24 @@ export default function DayScreen({ navigation }) {
   //Conditions adult pour gérer les trous de la base sur unit/quantity
   const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
     if (
-      data.quantity === null ||
-      data.quantity === 0 ||
-      data.quantity === "null"
+      typeof data.quantity === "undefined" || 
+      data.quantity === null || 
+      data.quantity === 0 || 
+      data.quantity === "null" || 
+      isNaN(data.quantity)
     ) {
       ingredientMapped = data.name;
-    } else if (
-      (data.unit === null || data.unit === "null") &&
-      (data.quantity !== null || data.quantity === "null")
+    } else if (      
+      !(typeof data.quantity === "undefined" || 
+      data.quantity === null || 
+      data.quantity === 0 || 
+      data.quantity === "null" || 
+      isNaN(data.quantity)) &&
+      (typeof data.unit === "undefined" || 
+      data.unit === null || 
+      data.unit === 0 || 
+      data.unit === "null" || 
+      isNaN(data.unit))
     ) {
       ingredientMapped = `${
         (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *

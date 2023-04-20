@@ -13,35 +13,48 @@ export default function ShoppingListScreen({ navigation }) {
   const household = useSelector((state) => state.household.value);
   const [shopList, setShopList] = useState([]);
   
+  // call function generateShoppingList at mounting of the screen
   useEffect(() => {
-    handleTest();    
+    generateShoppingList();    
   }, []);
 
-  const handleTest = () => {
-    const shoppingList = [];    
-    household.savedWeeklyRecipes.baby.forEach((recipe) => {
-      recipe.ingredients.forEach((ingredient) => {
-        console.log('ingredient', ingredient);
-        let found = false;
-        for (const e of shoppingList) {
-          if (e.name === ingredient.name && e.unit === ingredient.unit) {
+  // function generating a shopping list based on baby and adult weekly recipes without takig into account hhSize
+  const generateShoppingList = () => {
+    const mergedArray = [...household.savedWeeklyRecipes.baby, ...household.savedWeeklyRecipes.adult];
+    const shoppingList = [];
+    mergedArray.forEach((recipe) => {
+      recipe.ingredients.forEach((ingredient) => {        
+        let found = false;     
+        // allowing to sum for ingredients in singular vs plural   
+        for (const e of shoppingList) {  
+          if (e.name.endsWith('s')) {
+            e.name = e.name.slice(0, -1);            
+          };
+          if (ingredient.name.endsWith('s')) {
+            ingredient.name = ingredient.name.slice(0, -1);           
+          };
+          // adding quantity if same ingredient
+          if (e.name === ingredient.name && (e.unit === ingredient.unit || (e.unit == 'null' && ingredient.unit == 'null' ) || (e.unit == null && ingredient.unit == null) || (e.unit == 'null' && ingredient.unit == null) || (e.unit == null && ingredient.unit == 'null'))) {
             e.quantity += ingredient.quantity;
             found = true;
             break;
           }
         }
+        // if ingredient is not in shoppingList array, add it
         if (!found) {
           shoppingList.push({
             name: ingredient.name,
             quantity: ingredient.quantity,
             unit: ingredient.unit,
+            checked: false,
           });          
         }
       });
-    });    
+    }); 
+    // to avoid duplicates, we remove ingredient in cuillères unit, and keep the other   
     for (const e of shoppingList) {
       if (e.unit) {
-        let index = shoppingList.findIndex(g => e.name === g.name && g.unit.includes("c. "));
+        let index = shoppingList.findIndex(g => e.name === g.name && e.unit.includes("c. "));
         if (index !== -1) {                       
           shoppingList.splice(index, 1);          
         }
@@ -50,9 +63,14 @@ export default function ShoppingListScreen({ navigation }) {
     setShopList(shoppingList);            
   } 
     
+  // create the checkList based on shopList state
   const list = shopList.map((data, i) => { 
-    let ingredientMapped = "";
-    if (data.quantity === null || data.quantity === 0 || data.quantity === "null") {
+    let ingredientMapped = `${data.quantity} ${data.unit} ${data.name}`;
+    if (typeof data.quantity === "undefined" || 
+    data.quantity === null || 
+    data.quantity === 0 || 
+    data.quantity === "null" || 
+    isNaN(data.quantity) ) {
       ingredientMapped = data.name;
     } else if (
       (data.unit === null || data.unit === "null") && 
@@ -62,7 +80,7 @@ export default function ShoppingListScreen({ navigation }) {
       ingredientMapped = `${(Math.round(data.quantity))} ${data.unit} ${data.name}`;
     } else {
       ingredientMapped = `${(Math.round(data.quantity))} ${data.unit} de ${data.name}`;
-    }
+    }
     return <BouncyCheckbox style={{ marginBottom: 16 }} 
     key={i}
     size={30}

@@ -78,7 +78,7 @@ export default function ProfileScreen({ navigation }) {
             <TextInput
               disabled="true"
               mode="outlined"
-              label="mami@gmail.com"
+              label="mamie@gmail.com"
               style={styles.input}
               right={
                 <TextInput.Icon icon="close-circle-outline" color="#808080" />
@@ -103,7 +103,7 @@ export default function ProfileScreen({ navigation }) {
             <TextInput
               disabled="true"
               mode="outlined"
-              label="36"
+              label="36 mois"
               style={styles.input}
             />
             <Text style={styles.titleColor}>Ajouter un enfant au compte</Text>
