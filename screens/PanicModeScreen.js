@@ -8,27 +8,35 @@ import { Button, Chip, Searchbar, useTheme } from "react-native-paper";
 import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { addSearchedRecipe } from "../reducers/recipes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 
 export default function SearchScreen({ navigation }) {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState("");
-  const [chips, setChips] = useState([]);
+  const [chips, setChips] = useState([]); 
+  const [panicModeRecipes, setPanicModeRecipes] = useState([])
+  const [FlatListVisible, setFlatListVisible] = useState(false);
+  const [chipsContainerVisible, setchipsContainerVisible] = useState(true)
   const [recipeTitles, setRecipeTitles] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null); // local state to store the recipe the user clicked on in the flatlist
-  const [PanicModeRecipes, setPanicModRecipes] = useState([]); //all the recipes corresponding to searched chip keywords
+
+  
+  const recipe = useSelector((state) => state.recipes.value.searchedRecipe);
+
 
 const handleSubmit = () => {
     console.log("handleSubmit");
-    console.log(searchValue);
-    if (searchValue) {
-      //request : get all the recipe titles corresponding to the searchValue of the chips
+    console.log(chips);
+    if (chips && chips.length > 0) {
+      const ingredientsString = chips.join(", ");
+      //request : get all the recipes corresponding to the value of the ingredients search pushed in the array chips 
       fetch("https://back.ourson.app/recipes/panicMode", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ request: searchValue }),
+        body: JSON.stringify({ request: ingredientsString }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -38,11 +46,21 @@ const handleSubmit = () => {
             }));
             setRecipeTitles(titles);
             console.log(recipeTitles);
-            PanicModeRecipes(data.recipes); 
+            setPanicModeRecipes(data.recipes);
           }
         });
-    }
+    } 
   };
+
+  
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     // Reset chipsContainerVisible to true when navigating back to SearchScreen
+  //     setchipsContainerVisible(true);
+  //   }
+  // }, [isFocused]);
+
+  
 
   return (
     <>
@@ -64,6 +82,8 @@ const handleSubmit = () => {
                  if(searchValue){
                   setChips([...chips, searchValue]);
                   setSearchValue("");
+                  setchipsContainerVisible(true)
+                  setFlatListVisible(false)
                  }
                 }}
                 //same behavior on "rechercher" touch of the keyboard than the icon search of the search bar 
@@ -71,12 +91,49 @@ const handleSubmit = () => {
                  //add chip
                  if(searchValue){
                   setChips([...chips, searchValue]);
-                  setSearchValue("");
+                  setSearchValue(""); 
+                  setchipsContainerVisible(true)
+                  setFlatListVisible(false)
                  }
                 }}
               />
+              <View style={{ flex: 0, height: 0 }}>
+            {/* empty view to prevent top of list from being cut off */}
+          </View>
+          {FlatListVisible && (
+            <FlatList
+              data={recipeTitles}
+              renderItem={({ item }) => (
+                <Text 
+                onPress={() => {
+                  console.log("recipe clicked:", item.title)
+                  panicModeRecipes.map((recipe) => {
+                    if(recipe.title === item.title){
+                      dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchedRecipeScreen
+                      setSelectedRecipe(recipe); 
+                    }
+                    navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe});
+                    setFlatListVisible(false)
+                    setPanicModeRecipes([])
+                    setRecipeTitles([])
+                  })
+                }
+              } 
+                
+                style={styles.titresRecettes}>{item.title}</Text>
+              )}
+              keyExtractor={(item) => item.title}
+              style={styles.dropDownMenu}
+            />
+          )}
+          {!FlatListVisible && (
+            <View style={{height: 0, flexShrink: 1}}/>
+          )}
+          <View style={{ flex: 1 }}>
+            {/* empty view to push list to bottom of screen */}
+          </View>
 
-              {chips.length > 0 && (
+              {chips.length > 0 && chipsContainerVisible && (
                 <FlatList
                 style={styles.ingredientsChipsContainer}
                 data={chips}
@@ -96,43 +153,19 @@ const handleSubmit = () => {
                 // contentContainerStyle={styles.ingredientsChipsContainer}
               />
               )}
-              
-              {/* {FlatListVisible && (
-                <FlatList
-                  data={recipeTitles}
-                  renderItem={({ item }) => (
-                    <Text 
-                    onPress={() => {
-                      console.log("recipe clicked:", item.title)
-                      searchedRecipes.map((recipe) => {
-                        if(recipe.title === item.title){
-                          dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchedRecipeScreen
-                          setSelectedRecipe(recipe); 
-                        }
-                        navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe});
-                        setFlatListVisible(false)
-                        
-                      })
-                    }
-                  } 
-                    style={styles.titresRecettes}>{item.title}</Text>
-                  )}
-                  keyExtractor={(item) => item.title}
-                  style={styles.dropDownMenu}
-                />
-              )}
-              {!FlatListVisible && (
-                <View style={{height: 0, flexShrink: 1}}/>
-              )} */}
             
             </View>
             <Button
               style={styles.button}
               contentStyle={{ width: 230, height: 60 }}
               mode="contained"
-              onPress={() => handleSubmit()}
+              onPress={() =>{
+                handleSubmit();
+                setFlatListVisible(true),
+                setchipsContainerVisible(false)
+              }}
           >
-            VITE G FAIM
+            Terminer
           </Button>
           </View>
         </View>
@@ -150,6 +183,7 @@ const styles = StyleSheet.create({
   chip: {
     marginBottom: 6,
     marginRight: 6,
+    height: 40,
   },
   chipText: {
     flex: 1,
@@ -158,18 +192,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffff",
     },
+    dropDownMenu :{
+      maxHeight: '50%',
+      width: "100%",
+      backgroundColor: 'white',
+      opacity: 0.6,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 30,
+      zIndex: 1, 
+      marginTop: 77,
+    },
   elemContainer: {
     margin: 40,
     marginLeft: 40,
     marginRight: 40,
     },
-    ingredientsChipsContainer: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-      // alignItems: "center",
-      marginBottom: 10,
-      marginTop: 100,
-      
+  ingredientsChipsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    // alignItems: "center",
+    marginBottom: 10,
+    marginTop: 100,
+    
     },
   title: {
     fontFamily: "Roboto-Bold",
@@ -190,7 +235,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#FFDAD4",
-    
   },
   titresRecettes: {
     fontSize: 16,

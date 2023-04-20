@@ -1,31 +1,25 @@
 import {
-  StyleSheet,
-  ScrollView,
-  View,
-  TouchableOpacity,
-  ImageBackground,
-  Image,
-} from "react-native";
-import {
-  Chip,
-  useTheme,
-  Button,
-  Dialog,
-  Portal,
-  Text,
-  Divider,
-  RadioButton,
-} from "react-native-paper";
-
-import Header from "../components/Header";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { LinearGradient } from "expo-linear-gradient";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addSearchedRecipe } from "../reducers/recipes";
-
-export default function SearchedRecipeScreen({ navigation }) {
-  const theme = useTheme();
+    StyleSheet,
+    ScrollView,
+    View,
+    ImageBackground,
+  } from "react-native";
+  import { 
+    Chip,
+    useTheme,
+    Text,
+     } from "react-native-paper";
+  
+  import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+  import { LinearGradient } from "expo-linear-gradient";
+  import { useState, useEffect } from "react";
+  import { useDispatch, useSelector } from "react-redux";
+  import { addSearchedRecipe } from "../reducers/recipes";
+  
+  
+  
+  export default function SearchedRecipeScreen({ navigation }) {
+    const theme = useTheme();
 
   // Reducers ref
   const kidsCount = useSelector((state) => state.household.value.kidsCount);
