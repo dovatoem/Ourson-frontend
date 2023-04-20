@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     backgroundColor: "#ffffff",
-    padding: 14,
+    padding: 16,
     marginTop: 20,
     borderRadius: 20,
   },
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   title: {
-    padding: 10,
+    // padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "black",
   },

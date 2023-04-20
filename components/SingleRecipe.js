@@ -18,7 +18,7 @@ import {
   
   
   
-  export default function SearchedRecipeScreen({ navigation }) {
+  export default function SingleRecipeScreen({ navigation }) {
     const theme = useTheme();
 
   // Reducers ref

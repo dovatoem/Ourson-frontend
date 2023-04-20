@@ -109,7 +109,7 @@ export default function Header({ navigation }) {
     { screenName: "ShoppingListScreen", label: "Liste de course" },
     { screenName: "TastedFoodScreen", label: "Diversification" },
     { screenName: "SearchScreen", label: "Rechercher" },
-    // { screenName: "PanicModeRecipeScreen", label: "Panic Mode" },
+   
   ];
 
   let menuTopBar = null;
@@ -149,15 +149,15 @@ export default function Header({ navigation }) {
         <Text style={styles.tabLabelActive}>Régénerer une recette</Text>
       </TouchableOpacity>
     );
-  // } else if (currentScreen === "PanicModeRecipeScreen") {
-  //   menuTopBar = (
-  //     <TouchableOpacity
-  //       key={"PanicModeRecipeScreen"}
-  //       style={[styles.tabItem, styles.tabItemActive, styles.tabItemLong]}
-  //     >
-  //       <Text style={styles.tabLabelActive}>Panic Mode</Text>
-  //     </TouchableOpacity>
-  //   );
+  } else if (currentScreen === "PanicModeRecipesScreen") {
+    menuTopBar = (
+      <TouchableOpacity
+        key={"PanicModeRecipesScreen"}
+        style={[styles.tabItem, styles.tabItemActive, styles.tabItemLong]}
+      >
+        <Text style={styles.tabLabelActive}>Panic Mode</Text>
+      </TouchableOpacity>
+    );
   } else {
     menuTopBar = screens.map((item) => {
       const isActive = currentScreen === item.screenName;

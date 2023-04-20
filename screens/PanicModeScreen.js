@@ -112,7 +112,7 @@ const handleSubmit = () => {
                       dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchedRecipeScreen
                       setSelectedRecipe(recipe); 
                     }
-                    navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe});
+                    navigation.navigate('PanicModeRecipesScreen', { recipe: selectedRecipe});
                     setFlatListVisible(false)
                     setPanicModeRecipes([])
                     setRecipeTitles([])
