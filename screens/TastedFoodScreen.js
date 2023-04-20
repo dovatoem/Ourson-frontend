@@ -65,7 +65,9 @@ const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
       icon={isSelected ? "check" : null}
       onPress={onPress}
     >
-      <Text style={[styles.chipText, isSelected && { fontWeight: "bold" }]}>
+      <Text
+        style={[styles.chipText, isSelected && { fontFamily: "Roboto-Bold" }]}
+      >
         {name}
       </Text>
     </Chip>

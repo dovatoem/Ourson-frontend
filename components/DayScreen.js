@@ -172,23 +172,27 @@ export default function DayScreen({ navigation }) {
   //Conditions baby pour gérer les trous de la base sur unit/quantity
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
     let ingredientMapped = "";
-    if (typeof data.quantity === "undefined" || 
-    data.quantity === null || 
-    data.quantity === 0 || 
-    data.quantity === "null" || 
-    isNaN(data.quantity)) {
+    if (
+      typeof data.quantity === "undefined" ||
+      data.quantity === null ||
+      data.quantity === 0 ||
+      data.quantity === "null" ||
+      isNaN(data.quantity)
+    ) {
       ingredientMapped = data.name;
     } else if (
-      !(typeof data.quantity === "undefined" || 
-      data.quantity === null || 
-      data.quantity === 0 || 
-      data.quantity === "null" || 
-      isNaN(data.quantity)) &&
-      (typeof data.unit === "undefined" || 
-      data.unit === null || 
-      data.unit === 0 || 
-      data.unit === "null" || 
-      isNaN(data.unit))
+      !(
+        typeof data.quantity === "undefined" ||
+        data.quantity === null ||
+        data.quantity === 0 ||
+        data.quantity === "null" ||
+        isNaN(data.quantity)
+      ) &&
+      (typeof data.unit === "undefined" ||
+        data.unit === null ||
+        data.unit === 0 ||
+        data.unit === "null" ||
+        isNaN(data.unit))
     ) {
       ingredientMapped = `${
         (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
@@ -210,24 +214,26 @@ export default function DayScreen({ navigation }) {
   //Conditions adult pour gérer les trous de la base sur unit/quantity
   const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
     if (
-      typeof data.quantity === "undefined" || 
-      data.quantity === null || 
-      data.quantity === 0 || 
-      data.quantity === "null" || 
+      typeof data.quantity === "undefined" ||
+      data.quantity === null ||
+      data.quantity === 0 ||
+      data.quantity === "null" ||
       isNaN(data.quantity)
     ) {
       ingredientMapped = data.name;
-    } else if (      
-      !(typeof data.quantity === "undefined" || 
-      data.quantity === null || 
-      data.quantity === 0 || 
-      data.quantity === "null" || 
-      isNaN(data.quantity)) &&
-      (typeof data.unit === "undefined" || 
-      data.unit === null || 
-      data.unit === 0 || 
-      data.unit === "null" || 
-      isNaN(data.unit))
+    } else if (
+      !(
+        typeof data.quantity === "undefined" ||
+        data.quantity === null ||
+        data.quantity === 0 ||
+        data.quantity === "null" ||
+        isNaN(data.quantity)
+      ) &&
+      (typeof data.unit === "undefined" ||
+        data.unit === null ||
+        data.unit === 0 ||
+        data.unit === "null" ||
+        isNaN(data.unit))
     ) {
       ingredientMapped = `${
         (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *
@@ -352,12 +358,12 @@ export default function DayScreen({ navigation }) {
           <Dialog visible={isModalVisible} onDismiss={!isModalVisible}>
             <Dialog.Title
               style={{
-                fontWeight: "bold",
+                fontFamily: "Roboto-Bold",
                 fontSize: 20,
                 lineHeight: 28,
               }}
             >
-              Régénérer la recette enfant
+              Une autre recette enfant ?
             </Dialog.Title>
             <Dialog.Content>
               <RadioButton.Group
@@ -365,7 +371,7 @@ export default function DayScreen({ navigation }) {
                 value={checked}
               >
                 <RadioButton.Item
-                  label="Pour une recette favorite"
+                  label="Via une recette favorite"
                   value="first"
                   labelStyle={{
                     fontSize: 16,
@@ -374,14 +380,14 @@ export default function DayScreen({ navigation }) {
                 />
                 <Divider />
                 <RadioButton.Item
-                  label="Pour une recette spécifique"
+                  label="Via une recette spécifique"
                   value="second"
                   labelStyle={{
                     fontSize: 16,
                     lineHeight: 22,
                   }}
                 />
-                <Divider />
+                {/* <Divider />
                 <RadioButton.Item
                   label="Pour une recette aléatoire"
                   value="third"
@@ -389,7 +395,7 @@ export default function DayScreen({ navigation }) {
                     fontSize: 16,
                     lineHeight: 22,
                   }}
-                />
+                /> */}
               </RadioButton.Group>
             </Dialog.Content>
             <Dialog.Actions>
@@ -403,17 +409,18 @@ export default function DayScreen({ navigation }) {
               <Button
                 onPress={() => {
                   if (checked === "first") {
-                    navigation.navigate("RegenerateFavScreen");
+                    navigation.navigate("FavoritesScreen");
                     setIsModalVisible(false);
                   } else if (checked === "second") {
-                    navigation.navigate("RegenerateSearchScreen");
+                    navigation.navigate("SearchScreen");
                     setIsModalVisible(false);
-                  } else if (checked === "third") {
-                    console.log(
-                      "Penser a faire la fonctionalité regeneration aléatoire",
-                      checked
-                    );
                   }
+                  // else if (checked === "third") {
+                  //   console.log(
+                  //     "Penser a faire la fonctionalité regeneration aléatoire",
+                  //     checked
+                  //   );
+                  // }
                 }}
               >
                 CONFIRMER
@@ -627,8 +634,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleActive: {
-    fontFamily: "Roboto",
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
     fontSize: 24,
     lineHeight: 32,
     color: "rgb(255, 107, 87)",
@@ -642,16 +648,15 @@ const styles = StyleSheet.create({
   },
 
   titleSeparator: {
-    fontFamily: "Roboto",
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
     fontSize: 24,
     lineHeight: 32,
     marginLeft: 4,
     marginRight: 4,
   },
   titleInactive: {
-    fontFamily: "Roboto",
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
+
     fontSize: 24,
     lineHeight: 32,
     color: "black",
@@ -697,7 +702,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   changePortion: {
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",

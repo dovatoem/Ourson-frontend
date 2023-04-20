@@ -7,14 +7,13 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  ScrollView, 
+  ScrollView,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { addSearchedRecipe } from "../reducers/recipes";
 import { useDispatch, useSelector } from "react-redux";
-
 
 export default function DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -24,7 +23,7 @@ export default function DashboardScreen({ navigation }) {
   const [searchedRecipes, setSearchedRecipes] = useState([]); //all the recipes corresponding to searched keyword
   const [FlatListVisible, setFlatListVisible] = useState(false);
   const [dashboardVisible, setDashboardVisible] = useState(true);
- 
+
   const recipe = useSelector((state) => state.recipes.value);
 
   const handleSubmit = () => {
@@ -45,29 +44,27 @@ export default function DashboardScreen({ navigation }) {
             }));
             setRecipeTitles(titles);
             console.log(recipeTitles);
-            setSearchedRecipes(data.recipes); 
+            setSearchedRecipes(data.recipes);
           }
         });
     }
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     if (recipe.searchedRecipe) {
-      console.log("recette dans le reducer:",recipe.searchedRecipe)
-      
+      console.log("recette dans le reducer:", recipe.searchedRecipe);
     }
   }, [recipe.searchedRecipe]);
 
   return (
-    <View >
+    <View>
       <SafeAreaView />
       <Header navigation={navigation} />
       <ImageBackground
         source={require("../assets/dashboardBackground.png")}
         style={styles.background}
       >
-       
-        <View styles={{flex:1}}>
+        <View styles={{ flex: 1 }}>
           <Searchbar
             style={styles.searchBar}
             placeholder="Rechercher une recette enfant"
@@ -75,18 +72,17 @@ export default function DashboardScreen({ navigation }) {
             value={searchValue}
             onIconPress={() => {
               handleSubmit(),
-              setFlatListVisible(true),
-              setDashboardVisible(false)
+                setFlatListVisible(true),
+                setDashboardVisible(false);
             }}
-            //same behavior on "rechercher" touch of the keyboard than the icon search of the search bar 
+            //same behavior on "rechercher" touch of the keyboard than the icon search of the search bar
             onSubmitEditing={() => {
               handleSubmit();
               setFlatListVisible(true);
               setDashboardVisible(false);
             }}
-            onClearIconPress= {() => {
-              setFlatListVisible(false),
-              setDashboardVisible(true)
+            onClearIconPress={() => {
+              setFlatListVisible(false), setDashboardVisible(true);
             }}
           />
           <View style={{ flex: 0, height: 0 }}>
@@ -96,125 +92,124 @@ export default function DashboardScreen({ navigation }) {
             <FlatList
               data={recipeTitles}
               renderItem={({ item }) => (
-                <Text 
-                onPress={() => {
-                  console.log("recipe clicked:", item.title)
-                  searchedRecipes.map((recipe) => {
-                    if(recipe.title === item.title){
-                      dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchedRecipeScreen
-                      setSelectedRecipe(recipe); 
-                    }
-                    navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe});
-                    setFlatListVisible(false)
-                  })
-                }
-              } 
-                
-                style={styles.titresRecettes}>{item.title}</Text>
+                <Text
+                  onPress={() => {
+                    console.log("recipe clicked:", item.title);
+                    searchedRecipes.map((recipe) => {
+                      if (recipe.title === item.title) {
+                        dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchedRecipeScreen
+                        setSelectedRecipe(recipe);
+                      }
+                      navigation.navigate("SearchedRecipeScreen", {
+                        recipe: selectedRecipe,
+                      });
+                      setFlatListVisible(false);
+                    });
+                  }}
+                  style={styles.titresRecettes}
+                >
+                  {item.title}
+                </Text>
               )}
               keyExtractor={(item) => item.title}
               style={styles.dropDownMenu}
             />
           )}
-          {!FlatListVisible && (
-            <View style={{height: 0, flexShrink: 1}}/>
-          )}
+          {!FlatListVisible && <View style={{ height: 0, flexShrink: 1 }} />}
           <View style={{ flex: 1 }}>
             {/* empty view to push list to bottom of screen */}
           </View>
         </View>
 
+        {dashboardVisible && (
+          <View style={styles.cardContainer}>
+            <View style={styles.container}>
+              <TouchableOpacity
+                style={styles.card}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("ShoppingListScreen")}
+              >
+                <View style={styles.imageView}>
+                  <Image
+                    source={require("../assets/shoppinglist.png")}
+                    style={styles.cardImage}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.screenName}>Liste de courses</Text>
+                  <Text style={styles.screenDescription} numberOfLines={3}>
+                    Consulter les ingrédients dont j'ai besoin pour ma semaine
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-    {dashboardVisible && (
-        <View style={styles.cardContainer}>
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.card}
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate("ShoppingListScreen")}
-            >
-              <View style={styles.imageView}>
-                <Image
-                  source={require("../assets/shoppinglist.png")}
-                  style={styles.cardImage}
-                />
-              </View>
-              <View>
-                <Text style={styles.screenName}>Liste de courses</Text>
-                <Text style={styles.screenDescription} numberOfLines={3}>
-                  Consulter les ingrédients dont j'ai besoin pour ma semaine
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.container}>
+              <TouchableOpacity
+                style={styles.card}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("TastedFoodScreen")}
+              >
+                <View style={styles.imageView}>
+                  <Image
+                    source={require("../assets/diversification.png")}
+                    style={styles.cardImage}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.screenName}>
+                    Diversification alimentaire
+                  </Text>
+                  <Text style={styles.screenDescription} numberOfLines={2}>
+                    Suivre ce que mon enfant a déjà goûté
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.card}
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate("TastedFoodScreen")}
-            >
-              <View style={styles.imageView}>
-                <Image
-                  source={require("../assets/diversification.png")}
-                  style={styles.cardImage}
-                />
-              </View>
-              <View>
-                <Text style={styles.screenName}>
-                  Diversification alimentaire
-                </Text>
-                <Text style={styles.screenDescription} numberOfLines={2}>
-                  Suivre ce que mon enfant a déjà goûté
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.container}>
+              <TouchableOpacity
+                style={styles.card}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("FavoritesScreen")}
+              >
+                <View style={styles.imageView}>
+                  <Image
+                    source={require("../assets/fav.png")}
+                    style={styles.cardImage}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.screenName}>Favoris</Text>
+                  <Text style={styles.screenDescription} numberOfLines={3}>
+                    Consulter mes recettes favorites
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.card}
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate("FavoritesScreen")}
-            >
-              <View style={styles.imageView}>
-                <Image
-                  source={require("../assets/fav.png")}
-                  style={styles.cardImage}
-                />
-              </View>
-              <View>
-                <Text style={styles.screenName}>Favoris</Text>
-                <Text style={styles.screenDescription} numberOfLines={3}>
-                  Consulter mes recettes favorites
-                </Text>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.container}>
+              <TouchableOpacity
+                style={styles.card}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("PanicModeScreen")}
+              >
+                <View style={styles.imageView}>
+                  <Image
+                    source={require("../assets/panicmode.png")}
+                    style={styles.cardImage}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.screenName}>Panic Mode</Text>
+                  <Text style={styles.screenDescription} numberOfLines={2}>
+                    Générer une recette avec ce que j'ai dans mon frigo
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.card}
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate("PanicModeScreen")}
-            >
-              <View style={styles.imageView}>
-                <Image
-                  source={require("../assets/panicmode.png")}
-                  style={styles.cardImage}
-                />
-              </View>
-              <View>
-                <Text style={styles.screenName}>Panic Mode</Text>
-                <Text style={styles.screenDescription} numberOfLines={2}>
-                  Générer une recette avec ce que j'ai dans mon frigo
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View> 
         )}
-
       </ImageBackground>
     </View>
   );
@@ -233,7 +228,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     height: "45%",
-    marginTop: '20%',
+    marginTop: "20%",
   },
   cardImage: {
     height: 75,
@@ -248,23 +243,22 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
-  dropDownMenu :{
-    position: 'relative',
+  dropDownMenu: {
+    position: "relative",
     left: "10%",
     right: "10%",
-    maxHeight: '50%',
+    maxHeight: "50%",
     width: "80%",
-    backgroundColor: 'white',
+    backgroundColor: "white",
     opacity: 0.6,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 20,
-    zIndex: 1, 
-    marginTop: '20%',
+    zIndex: 1,
+    marginTop: "20%",
   },
   screenName: {
-    fontFamily: 'Roboto',
-    fontWeight: "bold",
+    fontFamily: "Roboto-Bold",
     marginBottom: 10,
     fontSize: 15,
   },
@@ -278,17 +272,17 @@ const styles = StyleSheet.create({
     width: "82%",
     marginBottom: 15,
     marginTop: 20,
-    position: 'absolute',
+    position: "absolute",
   },
   title: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: 'black'
-  }, 
+    borderBottomColor: "black",
+  },
   titresRecettes: {
     fontSize: 16,
-    color: 'black',
+    color: "black",
     marginVertical: 10,
     marginHorizontal: 20,
-  }
+  },
 });
