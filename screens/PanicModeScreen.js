@@ -133,7 +133,23 @@ const handleSubmit = () => {
             {/* empty view to push list to bottom of screen */}
           </View>
 
-              {chips.length > 0 && chipsContainerVisible && (
+          {chips.length > 0 && chipsContainerVisible && (
+          <View style={styles.ingredientsChipsContainer}>
+            {chips.map((item, index) => (
+              <Chip
+                key={index.toString()}
+                style={styles.chip}
+                onClose={() => {
+                  // handle chip press, e.g. remove chip
+                  setChips(chips.filter((chip) => chip !== item));
+                }}
+              >
+                {item}
+              </Chip>
+            ))}
+           </View>)}
+
+              {/* {chips.length > 0 && chipsContainerVisible && (
                 <FlatList
                 style={styles.ingredientsChipsContainer}
                 data={chips}
@@ -150,9 +166,10 @@ const handleSubmit = () => {
                 )}
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
-                // contentContainerStyle={styles.ingredientsChipsContainer}
+                contentContainerStyle={styles.ingredientsChipsContainer}
+                flexWrap="wrap"
               />
-              )}
+              )} */}
             
             </View>
             <Button
@@ -211,10 +228,9 @@ const styles = StyleSheet.create({
   ingredientsChipsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    // alignItems: "center",
-    marginBottom: 10,
-    marginTop: 100,
-    
+    marginBottom: 1,
+    marginTop: "30%",
+    maxWidth: "100%",
     },
   title: {
     fontFamily: "Roboto-Bold",

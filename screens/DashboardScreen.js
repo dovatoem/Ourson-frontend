@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   title: {
-    // padding: 10,
+    padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "black",
   },
