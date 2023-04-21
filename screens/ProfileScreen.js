@@ -109,7 +109,7 @@ export default function ProfileScreen({ navigation }) {
               disabled="true"
               mode="outlined"
               label="Âge (en mois)"
-              value="36 mois"
+              value="7 mois"
               style={styles.input}
             />
             <Text style={styles.titleColor}>AJOUTER UN ENFANT AU COMPTE</Text>

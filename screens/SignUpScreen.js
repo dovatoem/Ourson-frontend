@@ -34,7 +34,7 @@ export default function SignUpScreen({ navigation }) {
           navigation.navigate("OnBoardingScreen1");
         } else {
           setShowError(!showError);
-        }       
+        }
       });
   };
 
@@ -84,9 +84,14 @@ export default function SignUpScreen({ navigation }) {
                 />
               }
             />
-            <HelperText type="error" visible={showError} style={styles.errorMessage}>
-            L'utilisateur avec cet email existe déjà. Veuillez vous connecter ou utiliser un autre email pour créer un nouveau compte.
-            {/* Cet utilisateur existe déjà. Veuillez utiliser un autre email. */}
+            <HelperText
+              type="error"
+              visible={showError}
+              style={styles.errorMessage}
+            >
+              L'utilisateur avec cet email existe déjà. Veuillez vous connecter
+              ou utiliser un autre email pour créer un nouveau compte.
+              {/* Cet utilisateur existe déjà. Veuillez utiliser un autre email. */}
             </HelperText>
           </View>
           <Button
@@ -120,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Bold",
     fontSize: 40,
     fontWeight: 700,
     textAlign: "center",
@@ -143,7 +148,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     fontSize: 14,
     fontWeight: 600,
-    color: 'red',
+    color: "red",
   },
   button: {
     borderRadius: 60,
