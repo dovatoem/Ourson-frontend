@@ -16,6 +16,7 @@ import {
   RadioButton,
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Lottie from "lottie-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +27,17 @@ import {
   addLikedRecipe,
   removeLikedRecipe,
 } from "../reducers/household";
+
+function Animation() {
+  return (
+    <Lottie
+      style={{ marginBottom: 60 }}
+      source={require("../assets/25523-wok-pan-food-fry-on-fire.json")}
+      autoPlay
+      loop
+    />
+  );
+}
 
 export default function DayScreen({ navigation }) {
   const currentScreen = useNavigationState(
@@ -53,7 +65,7 @@ export default function DayScreen({ navigation }) {
 
   //Local States
   const [activeMenu, setActiveMenu] = useState(
-    new Date().getHours() >= 15 ? "soir" : "midi"
+    new Date().getHours() >= 1 ? "soir" : "midi"
   );
   const [isLiked, setIsLiked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -380,41 +392,44 @@ export default function DayScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
-      <View style={styles.container}>
-        <Portal>
-          <Dialog visible={isModalVisible} onDismiss={!isModalVisible}>
-            <Dialog.Title
-              style={{
-                fontFamily: "Roboto-Bold",
-                fontSize: 20,
-                lineHeight: 28,
-              }}
-            >
-              Une autre recette enfant ?
-            </Dialog.Title>
-            <Dialog.Content>
-              <RadioButton.Group
-                onValueChange={(value) => setChecked(value)}
-                value={checked}
+      {weeklyRecipes.baby.length === 0 && weeklyRecipes.adult.length === 0 ? (
+        <Animation />
+      ) : (
+        <View style={styles.container}>
+          <Portal>
+            <Dialog visible={isModalVisible} onDismiss={!isModalVisible}>
+              <Dialog.Title
+                style={{
+                  fontFamily: "Roboto-Bold",
+                  fontSize: 20,
+                  lineHeight: 28,
+                }}
               >
-                <RadioButton.Item
-                  label="Via une recette favorite"
-                  value="first"
-                  labelStyle={{
-                    fontSize: 16,
-                    lineHeight: 22,
-                  }}
-                />
-                <Divider />
-                <RadioButton.Item
-                  label="Via une recette spécifique"
-                  value="second"
-                  labelStyle={{
-                    fontSize: 16,
-                    lineHeight: 22,
-                  }}
-                />
-                {/* <Divider />
+                Une autre recette enfant ?
+              </Dialog.Title>
+              <Dialog.Content>
+                <RadioButton.Group
+                  onValueChange={(value) => setChecked(value)}
+                  value={checked}
+                >
+                  <RadioButton.Item
+                    label="Via une recette favorite"
+                    value="first"
+                    labelStyle={{
+                      fontSize: 16,
+                      lineHeight: 22,
+                    }}
+                  />
+                  <Divider />
+                  <RadioButton.Item
+                    label="Via une recette spécifique"
+                    value="second"
+                    labelStyle={{
+                      fontSize: 16,
+                      lineHeight: 22,
+                    }}
+                  />
+                  {/* <Divider />
                 <RadioButton.Item
                   label="Pour une recette aléatoire"
                   value="third"
@@ -423,221 +438,230 @@ export default function DayScreen({ navigation }) {
                     lineHeight: 22,
                   }}
                 /> */}
-              </RadioButton.Group>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button
-                onPress={() => {
-                  setIsModalVisible(false);
-                }}
-              >
-                ANNULER
-              </Button>
-              <Button
-                onPress={() => {
-                  if (checked === "first") {
-                    navigation.navigate("FavoritesScreen");
+                </RadioButton.Group>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button
+                  onPress={() => {
                     setIsModalVisible(false);
-                  } else if (checked === "second") {
-                    navigation.navigate("SearchScreen");
-                    setIsModalVisible(false);
-                  }
-                  // else if (checked === "third") {
-                  //   console.log(
-                  //     "Penser a faire la fonctionalité regeneration aléatoire",
-                  //     checked
-                  //   );
-                  // }
-                }}
-              >
-                CONFIRMER
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
+                  }}
+                >
+                  ANNULER
+                </Button>
+                <Button
+                  onPress={() => {
+                    if (checked === "first") {
+                      navigation.navigate("FavoritesScreen");
+                      setIsModalVisible(false);
+                    } else if (checked === "second") {
+                      navigation.navigate("SearchScreen");
+                      setIsModalVisible(false);
+                    }
+                    // else if (checked === "third") {
+                    //   console.log(
+                    //     "Penser a faire la fonctionalité regeneration aléatoire",
+                    //     checked
+                    //   );
+                    // }
+                  }}
+                >
+                  CONFIRMER
+                </Button>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
 
-        <View style={styles.titleContain}>
-          <View style={styles.titleSwiper}>
-            <TouchableOpacity
-              style={
-                activeMenu === "midi" ? styles.viewActive : styles.viewInactive
-              }
-              onPress={() => {
-                setActiveMenu("midi");
-              }}
-            >
-              <Text
+          <View style={styles.titleContain}>
+            <View style={styles.titleSwiper}>
+              <TouchableOpacity
                 style={
                   activeMenu === "midi"
-                    ? styles.titleActive
-                    : styles.titleInactive
+                    ? styles.viewActive
+                    : styles.viewInactive
                 }
+                onPress={() => {
+                  setActiveMenu("midi");
+                }}
               >
-                Midi
-              </Text>
-            </TouchableOpacity>
-            <View>
-              <Text style={styles.titleSeparator}>•</Text>
-            </View>
-            <TouchableOpacity
-              style={
-                activeMenu === "soir" ? styles.viewActive : styles.viewInactive
-              }
-              onPress={() => {
-                setActiveMenu("soir");
-              }}
-            >
-              <Text
+                <Text
+                  style={
+                    activeMenu === "midi"
+                      ? styles.titleActive
+                      : styles.titleInactive
+                  }
+                >
+                  Midi
+                </Text>
+              </TouchableOpacity>
+              <View>
+                <Text style={styles.titleSeparator}>•</Text>
+              </View>
+              <TouchableOpacity
                 style={
                   activeMenu === "soir"
-                    ? styles.titleActive
-                    : styles.titleInactive
+                    ? styles.viewActive
+                    : styles.viewInactive
                 }
+                onPress={() => {
+                  setActiveMenu("soir");
+                }}
               >
-                Soir
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={
+                    activeMenu === "soir"
+                      ? styles.titleActive
+                      : styles.titleInactive
+                  }
+                >
+                  Soir
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.iconContain}>
+              {heartIcon}
+              <TouchableOpacity
+                onPress={() => {
+                  setIsModalVisible(true);
+                }}
+              >
+                <Icon name="refresh" size={36} color="black" />
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.iconContain}>
-            {heartIcon}
-            <TouchableOpacity
-              onPress={() => {
-                setIsModalVisible(true);
-              }}
-            >
-              <Icon name="refresh" size={36} color="black" />
-            </TouchableOpacity>
-          </View>
-        </View>
 
-        <ScrollView
-          contentContainerStyle={styles.scrollView}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.recipesContain}>
-            <View style={styles.recipeContain}>
-              <View style={styles.recipeCard}>
-                <ImageBackground
-                  style={{
-                    height: 140,
-                    width: 140,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-end",
-                    padding: 8,
-                  }}
-                  source={{
-                    uri: babyRecipe?.imageURL,
-                  }}
-                >
-                  <LinearGradient
-                    colors={["rgba(0,0,0,0)", "rgba(0,0,0,1)"]}
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.recipesContain}>
+              <View style={styles.recipeContain}>
+                <View style={styles.recipeCard}>
+                  <ImageBackground
                     style={{
                       height: 140,
                       width: 140,
-                      position: "absolute",
-                      bottom: 0,
-                      opacity: 0.7,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "flex-end",
+                      padding: 8,
                     }}
-                  />
-                  <Text style={styles.recipeTitle}>{babyRecipe?.title}</Text>
-                </ImageBackground>
-              </View>
-              <View style={styles.recipePortion}>
-                <Text style={styles.titlePortion}>Portions</Text>
-                <View style={styles.changePortion}>
-                  <Icon
-                    name="minus"
-                    size={28}
-                    color="black"
-                    onPress={() => {
-                      handleClickPortionsBaby("sub");
+                    source={{
+                      uri: babyRecipe?.imageURL,
                     }}
-                  />
-                  <Text style={styles.nbPortion}>{babyCounter}</Text>
-                  <Icon
-                    name="plus"
-                    size={28}
-                    color="black"
-                    onPress={() => {
-                      handleClickPortionsBaby("add");
-                    }}
-                  />
+                  >
+                    <LinearGradient
+                      colors={["rgba(0,0,0,0)", "rgba(0,0,0,1)"]}
+                      style={{
+                        height: 140,
+                        width: 140,
+                        position: "absolute",
+                        bottom: 0,
+                        opacity: 0.7,
+                      }}
+                    />
+                    <Text style={styles.recipeTitle}>{babyRecipe?.title}</Text>
+                  </ImageBackground>
+                </View>
+                <View style={styles.recipePortion}>
+                  <Text style={styles.titlePortion}>Portions</Text>
+                  <View style={styles.changePortion}>
+                    <Icon
+                      name="minus"
+                      size={28}
+                      color="black"
+                      onPress={() => {
+                        handleClickPortionsBaby("sub");
+                      }}
+                    />
+                    <Text style={styles.nbPortion}>{babyCounter}</Text>
+                    <Icon
+                      name="plus"
+                      size={28}
+                      color="black"
+                      onPress={() => {
+                        handleClickPortionsBaby("add");
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-            <View style={styles.recipeContain}>
-              <View style={styles.recipeCard}>
-                <ImageBackground
-                  style={{
-                    height: 140,
-                    width: 140,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-end",
-                    padding: 8,
-                  }}
-                  source={{
-                    uri: adultRecipe?.imageURL,
-                  }}
-                >
-                  <LinearGradient
-                    colors={["rgba(0,0,0,0)", "rgba(0,0,0,1)"]}
+              <View style={styles.recipeContain}>
+                <View style={styles.recipeCard}>
+                  <ImageBackground
                     style={{
                       height: 140,
                       width: 140,
-                      position: "absolute",
-                      bottom: 0,
-                      opacity: 0.7,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "flex-end",
+                      padding: 8,
                     }}
-                  />
-                  <Text style={styles.recipeTitle}>{adultRecipe?.title}</Text>
-                </ImageBackground>
-              </View>
-              <View style={styles.recipePortion}>
-                <Text style={styles.titlePortion}>Portions</Text>
-                <View style={styles.changePortion}>
-                  <Icon
-                    name="minus"
-                    size={28}
-                    color="black"
-                    onPress={() => {
-                      handleClickPortionsAdult("sub");
+                    source={{
+                      uri: adultRecipe?.imageURL,
                     }}
-                  />
-                  <Text style={styles.nbPortion}>{adultCounter}</Text>
-                  <Icon
-                    name="plus"
-                    size={28}
-                    color="black"
-                    onPress={() => {
-                      handleClickPortionsAdult("add");
-                    }}
-                  />
+                  >
+                    <LinearGradient
+                      colors={["rgba(0,0,0,0)", "rgba(0,0,0,1)"]}
+                      style={{
+                        height: 140,
+                        width: 140,
+                        position: "absolute",
+                        bottom: 0,
+                        opacity: 0.7,
+                      }}
+                    />
+                    <Text style={styles.recipeTitle}>{adultRecipe?.title}</Text>
+                  </ImageBackground>
+                </View>
+                <View style={styles.recipePortion}>
+                  <Text style={styles.titlePortion}>Portions</Text>
+                  <View style={styles.changePortion}>
+                    <Icon
+                      name="minus"
+                      size={28}
+                      color="black"
+                      onPress={() => {
+                        handleClickPortionsAdult("sub");
+                      }}
+                    />
+                    <Text style={styles.nbPortion}>{adultCounter}</Text>
+                    <Icon
+                      name="plus"
+                      size={28}
+                      color="black"
+                      onPress={() => {
+                        handleClickPortionsAdult("add");
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-          <View style={styles.mainRecipe}>
-            <Text style={styles.titleMainRecipe}>{babyRecipe?.title}</Text>
-            <Text style={styles.ingredientsMainRecipe}>Ingrédients :</Text>
-            <View style={styles.ingredientsChipsContainer}>
-              {babyIngredientsChips}
+            <View style={styles.mainRecipe}>
+              <Text style={styles.titleMainRecipe}>{babyRecipe?.title}</Text>
+              <Text style={styles.ingredientsMainRecipe}>Ingrédients :</Text>
+              <View style={styles.ingredientsChipsContainer}>
+                {babyIngredientsChips}
+              </View>
+              <Text style={styles.instructionsMainRecipe}>Instructions :</Text>
+              <Text style={styles.instructions}>
+                {babyRecipe?.instructions}
+              </Text>
             </View>
-            <Text style={styles.instructionsMainRecipe}>Instructions :</Text>
-            <Text style={styles.instructions}>{babyRecipe?.instructions}</Text>
-          </View>
-          <View style={styles.mainRecipe}>
-            <Text style={styles.titleMainRecipe}>{adultRecipe?.title}</Text>
-            <Text style={styles.ingredientsMainRecipe}>Ingrédients :</Text>
-            <View style={styles.ingredientsChipsContainer}>
-              {adultIngredientsChips}
+            <View style={styles.mainRecipe}>
+              <Text style={styles.titleMainRecipe}>{adultRecipe?.title}</Text>
+              <Text style={styles.ingredientsMainRecipe}>Ingrédients :</Text>
+              <View style={styles.ingredientsChipsContainer}>
+                {adultIngredientsChips}
+              </View>
+              <Text style={styles.instructionsMainRecipe}>Instructions :</Text>
+              <Text style={styles.instructions}>
+                {adultRecipe?.instructions}
+              </Text>
             </View>
-            <Text style={styles.instructionsMainRecipe}>Instructions :</Text>
-            <Text style={styles.instructions}>{adultRecipe?.instructions}</Text>
-          </View>
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View>
+      )}
     </View>
   );
 }
