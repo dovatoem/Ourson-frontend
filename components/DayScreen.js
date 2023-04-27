@@ -15,18 +15,21 @@ import {
   Divider,
   RadioButton,
 } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Lottie from "lottie-react-native";
-import { LinearGradient } from "expo-linear-gradient";
+
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigationState } from "@react-navigation/native";
+
+import { useDispatch, useSelector } from "react-redux";
 import {
   addWeeklyRecipes,
   resetCreatedAt,
   addLikedRecipe,
   removeLikedRecipe,
 } from "../reducers/household";
+
+import { LinearGradient } from "expo-linear-gradient";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Lottie from "lottie-react-native";
 
 function Animation() {
   return (

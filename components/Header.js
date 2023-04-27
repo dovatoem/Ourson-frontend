@@ -7,10 +7,9 @@ import {
   ScrollView,
   Text,
 } from "react-native";
-
 import { IconButton } from "react-native-paper";
-import { useState, useEffect } from "react";
 
+import { useState, useEffect } from "react";
 import { useNavigationState } from "@react-navigation/native";
 
 export default function Header({ navigation }) {

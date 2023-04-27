@@ -1,31 +1,19 @@
 import {
   StyleSheet,
-  SafeAreaView,
   View,
-  TextInput,
   ImageBackground,
-  Image,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useTheme, Button, Chip, Text } from "react-native-paper";
-import {
-  Tabs,
-  TabScreen,
-  useTabIndex,
-  useTabNavigation,
-} from "react-native-paper-tabs";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  addWeeklyRecipes,
-  resetCreatedAt,
-  addLikedRecipe,
-  removeLikedRecipe,
-} from "../reducers/household";
+import { useTheme, Text } from "react-native-paper";
+
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+
+import { useDispatch, useSelector } from "react-redux";
+import { addLikedRecipe, removeLikedRecipe } from "../reducers/household";
+
+import { LinearGradient } from "expo-linear-gradient";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function FavoriteRecipe({
   imageURL,

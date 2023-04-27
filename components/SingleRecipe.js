@@ -3,13 +3,10 @@ import { Chip, useTheme, Text } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addSearchedRecipe } from "../reducers/recipes";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function SingleRecipeScreen({ navigation }) {
-  const theme = useTheme();
-
   // Reducers ref
   const kidsCount = useSelector((state) => state.household.value.kidsCount);
 
