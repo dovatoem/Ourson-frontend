@@ -6,12 +6,14 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Button, Text, ProgressBar, TextInput } from "react-native-paper";
+
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useSelector } from "react-redux";
+
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function OnBoardingScreen1({ navigation }) {
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const household = useSelector((state) => state.household.value);
 
@@ -62,13 +64,13 @@ export default function OnBoardingScreen1({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            console.log("hh reducer3", household);  
+            console.log("hh reducer3", household);
             navigation.navigate(todayDay);
           }
         });
     } else {
       navigation.navigate(todayDay);
-      console.log("hh reducer3", household); 
+      console.log("hh reducer3", household);
     }
   };
 
@@ -94,7 +96,7 @@ export default function OnBoardingScreen1({ navigation }) {
             <Text style={styles.headerTitle}>Dernière étape !</Text>
             <Text style={styles.headerText}>
               Voulez-vous partager votre compte avec d'autres personnes de votre
-              foyer?{" "}
+              foyer?
             </Text>
           </View>
           <View style={styles.inputContainer}>

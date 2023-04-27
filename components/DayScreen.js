@@ -65,7 +65,7 @@ export default function DayScreen({ navigation }) {
 
   //Local States
   const [activeMenu, setActiveMenu] = useState(
-    new Date().getHours() >= 1 ? "soir" : "midi"
+    new Date().getHours() >= 17 ? "soir" : "midi"
   );
   const [isLiked, setIsLiked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -86,7 +86,7 @@ export default function DayScreen({ navigation }) {
         savedWeeklyRecipes.baby.length === 0 &&
         savedWeeklyRecipes.adult.length === 0
       ) &&
-      timepast < 604800000
+      timepast > 604800000
     ) {
       console.log("Not");
     } else {
@@ -203,8 +203,7 @@ export default function DayScreen({ navigation }) {
       (typeof data.unit === "undefined" ||
         data.unit === null ||
         data.unit === 0 ||
-        data.unit === "null" ||
-        isNaN(data.unit))
+        data.unit === "null")
     ) {
       ingredientMapped = `${
         (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
@@ -258,8 +257,7 @@ export default function DayScreen({ navigation }) {
       (typeof data.unit === "undefined" ||
         data.unit === null ||
         data.unit === 0 ||
-        data.unit === "null" ||
-        isNaN(data.unit))
+        data.unit === "null")
     ) {
       ingredientMapped = `${
         (Math.round((data.quantity / adultRecipe.portion) * 10) / 10) *

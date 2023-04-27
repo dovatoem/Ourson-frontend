@@ -7,13 +7,15 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  ScrollView,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
+
 import { useState, useEffect } from "react";
+
 import Header from "../components/Header";
-import { addSearchedRecipe } from "../reducers/recipes";
+
 import { useDispatch, useSelector } from "react-redux";
+import { addSearchedRecipe } from "../reducers/recipes";
 
 export default function DashboardScreen({ navigation }) {
   const dispatch = useDispatch();

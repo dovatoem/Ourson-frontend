@@ -5,9 +5,12 @@ import {
   View,
 } from "react-native";
 import { Button, TextInput, Text, HelperText } from "react-native-paper";
+
 import { useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../reducers/user";
+
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function SignUpScreen({ navigation }) {

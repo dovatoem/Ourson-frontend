@@ -42,8 +42,7 @@ export default function SingleRecipeScreen({ navigation }) {
       (typeof data.unit === "undefined" ||
         data.unit === null ||
         data.unit === 0 ||
-        data.unit === "null" ||
-        isNaN(data.unit))
+        data.unit === "null")
     ) {
       ingredientMapped = `${
         (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *

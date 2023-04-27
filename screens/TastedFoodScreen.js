@@ -1,9 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useTheme, Button, Chip } from "react-native-paper";
-import Header from "../components/Header";
+import { Chip } from "react-native-paper";
+
 import { useState, useEffect } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addTastedFood, removeTastedFood } from "../reducers/household";
+
+import Header from "../components/Header";
 
 const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
   const [isSelected, setIsSelected] = useState(isSelectedInDB);

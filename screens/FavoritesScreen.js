@@ -1,30 +1,10 @@
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  TextInput,
-  ImageBackground,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { useTheme, Button, Chip, Text, Snackbar } from "react-native-paper";
-import {
-  Tabs,
-  TabScreen,
-  useTabIndex,
-  useTabNavigation,
-} from "react-native-paper-tabs";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useState, useEffect } from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
+import { Text, Snackbar } from "react-native-paper";
+
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  addWeeklyRecipes,
-  resetCreatedAt,
-  addLikedRecipe,
-  removeLikedRecipe,
-} from "../reducers/household";
+
+import { addLikedRecipe } from "../reducers/household";
 
 import Header from "../components/Header";
 import FavoriteRecipe from "../components/FavoriteRecipe";
@@ -37,11 +17,6 @@ export default function FavoritesScreen({ navigation }) {
   const tempCancellation = (recipe) => setTempCanceledRecipe(recipe);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  // console.log("page", user);
-  // console.log("after page", {
-  //   baby: tempCanceledRecipe.baby._id,
-  //   adult: tempCanceledRecipe.adult._id,
-  // });
 
   const likedRecipes = useSelector(
     (state) => state.household.value.likedRecipes

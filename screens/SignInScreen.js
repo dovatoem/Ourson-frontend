@@ -5,12 +5,14 @@ import {
   View,
 } from "react-native";
 import { Button, TextInput, Text, HelperText } from "react-native-paper";
+
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 import { getHousehold } from "../reducers/household";
+
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import ProfileScreen from "./ProfileScreen";
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();

@@ -6,10 +6,13 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Button, Text, ProgressBar, RadioButton } from "react-native-paper";
+
 import { useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { addDiet } from "../reducers/household";
+
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function OnBoardingScreen1({ navigation }) {
   const dispatch = useDispatch();
@@ -35,9 +38,9 @@ export default function OnBoardingScreen1({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          const dietReducer = diet ? diet : 'Aucun';
+          const dietReducer = diet ? diet : "Aucun";
           dispatch(addDiet(dietReducer));
-          console.log("hh reducer2", household);          
+          console.log("hh reducer2", household);
           navigation.navigate("OnBoardingScreen3");
         }
       });

@@ -7,7 +7,9 @@ import {
   View,
   SafeAreaView,
 } from "react-native";
-import { Button } from "react-native-paper"; //composant particulier de react native paper
+
+import { Button } from "react-native-paper";
+
 import ConfettiCannon from "react-native-confetti-cannon";
 
 export default function HeroScreen({ navigation }) {

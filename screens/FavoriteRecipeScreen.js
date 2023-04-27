@@ -1,10 +1,12 @@
 import { StyleSheet, View, ImageBackground, ScrollView } from "react-native";
-import { Chip, useTheme, Text } from "react-native-paper";
+import { Chip, Text } from "react-native-paper";
+
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigationState } from "@react-navigation/native";
+
+import { useState } from "react";
+import { useSelector } from "react-redux";
+
 import { useRoute } from "@react-navigation/native";
 
 import Header from "../components/Header";

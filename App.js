@@ -1,25 +1,17 @@
 import { useCallback, useState } from "react";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Title,
-  Button,
-  Paragraph,
-  SafeAreaView,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
-
-import { IconButton } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
 
 //Redux
 import { Provider } from "react-redux";
-import { useSelector, useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+//Reducers
+import user from "./reducers/user";
+import household from "./reducers/household";
+import recipes from "./reducers/recipes";
 
+//Theme Material
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
@@ -29,22 +21,11 @@ import * as SplashScreen from "expo-splash-screen";
 //Navigation modules
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useRoute } from "@react-navigation/native";
 
-//Tab navigation modules
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-
-import {
-  Tabs,
-  TabScreen,
-  useTabIndex,
-  useTabNavigation,
-} from "react-native-paper-tabs";
-
+//Screens
 import HeroScreen from "./screens/HeroScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignInScreen from "./screens/SignInScreen";
-
 import OnBoardingScreen1 from "./screens/OnBoardingScreen1";
 import OnBoardingScreen2 from "./screens/OnBoardingScreen2";
 import OnBoardingScreen3 from "./screens/OnBoardingScreen3";
@@ -64,14 +45,9 @@ import SearchScreen from "./screens/SearchScreen";
 import SearchedRecipeScreen from "./screens/SearchedRecipeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import DashboardScreen from "./screens/DashboardScreen";
-import RegenerateSearchScreen from "./screens/RegenerateSearchScreen";
-import RegenerateFavScreen from "./screens/RegenerateFavScreen";
 import PanicModeRecipesScreen from "./screens/PanicModeRecipesScreen";
-import Header from "./components/Header";
-import user from "./reducers/user";
-import household from "./reducers/household";
-import recipes from "./reducers/recipes";
 
+//Store Reducers
 const store = configureStore({
   reducer: { user, household, recipes },
 });
@@ -127,7 +103,6 @@ const theme = {
 
 export default function App() {
   const Stack = createNativeStackNavigator();
-  const [currentScreen, setCurrentScreen] = useState("Hero");
 
   // utiliser currentScreen avec un if pour stocker dans une variable
   // le header qui se declenchera uniquement si currentScreen===TabNavigator
@@ -201,16 +176,11 @@ export default function App() {
               component={FavoriteRecipeScreen}
             />
             <Stack.Screen name="PanicModeScreen" component={PanicModeScreen} />
-            <Stack.Screen name="PanicModeRecipesScreen" component={PanicModeRecipesScreen}/>
+            <Stack.Screen
+              name="PanicModeRecipesScreen"
+              component={PanicModeRecipesScreen}
+            />
             <Stack.Screen name="SearchScreen" component={SearchScreen} />
-            <Stack.Screen
-              name="RegenerateSearchScreen"
-              component={RegenerateSearchScreen}
-            />
-            <Stack.Screen
-              name="RegenerateFavScreen"
-              component={RegenerateFavScreen}
-            />
           </Stack.Navigator>
           <View onLayout={onLayoutRootView}>
             <StatusBar style="auto" />

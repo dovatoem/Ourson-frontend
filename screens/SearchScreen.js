@@ -1,17 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-} from "react-native";
-import { Button, Chip, Searchbar, useTheme } from "react-native-paper";
-import Header from "../components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { addSearchedRecipe } from "../reducers/recipes";
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import { Searchbar } from "react-native-paper";
+
 import { useState } from "react";
 
+import { useDispatch } from "react-redux";
+import { addSearchedRecipe } from "../reducers/recipes";
+
+import Header from "../components/Header";
+
 export default function SearchScreen({ navigation }) {
-  const theme = useTheme();
   const dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState("");
@@ -20,7 +17,7 @@ export default function SearchScreen({ navigation }) {
   const [selectedRecipe, setSelectedRecipe] = useState(null); // local state to store the recipe the user clicked on in the flatlist
   const [searchedRecipes, setSearchedRecipes] = useState([]); //all the recipes corresponding to searched keyword
 
-const handleSubmit = () => {
+  const handleSubmit = () => {
     console.log("handleSubmit");
     console.log(searchValue);
     if (searchValue) {
@@ -38,7 +35,7 @@ const handleSubmit = () => {
             }));
             setRecipeTitles(titles);
             console.log(recipeTitles);
-            setSearchedRecipes(data.recipes); 
+            setSearchedRecipes(data.recipes);
           }
         });
     }
@@ -47,66 +44,69 @@ const handleSubmit = () => {
   return (
     <>
       <Header navigation={navigation} />
-        <View style={styles.container}>
-          <View style={styles.elemContainer}>
-            <Text style={styles.title}>Regénérer la recette enfant</Text>
-            <Text style={styles.text}>Envie d’une recette enfant particulière ? Recherchez directement par titre celle qui vous fait envie !</Text>
-            
-              <View styles={{flex:1}}>
-              <Searchbar
-                style={styles.searchBar}
-                placeholder="Rechercher une recette enfant"
-                onChangeText={(text) => setSearchValue(text)}
-                value={searchValue}
-                onIconPress={() => {
-                  handleSubmit(),
-                  setFlatListVisible(true)
-                }}
-                //same behavior on "rechercher" touch of the keyboard than the icon search of the search bar 
-                onSubmitEditing={() => {
-                  handleSubmit();
-                  setFlatListVisible(true)
-                }}
-                onClearIconPress= {() => {
-                  setFlatListVisible(false)
-                }}
-              />
-              <View style={{ flex: 0, height: 0 }}>
-                {/* empty view to prevent top of list from being cut off */}
-              </View>
-              {FlatListVisible && (
-                <FlatList
-                  data={recipeTitles}
-                  renderItem={({ item }) => (
-                    <Text 
+      <View style={styles.container}>
+        <View style={styles.elemContainer}>
+          <Text style={styles.title}>Regénérer la recette enfant</Text>
+          <Text style={styles.text}>
+            Envie d’une recette enfant particulière ? Recherchez directement par
+            titre celle qui vous fait envie !
+          </Text>
+
+          <View styles={{ flex: 1 }}>
+            <Searchbar
+              style={styles.searchBar}
+              placeholder="Rechercher une recette enfant"
+              onChangeText={(text) => setSearchValue(text)}
+              value={searchValue}
+              onIconPress={() => {
+                handleSubmit(), setFlatListVisible(true);
+              }}
+              //same behavior on "rechercher" touch of the keyboard than the icon search of the search bar
+              onSubmitEditing={() => {
+                handleSubmit();
+                setFlatListVisible(true);
+              }}
+              onClearIconPress={() => {
+                setFlatListVisible(false);
+              }}
+            />
+            <View style={{ flex: 0, height: 0 }}>
+              {/* empty view to prevent top of list from being cut off */}
+            </View>
+            {FlatListVisible && (
+              <FlatList
+                data={recipeTitles}
+                renderItem={({ item }) => (
+                  <Text
                     onPress={() => {
-                      console.log("recipe clicked:", item.title)
+                      console.log("recipe clicked:", item.title);
                       searchedRecipes.map((recipe) => {
-                        if(recipe.title === item.title){
+                        if (recipe.title === item.title) {
                           dispatch(addSearchedRecipe(recipe)); // Dispatch in Redux store the searched recipes clicked on from the search bar to access them on SearchedRecipeScreen
-                          setSelectedRecipe(recipe); 
+                          setSelectedRecipe(recipe);
                         }
-                        navigation.navigate('SearchedRecipeScreen', { recipe: selectedRecipe});
-                        setFlatListVisible(false)
-                        
-                      })
-                    }
-                  } 
-                    style={styles.titresRecettes}>{item.title}</Text>
-                  )}
-                  keyExtractor={(item) => item.title}
-                  style={styles.dropDownMenu}
-                />
-              )}
-              {!FlatListVisible && (
-                <View style={{height: 0, flexShrink: 1}}/>
-              )}
-              <View style={{ flex: 1 }}>
-                {/* empty view to push list to bottom of screen */}
-              </View>
+                        navigation.navigate("SearchedRecipeScreen", {
+                          recipe: selectedRecipe,
+                        });
+                        setFlatListVisible(false);
+                      });
+                    }}
+                    style={styles.titresRecettes}
+                  >
+                    {item.title}
+                  </Text>
+                )}
+                keyExtractor={(item) => item.title}
+                style={styles.dropDownMenu}
+              />
+            )}
+            {!FlatListVisible && <View style={{ height: 0, flexShrink: 1 }} />}
+            <View style={{ flex: 1 }}>
+              {/* empty view to push list to bottom of screen */}
             </View>
           </View>
         </View>
+      </View>
     </>
   );
 }
@@ -121,12 +121,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffff",
-    },
+  },
   elemContainer: {
     margin: 40,
     marginLeft: 40,
     marginRight: 40,
-    },
+  },
   title: {
     fontFamily: "Roboto-Bold",
     fontSize: 20,
@@ -137,23 +137,23 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     lineHeight: 24,
     marginTop: 20,
-  }, 
-  dropDownMenu :{
-    position: 'relative',
-    maxHeight: '50%',
+  },
+  dropDownMenu: {
+    position: "relative",
+    maxHeight: "50%",
     width: "100%",
-    backgroundColor: 'white',
+    backgroundColor: "white",
     opacity: 0.6,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 20,
-    zIndex: 1, 
-    marginTop: '30%',
+    zIndex: 1,
+    marginTop: "30%",
   },
   searchBar: {
     width: "100%",
     marginTop: 35,
-    position: 'absolute',
+    position: "absolute",
     borderRadius: 60,
     backgroundColor: "white",
     borderWidth: 1,
@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
   },
   titresRecettes: {
     fontSize: 16,
-    color: 'black',
+    color: "black",
     marginVertical: 10,
     marginHorizontal: 20,
-  }
+  },
 });

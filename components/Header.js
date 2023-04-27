@@ -8,16 +8,9 @@ import {
   Text,
 } from "react-native";
 
-import {
-  Tabs,
-  TabScreen,
-  useTabIndex,
-  useTabNavigation,
-} from "react-native-paper-tabs";
 import { IconButton } from "react-native-paper";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setCurrentScreen } from "../reducers/user";
+
 import { useNavigationState } from "@react-navigation/native";
 
 export default function Header({ navigation }) {
@@ -109,7 +102,6 @@ export default function Header({ navigation }) {
     { screenName: "ShoppingListScreen", label: "Liste de course" },
     { screenName: "TastedFoodScreen", label: "Diversification" },
     { screenName: "SearchScreen", label: "Rechercher" },
-   
   ];
 
   let menuTopBar = null;

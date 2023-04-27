@@ -7,10 +7,13 @@ import {
   ScrollView,
 } from "react-native";
 import { Button, TextInput, Text, ProgressBar } from "react-native-paper";
+
 import { useState, useEffect } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { addHousehold } from "../reducers/household";
+
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function OnBoardingScreen1({ navigation }) {
   const dispatch = useDispatch();
