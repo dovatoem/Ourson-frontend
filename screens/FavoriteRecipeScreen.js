@@ -11,6 +11,8 @@ import { useRoute } from "@react-navigation/native";
 
 import Header from "../components/Header";
 
+import CleanIngredientsFormat from "../modules/CleanIngredientsFormat";
+
 export default function FavoriteRecipeScreen({ navigation }) {
   const route = useRoute();
   const babyRecipe = route.params.babyRecipe;
@@ -22,23 +24,13 @@ export default function FavoriteRecipeScreen({ navigation }) {
 
   //refaire parce que les conditions sont mauvaises
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
-    let ingredientMapped = "";
-    if (data.quantity === null || data.quantity === 0) {
-      ingredientMapped = data.name;
-    } else if (
-      !(data.quantity === null || data.quantity === 0) &&
-      (data.unit === null || data.unit === 0)
-    ) {
-      ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
-        babyCounter
-      } ${data.name}`;
-    } else {
-      ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 100) / 100) *
-        babyCounter
-      } ${data.unit} de ${data.name}`;
-    }
+    let ingredientMapped = CleanIngredientsFormat(
+      data.quantity,
+      data.unit,
+      data.name,
+      babyRecipe.portion,
+      babyCounter
+    );
     return (
       <Chip key={i} style={styles.chip}>
         <Text style={styles.chipText}>{ingredientMapped}</Text>
@@ -48,19 +40,13 @@ export default function FavoriteRecipeScreen({ navigation }) {
 
   //refaire parce que les conditions sont mauvaises
   const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
-    if (data.quantity === null || data.quantity === 0) {
-      ingredientMapped = data.name;
-    } else if (data.unit === null && data.quantity !== null) {
-      ingredientMapped = `${
-        (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *
-        adultCounter
-      } ${data.name}`;
-    } else {
-      ingredientMapped = `${
-        (Math.round((data.quantity / adultRecipe.portion) * 100) / 100) *
-        adultCounter
-      } ${data.unit} de ${data.name}`;
-    }
+    let ingredientMapped = CleanIngredientsFormat(
+      data.quantity,
+      data.unit,
+      data.name,
+      adultRecipe.portion,
+      adultCounter
+    );
     return (
       <Chip key={i} style={styles.chip}>
         <Text style={styles.chipText}>{ingredientMapped}</Text>

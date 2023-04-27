@@ -27,6 +27,8 @@ import {
   removeLikedRecipe,
 } from "../reducers/household";
 
+import CleanIngredientsFormat from "../modules/CleanIngredientsFormat";
+
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Lottie from "lottie-react-native";
@@ -52,7 +54,6 @@ export default function DayScreen({ navigation }) {
 
   // Reducers ref
   const user = useSelector((state) => state.user.value);
-  const household = useSelector((state) => state.household.value);
   const savedWeeklyRecipes = useSelector(
     (state) => state.household.value.savedWeeklyRecipes
   );
@@ -186,51 +187,13 @@ export default function DayScreen({ navigation }) {
 
   //Conditions baby pour gérer les trous de la base sur unit/quantity
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
-    let ingredientMapped = "";
-    if (
-      typeof data.quantity === "undefined" ||
-      data.quantity === null ||
-      data.quantity === 0 ||
-      data.quantity === "null" ||
-      isNaN(data.quantity)
-    ) {
-      ingredientMapped = data.name;
-    } else if (
-      !(
-        typeof data.quantity === "undefined" ||
-        data.quantity === null ||
-        data.quantity === 0 ||
-        data.quantity === "null" ||
-        isNaN(data.quantity)
-      ) &&
-      (typeof data.unit === "undefined" ||
-        data.unit === null ||
-        data.unit === 0 ||
-        data.unit === "null")
-    ) {
-      ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
-        babyCounter
-      } ${data.name}`;
-
-      let quantity = (data.quantity / babyRecipe.portion) * babyCounter;
-      if (Number.isInteger(quantity)) {
-        ingredientMapped = `${quantity.toFixed(0)} de ${data.name}`;
-      } else {
-        ingredientMapped = `${quantity.toFixed(1)} ${data.name}`;
-      }
-    } else {
-      let quantity = (data.quantity / babyRecipe.portion) * babyCounter;
-      if (Number.isInteger(quantity)) {
-        ingredientMapped = `${quantity.toFixed(0)} ${data.unit} de ${
-          data.name
-        }`;
-      } else {
-        ingredientMapped = `${quantity.toFixed(1)} ${data.unit} de ${
-          data.name
-        }`;
-      }
-    }
+    let ingredientMapped = CleanIngredientsFormat(
+      data.quantity,
+      data.unit,
+      data.name,
+      babyRecipe.portion,
+      babyCounter
+    );
     return (
       <Chip key={i} style={styles.chip}>
         <Text style={styles.chipText}>{ingredientMapped}</Text>
@@ -240,51 +203,13 @@ export default function DayScreen({ navigation }) {
 
   //Conditions adult pour gérer les trous de la base sur unit/quantity
   const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
-    let ingredientMapped = "";
-    if (
-      typeof data.quantity === "undefined" ||
-      data.quantity === null ||
-      data.quantity === 0 ||
-      data.quantity === "null" ||
-      isNaN(data.quantity)
-    ) {
-      ingredientMapped = data.name;
-    } else if (
-      !(
-        typeof data.quantity === "undefined" ||
-        data.quantity === null ||
-        data.quantity === 0 ||
-        data.quantity === "null" ||
-        isNaN(data.quantity)
-      ) &&
-      (typeof data.unit === "undefined" ||
-        data.unit === null ||
-        data.unit === 0 ||
-        data.unit === "null")
-    ) {
-      ingredientMapped = `${
-        (Math.round((data.quantity / adultRecipe.portion) * 10) / 10) *
-        adultCounter
-      } ${data.name}`;
-
-      let quantity = (data.quantity / adultRecipe.portion) * adultCounter;
-      if (Number.isInteger(quantity)) {
-        ingredientMapped = `${quantity.toFixed(0)} de ${data.name}`;
-      } else {
-        ingredientMapped = `${quantity.toFixed(1)} ${data.name}`;
-      }
-    } else {
-      let quantity = (data.quantity / adultRecipe.portion) * adultCounter;
-      if (Number.isInteger(quantity)) {
-        ingredientMapped = `${quantity.toFixed(0)} ${data.unit} de ${
-          data.name
-        }`;
-      } else {
-        ingredientMapped = `${quantity.toFixed(1)} ${data.unit} de ${
-          data.name
-        }`;
-      }
-    }
+    let ingredientMapped = CleanIngredientsFormat(
+      data.quantity,
+      data.unit,
+      data.name,
+      adultRecipe.portion,
+      adultCounter
+    );
     return (
       <Chip key={i} style={styles.chip}>
         <Text style={styles.chipText}>{ingredientMapped}</Text>

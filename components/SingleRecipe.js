@@ -1,10 +1,13 @@
 import { StyleSheet, ScrollView, View, ImageBackground } from "react-native";
-import { Chip, useTheme, Text } from "react-native-paper";
+import { Chip, Text } from "react-native-paper";
+
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+
+import CleanIngredientsFormat from "../modules/CleanIngredientsFormat";
 
 export default function SingleRecipeScreen({ navigation }) {
   // Reducers ref
@@ -19,38 +22,14 @@ export default function SingleRecipeScreen({ navigation }) {
   const [babyCounter, setBabyCounter] = useState(kidsCount);
 
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
-    let ingredientMapped = "";
-    if (
-      typeof data.quantity === "undefined" ||
-      data.quantity === null ||
-      data.quantity === 0 ||
-      data.quantity === "null" ||
-      isNaN(data.quantity)
-    ) {
-      ingredientMapped = data.name;
-    } else if (
-      !(
-        typeof data.quantity === "undefined" ||
-        data.quantity === null ||
-        data.quantity === 0 ||
-        data.quantity === "null" ||
-        isNaN(data.quantity)
-      ) &&
-      (typeof data.unit === "undefined" ||
-        data.unit === null ||
-        data.unit === 0 ||
-        data.unit === "null")
-    ) {
-      ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
-        babyCounter
-      } ${data.name}`;
-    } else {
-      ingredientMapped = `${
-        (Math.round((data.quantity / babyRecipe.portion) * 10) / 10) *
-        babyCounter
-      } ${data.unit} de ${data.name}`;
-    }
+    let ingredientMapped = CleanIngredientsFormat(
+      data.quantity,
+      data.unit,
+      data.name,
+      babyRecipe.portion,
+      babyCounter
+    );
+
     return (
       <Chip key={i} style={styles.chip}>
         <Text style={styles.chipText}>{ingredientMapped}</Text>
