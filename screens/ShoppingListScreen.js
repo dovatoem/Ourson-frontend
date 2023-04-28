@@ -1,5 +1,5 @@
 import { StyleSheet, View, ScrollView } from "react-native";
-import { Text, Button } from "react-native-paper";
+import { Text } from "react-native-paper";
 
 import { useEffect, useState } from "react";
 
