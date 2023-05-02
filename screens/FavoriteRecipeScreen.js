@@ -22,7 +22,7 @@ export default function FavoriteRecipeScreen({ navigation }) {
   const [babyCounter, setBabyCounter] = useState(kidsCount);
   const [adultCounter, setAdultCounter] = useState(hhSize - kidsCount);
 
-  //refaire parce que les conditions sont mauvaises
+
   const babyIngredientsChips = babyRecipe?.ingredients.map((data, i) => {
     let ingredientMapped = CleanIngredientsFormat(
       data.quantity,
@@ -38,7 +38,7 @@ export default function FavoriteRecipeScreen({ navigation }) {
     );
   });
 
-  //refaire parce que les conditions sont mauvaises
+ 
   const adultIngredientsChips = adultRecipe?.ingredients.map((data, i) => {
     let ingredientMapped = CleanIngredientsFormat(
       data.quantity,
