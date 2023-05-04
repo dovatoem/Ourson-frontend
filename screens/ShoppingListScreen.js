@@ -1,22 +1,47 @@
 import { StyleSheet, View, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
-
 import { useEffect, useState } from "react";
-
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-
 import Header from "../components/Header";
+import { updateShoppingList } from "../reducers/household";
 
 export default function ShoppingListScreen({ navigation }) {
+  const dispatch = useDispatch();
   const household = useSelector((state) => state.household.value);
-  const [shopList, setShopList] = useState([]);
+  const user = useSelector((state) => state.user.value);
+  const token = user.token;
+  const [shopList, setShopList] = useState([]);  
+  const [checkedIngredients, setCheckedIngredients] = useState(household.shoppingList); 
+  const [checkboxStates, setCheckboxStates] = useState(
+    shopList.map(() => false))
 
   // call function generateShoppingList at mounting of the screen
   useEffect(() => {
     generateShoppingList();
   }, []);
+
+  // at unmount save updated checkedIngredients in reducer and in DB
+  useEffect(() => {    
+    const unsubscribe = navigation.addListener('beforeRemove', () => {         
+      fetch("https://ourson-app-backend.vercel.app/recipes/updateShoppingList", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({token, shoppingList: checkedIngredients }),
+    })
+    .then((response) => response.json())
+      .then((data) => {       
+        console.log('fetchData', data);
+        if (data.result) {
+          dispatch(
+            updateShoppingList(checkedIngredients));                  
+          } else {
+            console.log(data.error);
+          }
+        });
+    });    
+    return unsubscribe;
+  }, [checkedIngredients, navigation]);
 
   // function generating a shopping list based on baby and adult weekly recipes without takig into account hhSize
   const generateShoppingList = () => {
@@ -56,11 +81,11 @@ export default function ShoppingListScreen({ navigation }) {
             name: ingredient.name,
             quantity: ingredient.quantity,
             unit: ingredient.unit,
-            checked: false,
           });
         }
       });
     });
+
     // to avoid duplicates, we remove ingredient in cuillères unit, and keep the other
     for (const e of shoppingList) {
       if (e.unit) {
@@ -71,35 +96,48 @@ export default function ShoppingListScreen({ navigation }) {
           shoppingList.splice(index, 1);
         }
       }
-    }
-    setShopList(shoppingList);
-  };
+    };
 
+    // format shoppingList
+    let formattedArray = [];
+    shoppingList.map((data, i) => {     
+      let ingredientMapped = '';
+      if (
+        typeof data.quantity === "undefined" ||
+        data.quantity === null ||
+        data.quantity === 0 ||
+        data.quantity === "null" ||
+        isNaN(data.quantity)
+      ) {
+        ingredientMapped = data.name;
+        formattedArray.push(ingredientMapped);
+      } else if (
+        (data.unit === null || data.unit === "null") &&
+        (data.quantity !== null || data.quantity === "null")
+      ) {
+        ingredientMapped = `${Math.round(data.quantity)} ${data.name}`;
+        formattedArray.push(ingredientMapped);
+      } else if (data.quantity <= 1) {
+        ingredientMapped = `${Math.round(data.quantity)} ${data.unit} ${
+          data.name
+        }`;
+        formattedArray.push(ingredientMapped);        
+      } else {
+        ingredientMapped = `${Math.round(data.quantity)} ${data.unit} de ${
+          data.name
+        }`;
+        formattedArray.push(ingredientMapped);  
+      }
+    });
+    setShopList(formattedArray);
+
+    console.log('shopList', shopList);
+    console.log('checkedIngredients', checkedIngredients);
+    
+  }
+ 
   // create the checkList based on shopList state
-  const list = shopList.map((data, i) => {
-    let ingredientMapped = `${data.quantity} ${data.unit} ${data.name}`;
-    if (
-      typeof data.quantity === "undefined" ||
-      data.quantity === null ||
-      data.quantity === 0 ||
-      data.quantity === "null" ||
-      isNaN(data.quantity)
-    ) {
-      ingredientMapped = data.name;
-    } else if (
-      (data.unit === null || data.unit === "null") &&
-      (data.quantity !== null || data.quantity === "null")
-    ) {
-      ingredientMapped = `${Math.round(data.quantity)} ${data.name}`;
-    } else if (data.quantity <= 1) {
-      ingredientMapped = `${Math.round(data.quantity)} ${data.unit} ${
-        data.name
-      }`;
-    } else {
-      ingredientMapped = `${Math.round(data.quantity)} ${data.unit} de ${
-        data.name
-      }`;
-    }
+  const list = shopList.map((ingredient, i) => {    
     return (
       <BouncyCheckbox
         style={{ marginBottom: 16 }}
@@ -107,11 +145,19 @@ export default function ShoppingListScreen({ navigation }) {
         size={30}
         fillColor="rgb(255, 107, 87)"
         unfillColor="#FFFFFF"
-        text={ingredientMapped}
+        text={ingredient}
         iconStyle={{ borderColor: "rgb(255, 107, 87)", borderRadius: 0 }}
         innerIconStyle={{ borderWidth: 2, borderRadius: 0 }}
         textStyle={{ fontFamily: "Roboto", textDecorationLine: "none" }}
-        onPress={(isChecked: boolean) => {}}
+        isChecked={checkboxStates[i]}
+        disableBuiltInState
+        onPress={() => {
+          const newStates = [...checkboxStates];
+          newStates[i] = !newStates[i];
+          setCheckboxStates(newStates);
+          newStates[i] ? setCheckedIngredients([...checkedIngredients, ingredient]) : setCheckedIngredients(checkedIngredients.filter(e => e !== ingredient ));        
+          console.log('after click', checkedIngredients);
+        }}
       />
     );
   });

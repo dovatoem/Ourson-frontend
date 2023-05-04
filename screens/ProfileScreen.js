@@ -61,8 +61,7 @@ export default function ProfileScreen({ navigation }) {
               mode="outlined"
               label="Email"
               value={user.email}
-              style={styles.input}
-              keyboardType="email-address"
+              style={styles.input}             
             />
             <TextInput
               disabled="true"
@@ -98,7 +97,7 @@ export default function ProfileScreen({ navigation }) {
               disabled="true"
               mode="outlined"
               label="Nombre d'enfants"
-              value={household.kidsCount}
+              value={household.kidsCount.toString()}
               style={styles.input}
             />
             <TextInput
@@ -121,7 +120,7 @@ export default function ProfileScreen({ navigation }) {
               disabled="true"
               mode="outlined"
               label="Nombre de personnes"
-              value={household.hhSize}
+              value={household.hhSize.toString()}
               style={styles.input}
             />
 

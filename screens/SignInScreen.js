@@ -5,16 +5,13 @@ import {
   View,
 } from "react-native";
 import { Button, TextInput, Text, HelperText } from "react-native-paper";
-
 import { useState, useEffect } from "react";
-
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 import { getHousehold } from "../reducers/household";
-
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function SignInScreen({ navigation }) {
+export default function SignInScreen({ navigation }) {  
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -93,7 +90,7 @@ export default function SignInScreen({ navigation }) {
               diet,
               tastedFoods: data.household.tastedFoods,
               shoppingList: data.household.shoppingList,
-            })
+            })          
           );
           navigation.navigate(todayDay);
         } else {

@@ -22,9 +22,14 @@ export default function SignUpScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+
+  // Grabbed from emailregex.com
+  const EMAIL_REGEX: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   // Save in DB the user
   const handleSubmit = () => {
+    if (EMAIL_REGEX.test(email)) {
     fetch("https://back.ourson.app/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,6 +44,9 @@ export default function SignUpScreen({ navigation }) {
           setShowError(!showError);
         }
       });
+    } else {
+      setEmailError(true);
+    }
   };
 
   return (
@@ -89,13 +97,19 @@ export default function SignUpScreen({ navigation }) {
             />
             <HelperText
               type="error"
+              visible={emailError}
+              style={styles.errorMessage}
+            >
+              Veuillez entrer une adresse email valide.             
+            </HelperText>
+            <HelperText
+              type="error"
               visible={showError}
               style={styles.errorMessage}
             >
               L'utilisateur avec cet email existe déjà. Veuillez vous connecter
-              ou utiliser un autre email pour créer un nouveau compte.
-              {/* Cet utilisateur existe déjà. Veuillez utiliser un autre email. */}
-            </HelperText>
+              ou utiliser un autre email pour créer un nouveau compte.             
+            </HelperText>            
           </View>
           <Button
             style={styles.button}

@@ -65,16 +65,16 @@ export const householdSlice = createSlice({
       );
     },
     emptyHousehold: (state, action) => {
-      state.value.hhSize = null;
-      state.value.kidsCount = null;
+      state.value.hhSize = "aucun";
+      state.value.kidsCount = "aucun";
       state.value.kidsArray = [];
       state.value.savedWeeklyRecipes = { baby: [], adult: [] };
       state.value.likedRecipes = { baby: [], adult: [] };
       state.value.createdAt = "";
       state.value.diet = null;
     },
-    addShoppingList: (state, action) => {
-      state.value.shoppingList.push(action.payload);
+    updateShoppingList: (state, action) => {
+      state.value.shoppingList = action.payload.shoppingList;
     },
   },
 });
@@ -88,7 +88,7 @@ export const {
   addLikedRecipe,
   removeLikedRecipe,
   emptyHousehold,
-  addShoppingList,
+  updateShoppingList,
   addTastedFood,
   removeTastedFood,
 } = householdSlice.actions;

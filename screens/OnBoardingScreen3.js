@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
 } from "react-native";
-import { Button, Text, ProgressBar, TextInput } from "react-native-paper";
+import { Button, Text, ProgressBar, TextInput, HelperText } from "react-native-paper";
 
 import { useState, useEffect } from "react";
 
@@ -21,6 +21,7 @@ export default function OnBoardingScreen1({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const [todayDay, setTodayDay] = useState("");
 
@@ -53,8 +54,7 @@ export default function OnBoardingScreen1({ navigation }) {
     }
   }, []);
 
-  const handleSubmit = () => {
-    // via
+  const handleSubmit = () => {    
     if (firstName && email && password) {
       fetch("https://back.ourson.app/users/signupGuest", {
         method: "POST",
@@ -66,6 +66,8 @@ export default function OnBoardingScreen1({ navigation }) {
           if (data.result) {
             console.log("hh reducer3", household);
             navigation.navigate(todayDay);
+          } else {
+            setShowError(true);
           }
         });
     } else {
@@ -128,6 +130,13 @@ export default function OnBoardingScreen1({ navigation }) {
                 />
               }
             />
+            <HelperText
+              type="error"
+              visible={showError}
+              style={styles.errorMessage}
+            >
+            L'utilisateur avec cet email existe déjà.          
+            </HelperText>
           </View>
           <Button
             style={styles.button}
@@ -201,6 +210,12 @@ const styles = StyleSheet.create({
     margin: 5,
     width: "85%",
     backgroundColor: "white",
+  },
+  errorMessage: {
+    fontFamily: "Roboto",
+    fontSize: 14,
+    fontWeight: 600,
+    color: "red",
   },
   button: {
     borderRadius: 60,
