@@ -84,6 +84,7 @@ export default function TastedFoodScreen({ navigation }) {
   const tastedFoodsList = useSelector(
     (state) => state.household.value.tastedFoods
   );
+  console.log(tastedFoodsList);
   const [foodList, setFoodList] = useState([]);
 
   useEffect(() => {
@@ -169,11 +170,11 @@ export default function TastedFoodScreen({ navigation }) {
     });
 
   const getKidNames = () => {
-    return kidsArray.map((kid, i) => kid.kidName).join(", ");
+    return kidsArray[0].map((kid, i) => kid.kidName).join(", ");
   };
 
   const getVerb = () => {
-    return kidsArray.length > 1 ? "ont" : "a";
+    return kidsArray[0].length > 1 ? "ont" : "a";
   };
 
   return (
@@ -182,8 +183,7 @@ export default function TastedFoodScreen({ navigation }) {
       <View style={styles.container}>
         <View style={styles.elemContainer}>
           <Text style={styles.title}>
-            {/* Ce que {getKidNames()} {getVerb()} goûté */}
-            Ce que Emilian a goûté
+            Ce que {getKidNames()} {getVerb()} goûté            
           </Text>
           <ScrollView
             contentContainerStyle={styles.scrollView}

@@ -73,7 +73,7 @@ export default function DashboardScreen({ navigation }) {
             onChangeText={(text) => setSearchValue(text)}
             value={searchValue}
             onIconPress={() => {
-              handleSubmit(),
+                handleSubmit(),
                 setFlatListVisible(true),
                 setDashboardVisible(false);
             }}
