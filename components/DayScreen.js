@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 import { useNavigationState } from "@react-navigation/native";
 
 import { useDispatch, useSelector } from "react-redux";
-import household, {
+import {
   addWeeklyRecipes,
   resetCreatedAt,
   addLikedRecipe,
@@ -52,7 +52,7 @@ export default function DayScreen({ navigation }) {
 
   // Reducers ref
   const user = useSelector((state) => state.user.value);
-  const household = useSelector((state => state.household.value));
+  const household = useSelector((state) => state.household.value);
   const savedWeeklyRecipes = useSelector(
     (state) => state.household.value.savedWeeklyRecipes
   );
@@ -79,7 +79,7 @@ export default function DayScreen({ navigation }) {
   // if > 7 days OR reducer Weeklyrecipes is empty, just fetch it from database.
   useEffect(() => {
     console.log("usertoken", user.token);
-    console.log('household reducer', household);
+    console.log("household reducer", household);
     let timepast = Date.now() - createdAt;
     console.log("createdAt initial", createdAt);
     console.log("timepast initial", timepast);
@@ -89,7 +89,7 @@ export default function DayScreen({ navigation }) {
         savedWeeklyRecipes.baby.length === 0 &&
         savedWeeklyRecipes.adult.length === 0
       ) &&
-      timepast > 604800000
+      timepast < 604800000
     ) {
       console.log("Not");
     } else {
