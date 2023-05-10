@@ -8,7 +8,13 @@ import { addTastedFood, removeTastedFood } from "../reducers/household";
 
 import Header from "../components/Header";
 
-const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
+const TastedFoodChip = ({
+  food,
+  name,
+  isSelectedInDB,
+  updateCounters,
+  type,
+}) => {
   const [isSelected, setIsSelected] = useState(isSelectedInDB);
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
@@ -16,6 +22,7 @@ const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
   const onPress = () => {
     const newIsSelected = !isSelected;
     setIsSelected(newIsSelected);
+    updateCounters(type, newIsSelected ? 1 : -1);
     if (newIsSelected) {
       fetch("https://back.ourson.app/tastedFoods/addTastedFood/", {
         method: "PUT",
@@ -87,8 +94,16 @@ export default function TastedFoodScreen({ navigation }) {
   );
   console.log(tastedFoodsList);
   const [foodList, setFoodList] = useState([]);
-  let nbFruits = 0;
-  let nbVegetables = 0;
+  let [nbFruits, setNbFruits] = useState(0);
+  let [nbVegetables, setNbVegetables] = useState(0);
+
+  const updateCounters = (type, increment) => {
+    if (type === "fruit") {
+      setNbFruits((prevCount) => prevCount + increment);
+    } else if (type === "légume") {
+      setNbVegetables((prevCount) => prevCount + increment);
+    }
+  };
 
   useEffect(() => {
     fetch("https://back.ourson.app/tastedFoods/foodList")
@@ -116,8 +131,10 @@ export default function TastedFoodScreen({ navigation }) {
           <TastedFoodChip
             key={data._id}
             food={data._id}
+            type="fruit"
             name={data.name}
             isSelectedInDB={true}
+            updateCounters={updateCounters}
           />
         );
       } else {
@@ -125,8 +142,10 @@ export default function TastedFoodScreen({ navigation }) {
           <TastedFoodChip
             key={data._id}
             food={data._id}
+            type="fruit"
             name={data.name}
             isSelectedInDB={false}
+            updateCounters={updateCounters}
           />
         );
       }
@@ -145,8 +164,10 @@ export default function TastedFoodScreen({ navigation }) {
           <TastedFoodChip
             key={data._id}
             food={data._id}
+            type="légume"
             name={data.name}
             isSelectedInDB={true}
+            updateCounters={updateCounters}
           />
         );
       } else {
@@ -154,8 +175,10 @@ export default function TastedFoodScreen({ navigation }) {
           <TastedFoodChip
             key={data._id}
             food={data._id}
+            type="légume"
             name={data.name}
             isSelectedInDB={false}
+            updateCounters={updateCounters}
           />
         );
       }
@@ -183,7 +206,7 @@ export default function TastedFoodScreen({ navigation }) {
       <View style={styles.container}>
         <View style={styles.elemContainer}>
           <Text style={styles.title}>
-            Ce que {getKidNames()} {getVerb()} goûté            
+            Ce que {getKidNames()} {getVerb()} goûté
           </Text>
           <ScrollView
             contentContainerStyle={styles.scrollView}
