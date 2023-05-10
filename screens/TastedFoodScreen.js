@@ -80,38 +80,28 @@ const TastedFoodChip = ({ food, name, isSelectedInDB }) => {
 
 export default function TastedFoodScreen({ navigation }) {
   const kidsArray = [useSelector((state) => state.household.value.kidsArray)];
-  console.log(kidsArray);
+
+  console.log("CL kidsArray from reducer", kidsArray);
   const tastedFoodsList = useSelector(
     (state) => state.household.value.tastedFoods
   );
   console.log(tastedFoodsList);
   const [foodList, setFoodList] = useState([]);
+  let nbFruits = 0;
+  let nbVegetables = 0;
 
   useEffect(() => {
     fetch("https://back.ourson.app/tastedFoods/foodList")
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          setFoodList(data.recipes);
+          setFoodList(data.foodList);
         }
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-
-  const nbFruits = foodList?.filter((data) =>
-    tastedFoodsList.some((tastedFood) => {
-      return tastedFood._id === data._id && data.type === "fruit";
-    })
-  );
-  console.log(nbFruits);
-
-  const nbVegetables = foodList?.filter((data) =>
-    tastedFoodsList.some((tastedFood) => {
-      return tastedFood._id === data._id && data.type === "légume";
-    })
-  );
 
   const fruitsChips = foodList
     ?.filter((food) => food.type === "fruit")
@@ -121,6 +111,7 @@ export default function TastedFoodScreen({ navigation }) {
           return tastedFood === data._id;
         })
       ) {
+        nbFruits++;
         return (
           <TastedFoodChip
             key={data._id}
@@ -149,12 +140,13 @@ export default function TastedFoodScreen({ navigation }) {
           return tastedFood === data._id;
         })
       ) {
+        nbVegetables++;
         return (
           <TastedFoodChip
             key={data._id}
             food={data._id}
             name={data.name}
-            isSelected={true}
+            isSelectedInDB={true}
           />
         );
       } else {
@@ -169,8 +161,16 @@ export default function TastedFoodScreen({ navigation }) {
       }
     });
 
+  // PBM kidsName car kidName est incrémenté avec un champs kidName1 / kidName2 donc en mappant sur kidName on n'aura rien.
+
+  //Info du Reducer apres SignUP :
+  //CL kidsArray from reducer [[{"0": [Object], "ageMonths1": "12", "ageMonths2": "13", "ageMonths3": "14", "kidName1": "Theo", "kidName2": "Julien", "kidName3": "Raida"}]]
+
+  //Info du Reducer apres SignIN :
+  // CL kidsArray from reducer [[{"_id": "64555802a49515fc6a25a013", "ageMonths": 12, "kidName": "Theo"}, {"_id": "64555802a49515fc6a25a014", "ageMonths": 13, "kidName": "Julien"}, {"_id": "64555802a49515fc6a25a015", "ageMonths": 14, "kidName": "Raida"}]]
+
   const getKidNames = () => {
-    return kidsArray[0].map((kid, i) => kid.kidName).join(", ");
+    return kidsArray[0].map((kid) => kid.kidName).join(", ");
   };
 
   const getVerb = () => {
@@ -190,18 +190,18 @@ export default function TastedFoodScreen({ navigation }) {
             showsVerticalScrollIndicator={false}
           >
             <Text style={styles.subtitle}>Légumes</Text>
-            {/* <Text style={styles.text}>
-              {nbVegetables}/{vegetablesChips.length} légumes goûtés.
-            </Text> */}
+            <Text style={styles.text}>
+              {nbVegetables}/{vegetablesChips?.length} légumes goûtés.
+            </Text>
 
             <View style={styles.ingredientsChipsContainer}>
               {vegetablesChips}
             </View>
 
             <Text style={styles.subtitle}>Fruits</Text>
-            {/* <Text style={styles.text}>
-              {nbFruits}/{fruitsChips.length} fruits goûtés.
-            </Text> */}
+            <Text style={styles.text}>
+              {nbFruits}/{fruitsChips?.length} fruits goûtés.
+            </Text>
 
             <View style={styles.ingredientsChipsContainer}>{fruitsChips}</View>
           </ScrollView>
