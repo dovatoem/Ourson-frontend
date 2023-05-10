@@ -10,7 +10,7 @@ import { Button, Text, ProgressBar, RadioButton } from "react-native-paper";
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addDiet } from "../reducers/household";
+import { getHousehold } from "../reducers/household";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -38,10 +38,34 @@ export default function OnBoardingScreen1({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          const dietReducer = diet ? diet : "Aucun";
-          dispatch(addDiet(dietReducer));
-          console.log("hh reducer2", household);
+          console.log('ok');
           navigation.navigate("OnBoardingScreen3");
+          const dietReducer = diet ? diet : "Aucun";          
+          dispatch(
+            getHousehold({
+              hhSize: data.household.hhSize,
+              kidsCount: data.household.kidsCount,
+              kidsArray: data.household.kids,
+              savedWeeklyRecipes: {
+                baby: data.household.weeklyRecipes.map((recipe) => recipe.baby),
+                adult: data.household.weeklyRecipes.map(
+                  (recipe) => recipe.adult
+                ),
+              },
+              likedRecipes: {
+                baby: data.household.likedRecipes.map((recipe) => recipe.baby),
+                adult: data.household.likedRecipes.map(
+                  (recipe) => recipe.adult
+                ),
+              },
+              createdAt: data.household.createdAt,
+              diet: dietReducer,
+              tastedFoods: data.household.tastedFoods,
+              shoppingList: data.household.shoppingList,
+            })  
+          );         
+        } else {
+          console.log('error');
         }
       });
   };

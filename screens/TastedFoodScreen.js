@@ -85,6 +85,7 @@ export default function TastedFoodScreen({ navigation }) {
   const tastedFoodsList = useSelector(
     (state) => state.household.value.tastedFoods
   );
+  console.log(tastedFoodsList);
   const [foodList, setFoodList] = useState([]);
   let nbFruits = 0;
   let nbVegetables = 0;
@@ -182,7 +183,7 @@ export default function TastedFoodScreen({ navigation }) {
       <View style={styles.container}>
         <View style={styles.elemContainer}>
           <Text style={styles.title}>
-            Ce que {getKidNames()} {getVerb()} goûté
+            Ce que {getKidNames()} {getVerb()} goûté            
           </Text>
           <ScrollView
             contentContainerStyle={styles.scrollView}
