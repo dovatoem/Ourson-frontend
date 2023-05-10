@@ -19,6 +19,10 @@ const TastedFoodChip = ({
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    updateCounters(type, isSelected ? 1 : 0);
+  }, []);
+
   const onPress = () => {
     const newIsSelected = !isSelected;
     setIsSelected(newIsSelected);
@@ -94,8 +98,8 @@ export default function TastedFoodScreen({ navigation }) {
   );
   console.log(tastedFoodsList);
   const [foodList, setFoodList] = useState([]);
-  let [nbFruits, setNbFruits] = useState(0);
-  let [nbVegetables, setNbVegetables] = useState(0);
+  const [nbFruits, setNbFruits] = useState(0);
+  const [nbVegetables, setNbVegetables] = useState(0);
 
   const updateCounters = (type, increment) => {
     if (type === "fruit") {
@@ -126,7 +130,6 @@ export default function TastedFoodScreen({ navigation }) {
           return tastedFood === data._id;
         })
       ) {
-        nbFruits++;
         return (
           <TastedFoodChip
             key={data._id}
@@ -159,7 +162,6 @@ export default function TastedFoodScreen({ navigation }) {
           return tastedFood === data._id;
         })
       ) {
-        nbVegetables++;
         return (
           <TastedFoodChip
             key={data._id}
