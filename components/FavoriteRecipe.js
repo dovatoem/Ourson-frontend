@@ -35,54 +35,31 @@ export default function FavoriteRecipe({
   const handleClickLike = () => {
     const newIsLiked = !isLiked;
     setIsLiked(newIsLiked);
-
-    if (newIsLiked) {
-      fetch("https://back.ourson.app/recipes/addLikedRecipe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-
-        body: JSON.stringify({
-          token: user.token,
-          recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.result) {
-            dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
-          } else {
-            setIsLiked(!newIsLiked);
-          }
-        })
-        .catch(() => {
+    fetch("https://back.ourson.app/recipes/removeLikedRecipe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: user.token,
+        recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          dispatch(
+            removeLikedRecipe({
+              baby: babyRecipe._id,
+              adult: adultRecipe._id,
+            })
+          );
+        } else {
           setIsLiked(!newIsLiked);
-        });
-    } else {
-      fetch("https://back.ourson.app/recipes/removeLikedRecipe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          token: user.token,
-          recipeID: { baby: babyRecipe._id, adult: adultRecipe._id },
-        }),
+          dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
+        }
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.result) {
-            dispatch(
-              removeLikedRecipe({
-                baby: babyRecipe._id,
-                adult: adultRecipe._id,
-              })
-            );
-          } else {
-            setIsLiked(!newIsLiked);
-          }
-        })
-        .catch(() => {
-          setIsLiked(!newIsLiked);
-        });
-    }
+      .catch(() => {
+        setIsLiked(!newIsLiked);
+      });
   };
 
   let heartIcon = "";
