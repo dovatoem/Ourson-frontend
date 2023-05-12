@@ -52,6 +52,7 @@ export default function FavoriteRecipe({
               adult: adultRecipe._id,
             })
           );
+          onToggleSnackBar();
         } else {
           setIsLiked(!newIsLiked);
           dispatch(addLikedRecipe({ baby: babyRecipe, adult: adultRecipe }));
@@ -69,7 +70,6 @@ export default function FavoriteRecipe({
         style={styles.heartIconBackground}
         onPress={() => {
           handleClickLike();
-          onToggleSnackBar();
           tempCancellation({
             baby: babyRecipe,
             adult: adultRecipe,
